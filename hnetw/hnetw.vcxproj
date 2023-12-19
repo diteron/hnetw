@@ -64,6 +64,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalDependencies>ws2_32.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>ws2_32.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -99,6 +109,9 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="capture\hn_packet_capturer.cpp" />
+    <ClCompile Include="network\hn_ipv4_socket.cpp" />
+    <ClCompile Include="network\hnetwork.cpp" />
     <ClCompile Include="packet\hn_packet.cpp" />
     <ClCompile Include="ui\hn_packet_details.cpp" />
     <ClCompile Include="qtmodels\hn_packet_details_model.cpp" />
@@ -109,6 +122,12 @@
     <ClCompile Include="ui\hn_main_window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
+    <ClInclude Include="capture\stdafx.h" />
+    <ClInclude Include="capture\hn_packet_capturer.h" />
+    <ClInclude Include="capture\hn_capturer_observer.h" />
+    <ClInclude Include="network\hn_ipv4_socket.h" />
+    <ClInclude Include="network\hnetwork.h" />
+    <ClInclude Include="network\stdafx.h" />
     <ClInclude Include="packet\hn_packet.h" />
     <ClInclude Include="packet\stdafx.h" />
     <ClInclude Include="packet\proto_headers.h" />
