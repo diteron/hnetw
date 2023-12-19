@@ -4,22 +4,28 @@
 
 class HnPacket {
 public:
-    HnPacket(int id);
+    HnPacket(int id, int type, uint8_t* rawData);
     ~HnPacket();
 
     enum packetTypes {
-        IPv4,
-        UDP,
-        TCP,
+        Undefined = -1,
+        ICMP = 1,
+        IGMP = 2,
+        TCP = 6,
+        UDP = 17,
     };
-
-
+    
+    const int id() const { return id_; }
+    const int type() const { return type_; }
+    const std::time_t arrivalTime() const { return arrivalTime_; }
+    const ipv4_hdr* ipv4Header() const { return ipv4Header_; }
+    const uint8_t* rawData() const { return rawData_; }
 
 private:
     int id_;
     int type_;
-    std::time_t time_;
-    struct ipv4Header ipv4Header_;
+    std::time_t arrivalTime_;
+    ipv4_hdr* ipv4Header_ = nullptr;
+    int ipv4HeaderLength_;
     uint8_t* rawData_ = nullptr;
 };
-

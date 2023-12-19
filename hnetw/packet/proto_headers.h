@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-struct ipv4Header {
+struct ipv4_hdr {
     uint8_t   header_length : 4;
     uint8_t   version : 4;
     uint8_t   ecn : 2;                 // Explicit Congestion Notification
@@ -21,7 +21,7 @@ struct ipv4Header {
     uint32_t  dest_address;
 };
 
-struct tcpHeader {
+struct tcp_hdr {
     uint8_t   src_port;
     uint8_t   dest_port;
     uint32_t  seq_num;
@@ -41,7 +41,7 @@ struct tcpHeader {
     uint8_t   urgent_pointer;
 };
 
-struct udpHeader {
+struct udp_hdr {
     uint16_t src_port;
     uint16_t dest_port;
     uint16_t udp_packet_length;
