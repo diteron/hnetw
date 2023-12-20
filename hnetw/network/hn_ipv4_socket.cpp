@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "hn_ipv4_socket.h"
 
+#include "hn_ipv4_socket.h"
 
 HnIPv4Socket::HnIPv4Socket(SOCKET socketHandle) : socketHandle_(socketHandle)
 {}
@@ -90,4 +90,21 @@ int HnIPv4Socket::bindToInterface(u_long intrface, unsigned short port)
     int bindResult = bind(socketHandle_, (sockaddr*) &bindAddr, sizeof(bindAddr));
     if (bindResult != 0) return Bind_error;
     return Success;
+}
+
+bool HnIPv4Socket::setPacketCaptureMode()
+{
+    if (socketType_ != Raw) return false;
+
+    int rcvallOpt = RCVALL_ON;
+    int bytesRetBuff = 0;
+    int result = WSAIoctl(socketHandle_, SIO_RCVALL, &rcvallOpt, sizeof(rcvallOpt), 0, 0, (LPDWORD) &bytesRetBuff, 0, 0);
+    if (result == SOCKET_ERROR) {
+#ifdef _DEBUG
+        int errCode = WSAGetLastError();
+#endif // _DEBUG
+        return false;
+    }
+
+    return true;
 }

@@ -28,6 +28,7 @@ public:
     int close();
 
     int bindToInterface(u_long intrface, unsigned short port);
+    bool setPacketCaptureMode();
 
     const SOCKET socketHandle() const { return socketHandle_; }
     const socket_type socketType() const { return socketType_; }
