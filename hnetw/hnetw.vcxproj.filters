@@ -77,6 +77,9 @@
     <ClInclude Include="hn_host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="network\hn_host.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hn_host.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="network\hn_host.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

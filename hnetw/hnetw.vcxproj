@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="hn_host.cpp" />
+    <ClCompile Include="network\hn_host.cpp" />
     <ClCompile Include="network\hn_ipv4_socket.cpp" />
     <ClCompile Include="network\hnetwork.cpp" />
     <ClCompile Include="packet\hn_packet.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_capturer_observer.h" />
     <ClInclude Include="hn_host.h" />
+    <ClInclude Include="network\hn_host.h" />
     <ClInclude Include="network\hn_ipv4_socket.h" />
     <ClInclude Include="network\hnetwork.h" />
     <ClInclude Include="network\stdafx.h" />
