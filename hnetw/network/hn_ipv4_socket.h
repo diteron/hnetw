@@ -18,13 +18,16 @@ public:
         Success,
         Sock_already_init,
         WSA_error,
-        Sock_already_closed
+        Sock_already_closed,
+        Bind_error
     };
 
     int createStreamSocket();
     int createDatagramSocket();
     int createRawSocket();
     int close();
+
+    int bindToInterface(u_long intrface, unsigned short port);
 
     const SOCKET socketHandle() const { return socketHandle_; }
     const socket_type socketType() const { return socketType_; }

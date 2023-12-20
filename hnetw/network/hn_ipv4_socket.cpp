@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "hn_ipv4_socket.h"
 
+
 HnIPv4Socket::HnIPv4Socket(SOCKET socketHandle) : socketHandle_(socketHandle)
 {}
 
@@ -16,8 +17,12 @@ int HnIPv4Socket::createStreamSocket()
         return Sock_already_init;
     
     socketHandle_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (socketHandle_ == INVALID_SOCKET)
+    if (socketHandle_ == INVALID_SOCKET) {
+#ifdef _DEBUG
+        int errCode = WSAGetLastError();
+#endif // _DEBUG
         return WSA_error;
+    }
 
     socketType_ = Stream;
     return Success;
@@ -29,8 +34,12 @@ int HnIPv4Socket::createDatagramSocket()
         return Sock_already_init;
 
     socketHandle_ = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (socketHandle_ == INVALID_SOCKET)
+    if (socketHandle_ == INVALID_SOCKET) {
+#ifdef _DEBUG
+        int errCode = WSAGetLastError();
+#endif // _DEBUG
         return WSA_error;
+    }
 
     socketType_ = Datagram;
     return Success;
@@ -42,8 +51,12 @@ int HnIPv4Socket::createRawSocket()
         return Sock_already_init;
 
     socketHandle_ = socket(AF_INET, SOCK_RAW, IPPROTO_IP);
-    if (socketHandle_ == INVALID_SOCKET)
+    if (socketHandle_ == INVALID_SOCKET) {
+#ifdef _DEBUG
+        int errCode = WSAGetLastError();
+#endif // _DEBUG
         return WSA_error;
+    }
 
     socketType_ = Raw;
     return Success;
@@ -55,10 +68,26 @@ int HnIPv4Socket::close()
         return Sock_already_closed;
 
     int closeResult = closesocket(socketHandle_);
-    if (closeResult != 0)
+    if (closeResult != 0) {
+#ifdef _DEBUG
+        int errCode = WSAGetLastError();
+#endif // _DEBUG
         return WSA_error;
+    }
 
     socketHandle_ = INVALID_SOCKET;
     socketType_ = Undefined;
+    return Success;
+}
+
+int HnIPv4Socket::bindToInterface(u_long intrface, unsigned short port)
+{
+    sockaddr_in bindAddr = {};
+    bindAddr.sin_family = AF_INET;
+    std::memcpy(&bindAddr.sin_addr, &intrface, sizeof(intrface));
+    bindAddr.sin_port = htons(port);
+
+    int bindResult = bind(socketHandle_, (sockaddr*) &bindAddr, sizeof(bindAddr));
+    if (bindResult != 0) return Bind_error;
     return Success;
 }

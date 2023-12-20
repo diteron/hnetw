@@ -9,5 +9,6 @@ int main(int argc, char *argv[])
     const int startWidth = 1100, startHeight = 620;
     HnMainWindow mainWnd(startWidth, startHeight);
     mainWnd.show();
-    return app.exec();
+    int errCode = app.exec();
+    return errCode;
 }
