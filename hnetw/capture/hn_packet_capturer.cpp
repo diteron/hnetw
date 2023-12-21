@@ -51,7 +51,7 @@ bool HnPacketCapturer::setInterfaceToCapture(u_long intrface, unsigned short por
 void HnPacketCapturer::startCapturing()
 {
     capturing_ = true;
-    std::thread capturing(capturePackets);
+    std::thread capturing(&HnPacketCapturer::capturePackets, this);
     capturing.detach();
 }
 
