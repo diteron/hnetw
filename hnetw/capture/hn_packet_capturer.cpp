@@ -81,10 +81,15 @@ void HnPacketCapturer::capturePackets()
             ipv4_hdr* ipHeader = (ipv4_hdr*) buffer_;
             uint8_t* rawData = new uint8_t[bytesRead];      // Memory management is in the captured packet object
             std::memcpy(rawData, buffer_, bytesRead);       // Possible errors?
-            HnPacket* capturedPacket = new HnPacket(++capturedPacketsCnt, ipHeader->protocol, rawData, bytesRead, currentPacketTime);
+
+            HnPacket* capturedPacket = new HnPacket(++capturedPacketsCnt, ipHeader->protocol);
+            capturedPacket->setPacketData(rawData, bytesRead);
+            capturedPacket->setArrivalTime(currentPacketTime);
+
             sharedMutex_->lock();
             capturedPackets_->append(capturedPacket);       // Shared use of QVector in the HnPacketDetails class
             sharedMutex_->unlock();
+
             notifyObservers(capturedPacket);
         }
     }
