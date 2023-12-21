@@ -3,8 +3,12 @@
 
 using namespace std::chrono;
 
-HnPacket::HnPacket(int id, int type, uint8_t* rawData) 
-    : id_(id), type_(type), rawData_(rawData)
+HnPacket::HnPacket(int id, int type, uint8_t* rawData, int rawDataLen, std::time_t arrivalTime) 
+    : id_(id),
+      type_(type),
+      rawData_(rawData),
+      rawDataLen_(rawDataLen),
+      arrivalTime_(arrivalTime)
 {
     arrivalTime_ = system_clock::to_time_t(system_clock::now());
     ipv4Header_ = reinterpret_cast<ipv4_hdr*>(rawData_);

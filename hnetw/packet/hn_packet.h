@@ -4,7 +4,7 @@
 
 class HnPacket {
 public:
-    HnPacket(int id, int type, uint8_t* rawData);
+    HnPacket(int id, int type, uint8_t* rawData, int rawDataLen, std::time_t arrivalTime);
     ~HnPacket();
 
     enum packetTypes {
@@ -28,4 +28,5 @@ private:
     ipv4_hdr* ipv4Header_ = nullptr;
     int ipv4HeaderLength_;
     uint8_t* rawData_ = nullptr;
+    int rawDataLen_ = 0;
 };
