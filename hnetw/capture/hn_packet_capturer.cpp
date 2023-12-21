@@ -9,7 +9,7 @@ HnPacketCapturer::HnPacketCapturer()
 HnPacketCapturer::~HnPacketCapturer()
 {
     if (capturedPackets_ && !capturedPackets_->isEmpty()) {
-        qDeleteAll(capturedPackets_);
+        qDeleteAll(*capturedPackets_);
         delete capturedPackets_;
     }
 }

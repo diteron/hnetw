@@ -19,3 +19,18 @@ QVariant HnPacketDetailsModel::data(const QModelIndex& index, int role) const
 
     return QVariant();
 }
+
+QModelIndex HnPacketDetailsModel::index(int row, int column, const QModelIndex& parent) const
+{
+    return QModelIndex();
+}
+
+QModelIndex HnPacketDetailsModel::parent(const QModelIndex& index) const
+{
+    return QModelIndex();
+}
+
+int HnPacketDetailsModel::rowCount(const QModelIndex& parent) const
+{
+    return 0;
+}
