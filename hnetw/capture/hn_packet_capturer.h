@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../packet/hn_packet.h"
+#include "packet/hn_packet.h"
 #include "hn_capturer_observer.h"
 
 class HnPacketCapturer {

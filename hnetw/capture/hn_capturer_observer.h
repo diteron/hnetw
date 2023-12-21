@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../packet/hn_packet.h"
+#include "packet/hn_packet.h"
 
 class IHnCapturerObserver {
 public:

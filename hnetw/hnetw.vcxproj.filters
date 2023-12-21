@@ -32,13 +32,7 @@
     <ClInclude Include="ui\hn_main_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\hn_central_widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui\qtmodels\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\qtmodels\hn_packet_list_row.h">
@@ -47,25 +41,16 @@
     <ClInclude Include="ui\hn_packet_details.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="packet\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="packet\hn_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="packet\proto_headers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="capture\stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="capture\hn_packet_capturer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="capture\hn_capturer_observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="network\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="network\hnetwork.h">
