@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include <QtWidgets/QApplication>
 
 #include "ui/hn_main_window.h"

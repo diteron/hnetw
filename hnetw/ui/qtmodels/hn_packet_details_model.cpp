@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_packet_details_model.h"
 
 HnPacketDetailsModel::HnPacketDetailsModel(QObject* parent) 

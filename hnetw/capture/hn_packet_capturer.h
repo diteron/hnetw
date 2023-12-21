@@ -1,6 +1,7 @@
 #pragma once
 
-#include "packet/hn_packet.h"
+#include <packet/hn_packet.h>
+#include <network/hn_ipv4_socket.h>
 #include "hn_capturer_observer.h"
 
 class HnPacketCapturer {

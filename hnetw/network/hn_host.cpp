@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_host.h"
 
 HnHost::HnHost(unsigned short port) : port_(port)

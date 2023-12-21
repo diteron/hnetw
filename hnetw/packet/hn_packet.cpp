@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_packet.h"
 
 using namespace std::chrono;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "capture/hn_capturer_observer.h"
+#include <capture/hn_capturer_observer.h>
 
 class HnPacketList : public QTreeView, public IHnCapturerObserver {
 

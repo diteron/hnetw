@@ -1,2 +1,2 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_packet_details.h"
