@@ -38,10 +38,10 @@
     <ClInclude Include="ui\hn_central_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qtmodels\stdafx.h">
+    <ClInclude Include="ui\qtmodels\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qtmodels\hn_packet_list_row.h">
+    <ClInclude Include="ui\qtmodels\hn_packet_list_row.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\hn_packet_details.h">
@@ -94,16 +94,16 @@
     <ClCompile Include="ui\hn_packetlist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qtmodels\hn_packet_list_model.cpp">
+    <ClCompile Include="ui\qtmodels\hn_packet_list_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qtmodels\hn_packet_list_row.cpp">
+    <ClCompile Include="ui\qtmodels\hn_packet_list_row.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\hn_packet_details.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qtmodels\hn_packet_details_model.cpp">
+    <ClCompile Include="ui\qtmodels\hn_packet_details_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="packet\hn_packet.cpp">
@@ -126,13 +126,13 @@
     <QtMoc Include="ui\hn_menubar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="qtmodels\hn_packet_list_model.h">
+    <QtMoc Include="ui\qtmodels\hn_packet_list_model.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui\hn_packetlist.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="qtmodels\hn_packet_details_model.h">
+    <QtMoc Include="ui\qtmodels\hn_packet_details_model.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

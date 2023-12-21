@@ -115,9 +115,9 @@
     <ClCompile Include="network\hnetwork.cpp" />
     <ClCompile Include="packet\hn_packet.cpp" />
     <ClCompile Include="ui\hn_packet_details.cpp" />
-    <ClCompile Include="qtmodels\hn_packet_details_model.cpp" />
-    <ClCompile Include="qtmodels\hn_packet_list_row.cpp" />
-    <ClCompile Include="qtmodels\hn_packet_list_model.cpp" />
+    <ClCompile Include="ui\qtmodels\hn_packet_details_model.cpp" />
+    <ClCompile Include="ui\qtmodels\hn_packet_list_row.cpp" />
+    <ClCompile Include="ui\qtmodels\hn_packet_list_model.cpp" />
     <ClCompile Include="ui\hn_packetlist.cpp" />
     <ClCompile Include="ui\hn_central_widget.cpp" />
     <ClCompile Include="ui\hn_main_window.cpp" />
@@ -134,10 +134,10 @@
     <ClInclude Include="packet\stdafx.h" />
     <ClInclude Include="packet\proto_headers.h" />
     <ClInclude Include="ui\hn_packet_details.h" />
-    <QtMoc Include="qtmodels\hn_packet_details_model.h" />
-    <ClInclude Include="qtmodels\hn_packet_list_row.h" />
-    <QtMoc Include="qtmodels\hn_packet_list_model.h" />
-    <ClInclude Include="qtmodels\stdafx.h" />
+    <QtMoc Include="ui\qtmodels\hn_packet_details_model.h" />
+    <ClInclude Include="ui\qtmodels\hn_packet_list_row.h" />
+    <QtMoc Include="ui\qtmodels\hn_packet_list_model.h" />
+    <ClInclude Include="ui\qtmodels\stdafx.h" />
     <QtMoc Include="ui\hn_packetlist.h" />
     <ClInclude Include="ui\hn_central_widget.h" />
     <ClInclude Include="ui\hn_main_window.h" />
