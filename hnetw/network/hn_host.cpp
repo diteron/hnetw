@@ -40,6 +40,16 @@ std::vector<std::string> HnHost::interfacesStrings() const
     return strings;
 }
 
+std::string HnHost::hostname() const
+{
+    return hostName_;
+}
+
+unsigned short HnHost::port() const
+{
+    return port_;
+}
+
 bool HnHost::getAllInterfaces()
 {
     addrinfo hints = {};

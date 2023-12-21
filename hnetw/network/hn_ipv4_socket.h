@@ -30,8 +30,8 @@ public:
     int bindToInterface(u_long intrface, unsigned short port);
     bool setPacketCaptureMode();
 
-    const SOCKET socketHandle() const { return socketHandle_; }
-    const socket_type socketType() const { return socketType_; }
+    const SOCKET socketHandle() const;
+    const socket_type socketType() const;
 
 private:
     SOCKET socketHandle_ = INVALID_SOCKET;

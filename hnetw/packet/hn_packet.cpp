@@ -19,3 +19,28 @@ HnPacket::~HnPacket()
 {
     if (rawData_) delete rawData_;
 }
+
+const int HnPacket::id() const
+{
+    return id_;
+}
+
+const int HnPacket::type() const
+{
+    return type_;
+}
+
+const std::time_t HnPacket::arrivalTime() const
+{
+    return arrivalTime_;
+}
+
+const ipv4_hdr* HnPacket::ipv4Header() const
+{
+    return ipv4Header_;
+}
+
+const uint8_t* HnPacket::rawData() const
+{
+    return rawData_;
+}

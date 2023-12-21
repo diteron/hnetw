@@ -9,8 +9,8 @@ public:
 	u_long interfaceAt(int index) const;
 	std::vector<std::string> interfacesStrings() const;
 
-	std::string hostname() const { return hostName_; }
-	unsigned short port() const { return port_; }
+	std::string hostname() const;
+	unsigned short port() const;
 
 private:
 	bool getAllInterfaces();

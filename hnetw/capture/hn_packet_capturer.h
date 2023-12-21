@@ -17,7 +17,7 @@ public:
     void startCapturing();
     void pauseCapturing();
 
-    const QVector<HnPacket*>* capturedPackets() const { return capturedPackets_; }
+    const QVector<HnPacket*>* capturedPackets() const;
 
 private:
     void capturePackets();

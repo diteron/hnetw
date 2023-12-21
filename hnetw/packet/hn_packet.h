@@ -15,11 +15,11 @@ public:
         UDP = 17,
     };
     
-    const int id() const { return id_; }
-    const int type() const { return type_; }
-    const std::time_t arrivalTime() const { return arrivalTime_; }
-    const ipv4_hdr* ipv4Header() const { return ipv4Header_; }
-    const uint8_t* rawData() const { return rawData_; }
+    const int id() const;
+    const int type() const;
+    const std::time_t arrivalTime() const;
+    const ipv4_hdr* ipv4Header() const;
+    const uint8_t* rawData() const;
 
 private:
     int id_;

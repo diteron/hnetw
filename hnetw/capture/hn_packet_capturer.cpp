@@ -60,6 +60,11 @@ void HnPacketCapturer::pauseCapturing()
     capturing_ = false;
 }
 
+const QVector<HnPacket*>* HnPacketCapturer::capturedPackets() const
+{
+    return capturedPackets_;
+}
+
 void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;

@@ -108,3 +108,13 @@ bool HnIPv4Socket::setPacketCaptureMode()
 
     return true;
 }
+
+const SOCKET HnIPv4Socket::socketHandle() const
+{
+    return socketHandle_;
+}
+
+const HnIPv4Socket::socket_type HnIPv4Socket::socketType() const
+{
+    return socketType_;
+}
