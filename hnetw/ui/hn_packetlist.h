@@ -1,8 +1,6 @@
 #pragma once
 
-#include <capture/hn_capturer_observer.h>
-
-class HnPacketList : public QTreeView, public IHnCapturerObserver {
+class HnPacketList : public QTreeView {
 
     Q_OBJECT
 
@@ -11,6 +9,5 @@ public:
     ~HnPacketList();
 
 private:
-    virtual void processPacket(HnPacket* packet) override;
 
 };

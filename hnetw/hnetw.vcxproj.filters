@@ -62,6 +62,18 @@
     <ClInclude Include="network\hn_host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="packet\packets\hn_tcp_packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\hn_packet_factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\packets\hn_udp_packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packet\packets\hn_other_packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +116,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="network\hn_host.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="capture\hn_capturer_observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\packets\hn_tcp_packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\hn_packet_factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\packets\hn_udp_packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\packets\hn_other_packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

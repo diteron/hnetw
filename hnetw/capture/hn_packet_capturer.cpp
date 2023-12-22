@@ -78,11 +78,12 @@ void HnPacketCapturer::capturePackets()
         bytesRead = recvfrom(captureSocket_.socketHandle(), buffer_, BuffSize_, 0, 0, 0);
         if (bytesRead > 0 && capturing_) {
             currentPacketTime = clock() - captureStarted;
-            ipv4_hdr* ipHeader = (ipv4_hdr*) buffer_;
+            ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer_);
             uint8_t* rawData = new uint8_t[bytesRead];      // Memory management is in the captured packet object
             std::memcpy(rawData, buffer_, bytesRead);       // Possible errors?
 
-            HnPacket* capturedPacket = new HnPacket(++capturedPacketsCnt, ipHeader->protocol);
+            HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, ++capturedPacketsCnt);
+            if (capturedPacket == nullptr) continue;
             capturedPacket->setPacketData(rawData, bytesRead);
             capturedPacket->setArrivalTime(currentPacketTime);
 

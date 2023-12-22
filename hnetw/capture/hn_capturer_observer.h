@@ -4,10 +4,8 @@
 
 class IHnCapturerObserver {
 public:
-    IHnCapturerObserver() 
-    {}
-    ~IHnCapturerObserver()
-    {}
+    IHnCapturerObserver();
+    ~IHnCapturerObserver();
 
     virtual void processPacket(HnPacket* packet) = 0;
 };

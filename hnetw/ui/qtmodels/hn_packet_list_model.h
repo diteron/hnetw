@@ -1,8 +1,9 @@
 #pragma once
 
+#include <capture/hn_capturer_observer.h>
 #include "hn_packet_list_row.h"
 
-class HnPacketListModel : public QAbstractItemModel {
+class HnPacketListModel : public QAbstractItemModel, public IHnCapturerObserver {
 
     Q_OBJECT
 
@@ -16,11 +17,10 @@ public:
     virtual QModelIndex	parent(const QModelIndex& index) const override;
     virtual int	rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    bool appendPacket();
+    virtual void processPacket(HnPacket* packet) override;
 
 private:
     HnPacketListRow* rowByIndex(const QModelIndex& index) const;
-
 
     const int columnCount_ = 6;
     QVector<HnPacketListRow*> packetsRows_;

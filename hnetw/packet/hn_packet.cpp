@@ -3,8 +3,8 @@
 
 using namespace std::chrono;
 
-HnPacket::HnPacket(int id, int type) 
-    : id_(id), type_(type)
+HnPacket::HnPacket(int id) 
+    : id_(id)
 {}
 
 HnPacket::~HnPacket()
@@ -30,6 +30,11 @@ const int HnPacket::id() const
     return id_;
 }
 
+std::string HnPacket::typeString() const
+{
+    return typeString_;
+}
+
 const int HnPacket::type() const
 {
     return type_;
@@ -48,4 +53,9 @@ const ipv4_hdr* HnPacket::ipv4Header() const
 const uint8_t* HnPacket::rawData() const
 {
     return rawData_;
+}
+
+const int HnPacket::length() const
+{
+    return rawDataLen_;
 }

@@ -7,6 +7,3 @@ HnPacketList::HnPacketList(QWidget* parent) : QTreeView(parent)
 
 HnPacketList::~HnPacketList()
 {}
-
-void HnPacketList::processPacket(HnPacket * packet)
-{}

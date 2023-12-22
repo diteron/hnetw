@@ -6,7 +6,12 @@ HnPacketListModel::HnPacketListModel(QObject* parent) : QAbstractItemModel(paren
 {}
 
 HnPacketListModel::~HnPacketListModel()
-{}
+{
+    if (!packetsRows_.isEmpty()) {
+        qDeleteAll(packetsRows_);
+        packetsRows_.clear();
+    }
+}
 
 int HnPacketListModel::columnCount(const QModelIndex& parent) const
 {
@@ -50,6 +55,12 @@ QModelIndex HnPacketListModel::parent(const QModelIndex& index) const
 int HnPacketListModel::rowCount(const QModelIndex& parent) const
 {
     return static_cast<int>(packetsRows_.count());
+}
+
+void HnPacketListModel::processPacket(HnPacket* packet)
+{
+    HnPacketListRow* newRow = new HnPacketListRow(packet);
+    packetsRows_.append(newRow);
 }
 
 HnPacketListRow* HnPacketListModel::rowByIndex(const QModelIndex& index) const
