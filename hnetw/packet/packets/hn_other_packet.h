@@ -7,8 +7,6 @@ public:
     HnOtherPacket(int id);
     ~HnOtherPacket();
 
-    std::string typeString() const override;
-
 private:
     static const bool registeredPacket;
 };

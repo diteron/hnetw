@@ -13,8 +13,3 @@ HnOtherPacket::HnOtherPacket(int id) : HnPacket(id)
 
 HnOtherPacket::~HnOtherPacket()
 {}
-
-std::string HnOtherPacket::typeString() const
-{
-    return typeString_;
-}

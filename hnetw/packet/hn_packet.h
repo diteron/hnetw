@@ -19,7 +19,7 @@ public:
     void setArrivalTime(std::time_t arrivalTime);
 
     const int id() const;
-    virtual std::string typeString() const;
+    std::string typeString() const;
     const int type() const;
     const std::time_t arrivalTime() const;
     const ipv4_hdr* ipv4Header() const;

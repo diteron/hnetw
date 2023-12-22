@@ -7,8 +7,6 @@ public:
     HnUdpPacket(int id);
     ~HnUdpPacket();
 
-    std::string typeString() const override;
-
 private:
     static const bool registeredPacket;
 };

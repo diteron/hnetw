@@ -13,8 +13,3 @@ HnUdpPacket::HnUdpPacket(int id) : HnPacket(id)
 
 HnUdpPacket::~HnUdpPacket()
 {}
-
-std::string HnUdpPacket::typeString() const
-{
-    return typeString_;
-}

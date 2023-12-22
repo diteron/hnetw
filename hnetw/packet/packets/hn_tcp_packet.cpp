@@ -13,8 +13,3 @@ HnTcpPacket::HnTcpPacket(int id) : HnPacket(id)
 
 HnTcpPacket::~HnTcpPacket()
 {}
-
-std::string HnTcpPacket::typeString() const
-{
-    return typeString_;
-}
