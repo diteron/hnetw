@@ -74,6 +74,24 @@
     <ClInclude Include="packet\packets\hn_other_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ui\qtmodels\hn_info_node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\hn_details_tree_builder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_details_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_tcp_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_ip_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_udp_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +149,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="packet\packets\hn_other_packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\qtmodels\hn_info_node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\hn_details_tree_builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_details_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

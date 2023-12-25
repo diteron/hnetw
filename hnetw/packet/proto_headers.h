@@ -22,8 +22,8 @@ struct ipv4_hdr {
 };
 
 struct tcp_hdr {
-    uint8_t   src_port;
-    uint8_t   dest_port;
+    uint16_t  src_port;
+    uint16_t  dest_port;
     uint32_t  seq_num;
     uint32_t  ack_num;
     uint8_t   reserved_part : 4;
@@ -36,9 +36,9 @@ struct tcp_hdr {
     uint8_t   urgent_f : 1;
     uint8_t   ecn_echo_f : 1;
     uint8_t   cwr_f : 1;
-    uint8_t   window;
-    uint8_t   checksum;
-    uint8_t   urgent_pointer;
+    uint16_t   window;
+    uint16_t   checksum;
+    uint16_t   urgent_pointer;
 };
 
 struct udp_hdr {

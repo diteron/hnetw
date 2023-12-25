@@ -17,6 +17,7 @@ public:
     };
 
     const QString columnString(int column) const;
+    const HnPacket* rowPacket() const;
 
 private:
     void setId(int id);
@@ -29,6 +30,7 @@ private:
     QString time_tToString(std::time_t time);
     QString ipToString(u_long ip);
 
+    HnPacket* packet_ = nullptr;
     const static size_t columnsNum_ = 6;
     std::array<QString, columnsNum_> rowColumns_ = {};
 };

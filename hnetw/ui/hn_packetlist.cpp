@@ -3,7 +3,10 @@
 #include "hn_packetlist.h"
 
 HnPacketList::HnPacketList(QWidget* parent) : QTreeView(parent)
-{}
+{
+    setItemsExpandable(false);
+    setRootIsDecorated(false);
+}
 
 HnPacketList::~HnPacketList()
 {}

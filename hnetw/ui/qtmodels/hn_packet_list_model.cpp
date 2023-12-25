@@ -67,3 +67,4 @@ HnPacketListRow* HnPacketListModel::rowByIndex(const QModelIndex& index) const
 {
     return static_cast<HnPacketListRow*>(index.internalPointer());
 }
+

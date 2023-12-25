@@ -60,9 +60,11 @@ void HnPacketCapturer::pauseCapturing()
     capturing_ = false;
 }
 
-const QVector<HnPacket*>* HnPacketCapturer::capturedPackets() const
+const HnPacket* HnPacketCapturer::getCapturedPacket(int packetId) const
 {
-    return capturedPackets_;
+    if (packetId < capturedPackets_->size())
+        return capturedPackets_->at(packetId);
+    return nullptr;
 }
 
 void HnPacketCapturer::capturePackets()

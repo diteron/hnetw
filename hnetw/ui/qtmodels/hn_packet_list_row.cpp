@@ -5,7 +5,7 @@
 
 #include "hn_packet_list_row.h"
 
-HnPacketListRow::HnPacketListRow(HnPacket* packet)
+HnPacketListRow::HnPacketListRow(HnPacket* packet) : packet_(packet)
 {
     setId(packet->id());
     setTime(packet->arrivalTime());
@@ -21,7 +21,6 @@ HnPacketListRow::~HnPacketListRow()
 const QString HnPacketListRow::columnString(int column) const
 {
     if (column >= columnsNum_) return QString();
-
     return rowColumns_.at(column);
 }
 
@@ -38,6 +37,11 @@ void HnPacketListRow::setTime(std::time_t time)
 void HnPacketListRow::setSourceIp(uint32_t srcIp)
 {
     rowColumns_[HnPacketListRow::source] = ipToString(static_cast<u_long>(srcIp));
+}
+
+const HnPacket* HnPacketListRow::rowPacket() const
+{
+    return packet_;
 }
 
 void HnPacketListRow::setDestinationIp(uint32_t destIp)

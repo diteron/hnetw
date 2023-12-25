@@ -34,3 +34,17 @@ int HnPacketDetailsModel::rowCount(const QModelIndex& parent) const
 {
     return 0;
 }
+
+void HnPacketDetailsModel::setRootNode(HnInfoNode* node)
+{
+    beginResetModel();
+    if (rootNode_) delete rootNode_;
+    rootNode_ = node;
+    endResetModel();
+    if (!node) return;
+
+    int rowCount = rootNode_->childrenCount();
+    if (rowCount < 1) return;
+    beginInsertRows(QModelIndex(), 0, rowCount - 1);
+    endInsertRows();
+}

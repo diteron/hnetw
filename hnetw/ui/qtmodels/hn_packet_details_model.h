@@ -1,11 +1,12 @@
 #pragma once
 
+#include "hn_info_node.h"
 
 class HnPacketDetailsModel : public QAbstractItemModel {
 
     Q_OBJECT
 
-private:
+public:
     HnPacketDetailsModel(QObject* parent = nullptr);
     ~HnPacketDetailsModel();
 
@@ -15,7 +16,9 @@ private:
     virtual QModelIndex	parent(const QModelIndex& index) const override;
     virtual int	rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
+    void setRootNode(HnInfoNode* node);
 
+private:
+    HnInfoNode* rootNode_ = nullptr;
 
 };
-

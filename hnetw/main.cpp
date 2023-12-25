@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include <QtWidgets/QApplication>
 
 #include "ui/hn_main_window.h"
 #include "network/hnetwork.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     if (HNetwork::initialize() != HNetwork::Success)
         return 1;
