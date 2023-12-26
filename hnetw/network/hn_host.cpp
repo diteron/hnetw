@@ -1,11 +1,19 @@
 #include <stdafx.h>
 #include "hn_host.h"
 
+HnHost::HnHost()
+{}
+
 HnHost::HnHost(unsigned short port) : port_(port)
 {}
 
 HnHost::~HnHost()
 {}
+
+void HnHost::setPort(unsigned short port)
+{
+    port_ = port;
+}
 
 bool HnHost::initialize()
 {

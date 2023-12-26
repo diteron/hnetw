@@ -18,11 +18,14 @@ public:
     HnMainWindow(int startWidth, int startHeight, QWidget* parent = nullptr);
     ~HnMainWindow();
 
+    void setCapturer(HnPacketCapturer* capturer);
+    void startCapture();
+
 private:
     HnMenuBar* menuBar_ = nullptr;
 
-    HnHost* host_ = nullptr;
-    HnPacketCapturer* packetCapturer_ = nullptr;
+    HnHost host_;
+    HnPacketCapturer* packetCapturer_;
     std::mutex* sharedMutex_ = nullptr;
 
     HnCentralWidget* centralWidget_ = nullptr;
@@ -34,6 +37,5 @@ private:
 
 public slots:
     void displayPacketDetails(int packetId);
-
 };
 

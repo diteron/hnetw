@@ -6,7 +6,9 @@ HnPacketDetailsModel::HnPacketDetailsModel(QObject* parent)
 {}
 
 HnPacketDetailsModel::~HnPacketDetailsModel()
-{}
+{
+    if (rootNode_) delete rootNode_;
+}
 
 int HnPacketDetailsModel::columnCount(const QModelIndex & parent) const
 {

@@ -20,5 +20,4 @@ public:
 
 private:
     HnInfoNode* rootNode_ = nullptr;
-
 };

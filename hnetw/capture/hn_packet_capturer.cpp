@@ -12,6 +12,7 @@ HnPacketCapturer::HnPacketCapturer(std::mutex* sharedMutex)
 
 HnPacketCapturer::~HnPacketCapturer()
 {
+    if (capturing_) capturing_ = false;
     if (capturedPackets_ && !capturedPackets_->isEmpty()) {
         qDeleteAll(*capturedPackets_);
         delete capturedPackets_;
@@ -82,7 +83,7 @@ void HnPacketCapturer::capturePackets()
             currentPacketTime = clock() - captureStarted;
             ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer_);
             uint8_t* rawData = new uint8_t[bytesRead];      // Memory management is in the captured packet object
-            std::memcpy(rawData, buffer_, bytesRead);       // Possible errors?
+            std::memcpy(rawData, buffer_, bytesRead);
 
             HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, ++capturedPacketsCnt);
             if (capturedPacket == nullptr) continue;

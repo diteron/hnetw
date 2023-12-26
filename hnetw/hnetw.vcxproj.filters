@@ -47,9 +47,6 @@
     <ClInclude Include="packet\proto_headers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="capture\hn_packet_capturer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="capture\hn_capturer_observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -181,6 +178,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui\qtmodels\hn_packet_details_model.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="capture\hn_packet_capturer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

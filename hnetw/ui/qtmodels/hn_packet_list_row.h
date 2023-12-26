@@ -16,8 +16,8 @@ public:
         length
     };
 
-    const QString columnString(int column) const;
-    const HnPacket* rowPacket() const;
+    const QString columnString(int column);
+    const HnPacket* packet() const;
 
 private:
     void setId(int id);

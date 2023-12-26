@@ -2,9 +2,11 @@
 
 class HnHost {
 public:
+	HnHost();
 	HnHost(unsigned short port);
 	~HnHost();
 
+	void setPort(unsigned short port);
 	bool initialize();
 	u_long interfaceAt(int index) const;
 	std::vector<std::string> interfacesStrings() const;

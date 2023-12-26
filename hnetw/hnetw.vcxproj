@@ -136,7 +136,7 @@
     <ClCompile Include="ui\hn_main_window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
-    <ClInclude Include="capture\hn_packet_capturer.h" />
+    <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_capturer_observer.h" />
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_ip_tree.h" />

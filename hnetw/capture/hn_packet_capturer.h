@@ -4,7 +4,10 @@
 #include <network/hn_ipv4_socket.h>
 #include "hn_capturer_observer.h"
 
-class HnPacketCapturer {
+class HnPacketCapturer : public QObject {
+
+    Q_OBJECT
+
 public:
     HnPacketCapturer(std::mutex* sharedMutex);
     ~HnPacketCapturer();

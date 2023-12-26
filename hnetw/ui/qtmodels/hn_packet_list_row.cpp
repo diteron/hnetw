@@ -7,20 +7,20 @@
 
 HnPacketListRow::HnPacketListRow(HnPacket* packet) : packet_(packet)
 {
-    setId(packet->id());
-    setTime(packet->arrivalTime());
-    setSourceIp(packet->ipv4Header()->src_address);
-    setDestinationIp(packet->ipv4Header()->dest_address);
-    setProtocolType(static_cast<QString>(packet->typeString().c_str()));
-    setLength(packet->length());
+    setId(packet_->id());
+    setTime(packet_->arrivalTime());
+    setSourceIp(packet_->ipv4Header()->src_address);
+    setDestinationIp(packet_->ipv4Header()->dest_address);
+    setProtocolType(static_cast<QString>(packet_->typeString().c_str()));
+    setLength(packet_->length());
 }
 
 HnPacketListRow::~HnPacketListRow()
 {}
 
-const QString HnPacketListRow::columnString(int column) const
+const QString HnPacketListRow::columnString(int column)
 {
-    if (column >= columnsNum_) return QString();
+    if (column >= columnsNum_ || column < 0) return QString();
     return rowColumns_.at(column);
 }
 
@@ -39,7 +39,7 @@ void HnPacketListRow::setSourceIp(uint32_t srcIp)
     rowColumns_[HnPacketListRow::source] = ipToString(static_cast<u_long>(srcIp));
 }
 
-const HnPacket* HnPacketListRow::rowPacket() const
+const HnPacket* HnPacketListRow::packet() const
 {
     return packet_;
 }
@@ -62,7 +62,6 @@ void HnPacketListRow::setLength(int length)
 QString HnPacketListRow::time_tToString(std::time_t time)       // Possible errors?
 {
     std::stringstream strStream;
-    std::time(&time);
     strStream << time;
     std::string str = strStream.str();
     QString qstr(str.c_str());
