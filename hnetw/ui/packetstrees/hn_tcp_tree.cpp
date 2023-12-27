@@ -9,20 +9,22 @@ HnTcpTree::HnTcpTree() : HnDetailsTree()
 HnTcpTree::~HnTcpTree()
 {}
 
-HnInfoNode* HnTcpTree::buildPacketTree(HnPacket* packet, HnInfoNode* parent)
+HnInfoNode* HnTcpTree::buildPacketTree(const HnPacket * packet, HnInfoNode* parent)
 {
     if (packet->type() != HnPacket::TCP) return nullptr;
 
     // Get TCP header from raw data
-    int ipHeaderLen = packet->ipv4Header()->header_length;
+    int ipHeaderLen = packet->ipv4Header()->header_length * 4;
     tcp_hdr* tcpHeader = reinterpret_cast<tcp_hdr*>(const_cast<uint8_t*>(packet->rawData() + ipHeaderLen));
+    
+    unsigned int dataOffset = static_cast<unsigned int>(tcpHeader->data_offset);
 
     rootNode_ = new HnInfoNode(tcpHeaderFields.header, parent);
     QString srcPortValue =  QString::number(ntohs(tcpHeader->src_port));
     QString destProtValue = QString::number(ntohs(tcpHeader->dest_port));
     QString seqNumValue =   QString::number(ntohl(tcpHeader->seq_num));
     QString ackNumValue =   QString::number(ntohl(tcpHeader->ack_num));
-    QString dataOffsValue = QString::number(static_cast<unsigned int>(tcpHeader->data_offset));
+    QString dataOffsValue = QString::number(dataOffset) + " (" + QString::number(dataOffset * 4) + " bytes)";
     QString cwrFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->cwr_f));
     QString eceFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->ecn_echo_f));
     QString urgFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->urgent_f));
@@ -32,7 +34,7 @@ HnInfoNode* HnTcpTree::buildPacketTree(HnPacket* packet, HnInfoNode* parent)
     QString synFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->sync_f));
     QString finFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->finish_f));
     QString wndSizeValue =  QString::number(ntohs(tcpHeader->window));
-    QString checksumValue = QString::number(ntohs(tcpHeader->checksum));
+    QString checksumValue = "0x" + QString::number(ntohs(tcpHeader->checksum), 16);
     QString urgPrtValue =   QString::number(ntohs(tcpHeader->urgent_pointer));
 
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.srcPort + srcPortValue));
@@ -52,13 +54,15 @@ HnInfoNode* HnTcpTree::buildPacketTree(HnPacket* packet, HnInfoNode* parent)
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.checkSum + checksumValue));
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.urgPtr + urgPrtValue));
 
+    addTcpOptions(const_cast<uint8_t*>(packet->rawData()), packet->length(), ipHeaderLen, tcpHeader->data_offset * 4);
+
     return rootNode_;
 }
 
 void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen)
 {
     const int minTcpHeaderLen = 20;
-    if (tcpHeaderLen < minTcpHeaderLen) return;             // There are no options in this header
+    if (tcpHeaderLen <= minTcpHeaderLen) return;             // There are no options in this header
 
     int optionsOffset = ipHeaderLen + minTcpHeaderLen;
     uint8_t currOption = rawData[optionsOffset];
@@ -83,15 +87,19 @@ void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen
             case maxSegSize:
             {
                 currOptionLen = rawData[++optionsOffset];
+
                 ++optionsOffset;
-                QString maxSegSizeVal = QString::number(*(reinterpret_cast<uint16_t*>(rawData + optionsOffset)));
-                optionsHeader->addChild(new HnInfoNode(tcpHeaderFields.noOperation_opt + maxSegSizeVal));
+                int value = ntohs(*(reinterpret_cast<uint16_t*>(rawData + optionsOffset)));
+                QString maxSegSizeVal = QString::number(value);
+
+                optionsHeader->addChild(new HnInfoNode(tcpHeaderFields.maxSegSize_opt + maxSegSizeVal));
                 optionsOffset += currOptionLen - 2;
                 break;
             }
             case wndScale:
             {
                 currOptionLen = rawData[++optionsOffset];
+
                 ++optionsOffset;
                 QString wndScaleVal = QString::number(*(reinterpret_cast<uint8_t*>(rawData + optionsOffset)));
                 optionsHeader->addChild(new HnInfoNode(tcpHeaderFields.windowScale_opt + wndScaleVal));
@@ -101,22 +109,26 @@ void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen
             case sackPerm:
             {
                 currOptionLen = rawData[++optionsOffset];
+
                 ++optionsOffset;
                 optionsHeader->addChild(new HnInfoNode(tcpHeaderFields.sackPerm_opt));
-                ++optionsOffset;
                 break;
             }
             case sack:
             {
-                currOptionLen = rawData[optionsOffset + 1];
-                optionsHeader->addChild(createSackNode(rawData, optionsOffset));
+                currOptionLen = rawData[++optionsOffset];
+
+                ++optionsOffset;
+                optionsHeader->addChild(createSackNode(rawData, optionsOffset, currOptionLen));
                 optionsOffset += currOptionLen - 2;
                 break;
             }
             case timestamps:
             {
-                currOptionLen = rawData[optionsOffset + 1];
-                createTimestampsNode(rawData, optionsOffset);
+                currOptionLen = rawData[++optionsOffset];
+
+                ++optionsOffset;
+                createTimestampsNode(rawData, optionsOffset, currOptionLen);
                 optionsOffset += currOptionLen - 2;
                 break;
             }
@@ -133,20 +145,22 @@ void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen
     rootNode_->addChild(optionsHeader);
 }
 
-HnInfoNode* HnTcpTree::createSackNode(uint8_t* rawData, int sackOffset)
+HnInfoNode* HnTcpTree::createSackNode(uint8_t* rawData, int sackOffset, int sackLen)
 {
     HnInfoNode* sackHeader = new HnInfoNode(tcpHeaderFields.sack_opt);
-    int sackLen = rawData[++sackOffset];
     int blocksCount = (sackLen - 2) / 8;    // Each SACK block specified as 32-bit begin/end pointers (max 4 blocks, in this case sackLen = 34)
 
-    ++sackOffset;   // First block
+    // We're already at the first SACK block
+    uint32_t value = 0;
     for (int i = 0; i < blocksCount; ++i) {
+        value = ntohl(*(reinterpret_cast<uint32_t*>(rawData + sackOffset)));
         QString blockLeftEdge = "Block " + QString::number(i + 1) + tcpHeaderFields.sackLeft_opt +
-                                QString::number(*(reinterpret_cast<uint16_t*>(rawData + sackOffset)));
-        ++sackOffset;
+                                QString::number(value);
+        sackOffset += 4;
+        value = ntohl(*(reinterpret_cast<uint32_t*>(rawData + sackOffset)));
         QString blockRightEdge = "Block " + QString::number(i + 1) + tcpHeaderFields.sackRight_opt +
-                                 QString::number(*(reinterpret_cast<uint16_t*>(rawData + sackOffset)));
-        ++sackOffset;
+                                 QString::number(value);
+        sackOffset += 4;
         sackHeader->addChild(new HnInfoNode(blockLeftEdge));
         sackHeader->addChild(new HnInfoNode(blockRightEdge));
     }
@@ -154,14 +168,12 @@ HnInfoNode* HnTcpTree::createSackNode(uint8_t* rawData, int sackOffset)
     return sackHeader;
 }
 
-HnInfoNode* HnTcpTree::createTimestampsNode(uint8_t* rawData, int timestampsOffset)
+HnInfoNode* HnTcpTree::createTimestampsNode(uint8_t* rawData, int timestampsOffset, int timestampsLen)
 {
-    HnInfoNode* timestampsHeader = new HnInfoNode(tcpHeaderFields.timestamp_opt);
-    int timestampsLen = rawData[++timestampsOffset];
-
-    ++timestampsOffset;
+    // We're already at the timestamp data block
     timestamp_* timestamps = reinterpret_cast<timestamp_*>(rawData + timestampsOffset);
 
+    HnInfoNode* timestampsHeader = new HnInfoNode(tcpHeaderFields.timestamp_opt);
     QString senderTimestamp = tcpHeaderFields.senderTime_opt +
                               QString::number(static_cast<unsigned int>(timestamps->senderTimestamp));
     QString echoReplyTimestamp = tcpHeaderFields.echoRepTime_opt + 

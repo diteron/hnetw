@@ -8,7 +8,7 @@ public:
     HnIpTree();
     ~HnIpTree();
 
-    HnInfoNode* buildPacketIpTree(HnPacket* packet);
+    HnInfoNode* buildPacketIpTree(const HnPacket* packet);
 
 private:
     QString getIpString(uint32_t ip);
@@ -18,10 +18,10 @@ private:
         QString version = "IP Version: ";
         QString headerLength = "Header Length: ";
         QString dscp = "Differentiated Services Code Point: ";
-        QString ecn = "Explicit Congestion Notification	";
+        QString ecn = "Explicit Congestion Notification: ";
         QString totalLength = "Total Length: ";
         QString id = "Id: ";
-        QString reservedZero_f = "Reserver Zero Flag: ";
+        QString reservedZero_f = "Reserved Zero Flag: ";
         QString dontFragment_f = "Don't Fragment Flag: ";
         QString moreFragments_f = "More Fragments Flag: ";
         QString fragmentOffset = "Fragment Offset: ";

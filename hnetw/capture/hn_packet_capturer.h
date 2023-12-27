@@ -9,18 +9,16 @@ class HnPacketCapturer : public QObject {
     Q_OBJECT
 
 public:
-    HnPacketCapturer(std::mutex* sharedMutex);
+    HnPacketCapturer();
     ~HnPacketCapturer();
 
     void connectObserver(IHnCapturerObserver* observer);
     void disconnectObserver(IHnCapturerObserver* observer);
     void notifyObservers(HnPacket* packet) const;
 
-    bool setInterfaceToCapture(u_long intrface, unsigned short port);
+    bool setInterfaceToCapture(u_long interfaceIp, unsigned short port);
     void startCapturing();
     void pauseCapturing();
-
-    const HnPacket* getCapturedPacket(int packetId) const;
 
 private:
     void capturePackets();
@@ -32,8 +30,5 @@ private:
     char* buffer_ = nullptr;
 
     QVector<IHnCapturerObserver*> observers_;
-    QVector<HnPacket*>* capturedPackets_ = nullptr;
-
-    std::mutex* sharedMutex_ = nullptr;
 };
 

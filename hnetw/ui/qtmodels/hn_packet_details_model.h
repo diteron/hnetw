@@ -16,8 +16,12 @@ public:
     virtual QModelIndex	parent(const QModelIndex& index) const override;
     virtual int	rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
+    void setPacket(const HnPacket* packet);
     void setRootNode(HnInfoNode* node);
 
 private:
+    HnInfoNode* nodeByIndex(const QModelIndex& index) const;
+    QModelIndex indexFromNode(HnInfoNode* node) const;
+
     HnInfoNode* rootNode_ = nullptr;
 };

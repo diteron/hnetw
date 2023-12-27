@@ -7,7 +7,7 @@ public:
     HnDetailsTree();
     virtual ~HnDetailsTree();
 
-    virtual HnInfoNode* buildPacketTree(HnPacket* packet, HnInfoNode* parent = nullptr) = 0;
+    virtual HnInfoNode* buildPacketTree(const HnPacket * packet, HnInfoNode* parent = nullptr) = 0;
     const HnInfoNode* rootNode() const;
 
 protected:

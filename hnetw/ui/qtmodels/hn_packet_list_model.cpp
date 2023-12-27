@@ -93,6 +93,11 @@ void HnPacketListModel::appendPacket(HnPacket* packet)
     }
 }
 
+const HnPacket* HnPacketListModel::packetAt(int index) const
+{
+    return packetsRows_.at(index)->packet();
+}
+
 void HnPacketListModel::insertNewRows()
 {
     int lastRowPos = static_cast<int>(packetsRows_.count());

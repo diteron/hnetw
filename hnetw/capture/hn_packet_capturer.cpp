@@ -3,26 +3,20 @@
 
 #include "hn_packet_capturer.h"
 
-HnPacketCapturer::HnPacketCapturer(std::mutex* sharedMutex)
-    : sharedMutex_(sharedMutex)
+HnPacketCapturer::HnPacketCapturer()
 {
-    capturedPackets_ = new QVector<HnPacket*>;
     buffer_ = new char[BuffSize_];
 }
 
 HnPacketCapturer::~HnPacketCapturer()
 {
     if (capturing_) capturing_ = false;
-    if (capturedPackets_ && !capturedPackets_->isEmpty()) {
-        qDeleteAll(*capturedPackets_);
-        delete capturedPackets_;
-        if (buffer_) delete buffer_;
-    }
 }
 
 void HnPacketCapturer::connectObserver(IHnCapturerObserver* observer)
 {
-    observers_.append(observer);
+    if (observer)
+        observers_.append(observer);
 }
 
 void HnPacketCapturer::disconnectObserver(IHnCapturerObserver* observer)
@@ -36,11 +30,11 @@ void HnPacketCapturer::notifyObservers(HnPacket* packet) const
         observer->processPacket(packet);
 }
 
-bool HnPacketCapturer::setInterfaceToCapture(u_long intrface, unsigned short port)
+bool HnPacketCapturer::setInterfaceToCapture(u_long interfaceIp, unsigned short port)
 {
     if (captureSocket_.createRawSocket() != HnIPv4Socket::Success)
         return false;
-    if (captureSocket_.bindToInterface(intrface, port) != HnIPv4Socket::Success)
+    if (captureSocket_.bindToInterface(interfaceIp, port) != HnIPv4Socket::Success)
         return false;
     if (captureSocket_.setPacketCaptureMode() != true)
         return false;
@@ -59,13 +53,6 @@ void HnPacketCapturer::startCapturing()
 void HnPacketCapturer::pauseCapturing()
 {
     capturing_ = false;
-}
-
-const HnPacket* HnPacketCapturer::getCapturedPacket(int packetId) const
-{
-    if (packetId < capturedPackets_->size())
-        return capturedPackets_->at(packetId);
-    return nullptr;
 }
 
 void HnPacketCapturer::capturePackets()
@@ -89,10 +76,6 @@ void HnPacketCapturer::capturePackets()
             if (capturedPacket == nullptr) continue;
             capturedPacket->setPacketData(rawData, bytesRead);
             capturedPacket->setArrivalTime(currentPacketTime);
-
-            sharedMutex_->lock();
-            capturedPackets_->append(capturedPacket);       // Shared use of QVector in the HnPacketDetails class
-            sharedMutex_->unlock();
 
             notifyObservers(capturedPacket);
         }

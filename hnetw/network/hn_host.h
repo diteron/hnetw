@@ -8,17 +8,17 @@ public:
 
 	void setPort(unsigned short port);
 	bool initialize();
-	u_long interfaceAt(int index) const;
-	std::vector<std::string> interfacesStrings() const;
+	u_long interfaceIpAt(int index) const;
+	std::vector<std::string> interfacesIpStrings() const;
 
 	std::string hostname() const;
 	unsigned short port() const;
 
 private:
-	bool getAllInterfaces();
+	bool getAllInterfacesIp();
 
 	std::string hostName_ = "";
 	unsigned short port_ = 0;
-	std::vector<u_long> interfaces_;
+	std::vector<u_long> interfacesIp_;
 };
 

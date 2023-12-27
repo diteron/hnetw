@@ -80,11 +80,11 @@ int HnIPv4Socket::close()
     return Success;
 }
 
-int HnIPv4Socket::bindToInterface(u_long intrface, unsigned short port)
+int HnIPv4Socket::bindToInterface(u_long interfaceIp, unsigned short port)
 {
     sockaddr_in bindAddr = {};
     bindAddr.sin_family = AF_INET;
-    std::memcpy(&bindAddr.sin_addr, &intrface, sizeof(intrface));
+    std::memcpy(&bindAddr.sin_addr, &interfaceIp, sizeof(interfaceIp));
     bindAddr.sin_port = htons(port);
 
     int bindResult = bind(socketHandle_, (sockaddr*) &bindAddr, sizeof(bindAddr));

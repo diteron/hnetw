@@ -9,5 +9,5 @@ public:
     HnDetailsTreeBuilder();
     ~HnDetailsTreeBuilder();
 
-    HnInfoNode* buildDetailsTree(HnPacket* packet);
+    HnInfoNode* buildDetailsTree(const HnPacket* packet);
 };

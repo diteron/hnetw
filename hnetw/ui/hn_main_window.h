@@ -22,11 +22,14 @@ public:
     void startCapture();
 
 private:
+    void setupPacketsViews();
+    void setupCapturer();
+
+
     HnMenuBar* menuBar_ = nullptr;
 
     HnHost host_;
     HnPacketCapturer* packetCapturer_;
-    std::mutex* sharedMutex_ = nullptr;
 
     HnCentralWidget* centralWidget_ = nullptr;
     QSplitter* mainSplitter_ = nullptr;

@@ -16,6 +16,9 @@ public:
     int childrenCount() const;
     bool isChild() const;
 
+    HnInfoNode* childAt(int index) const;
+    int rowNo() const;
+
 private:
     QString label_;
     QVector<HnInfoNode*> children_;

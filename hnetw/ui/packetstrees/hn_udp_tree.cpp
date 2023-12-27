@@ -1,7 +1,7 @@
 #include <stdafx.h>
 #include "hn_udp_tree.h"
 
-HnInfoNode* HnUdpTree::buildPacketTree(HnPacket* packet, HnInfoNode* parent)
+HnInfoNode* HnUdpTree::buildPacketTree(const HnPacket * packet, HnInfoNode* parent)
 {
     if (packet->type() != HnPacket::UDP) return nullptr;
 

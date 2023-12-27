@@ -7,14 +7,15 @@ HnIpTree::HnIpTree()
 HnIpTree::~HnIpTree()
 {}
 
-HnInfoNode* HnIpTree::buildPacketIpTree(HnPacket* packet)
+HnInfoNode* HnIpTree::buildPacketIpTree(const HnPacket* packet)
 {
     // Calculate 13-bit fragment offset field value
     unsigned int fragOffsetCombined = (packet->ipv4Header()->fragment_offset_5 << 8) | packet->ipv4Header()->fragment_offset_8;
+    unsigned int headerLen = static_cast<unsigned int>(packet->ipv4Header()->header_length);
 
     HnInfoNode* ipHeader = new HnInfoNode(ipHeaderFields.header);
     QString ipVersionValue =    QString::number(static_cast<unsigned int>(packet->ipv4Header()->version));
-    QString headerLenValue =    QString::number(static_cast<unsigned int>(packet->ipv4Header()->header_length) * 4) + " bytes";
+    QString headerLenValue =    QString::number(headerLen) + " (" + QString::number(headerLen * 4) + " bytes)";
     QString dscpValue =         QString::number(static_cast<unsigned int>(packet->ipv4Header()->dscp));
     QString ecnValue =          QString::number(static_cast<unsigned int>(packet->ipv4Header()->ecn));
     QString totalLenValue =     QString::number(ntohs(packet->ipv4Header()->total_length));
@@ -25,7 +26,7 @@ HnInfoNode* HnIpTree::buildPacketIpTree(HnPacket* packet)
     QString fragOffsetValue =   QString::number(fragOffsetCombined);
     QString ttlValue =          QString::number(static_cast<unsigned int>(packet->ipv4Header()->time_to_live));
     QString protocolValue =     packet->typeString().c_str();
-    QString checkSumValue =     QString::number(ntohs(packet->ipv4Header()->checksum));
+    QString checkSumValue =     "0x" + QString::number(ntohs(packet->ipv4Header()->checksum), 16);
     QString srcIpValue =        getIpString(packet->ipv4Header()->src_address);
     QString destIpValue =       getIpString(packet->ipv4Header()->dest_address);
 

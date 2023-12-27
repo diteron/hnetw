@@ -5,9 +5,7 @@ HnDetailsTree::HnDetailsTree()
 {}
 
 HnDetailsTree::~HnDetailsTree()
-{
-    if (rootNode_) delete rootNode_;
-}
+{}
 
 const HnInfoNode* HnDetailsTree::rootNode() const
 {

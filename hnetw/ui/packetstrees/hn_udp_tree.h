@@ -4,7 +4,7 @@
 
 class HnUdpTree : public HnDetailsTree {
 public:
-    HnInfoNode* buildPacketTree(HnPacket* packet, HnInfoNode* parent = nullptr) override;
+    HnInfoNode* buildPacketTree(const HnPacket* packet, HnInfoNode* parent = nullptr) override;
 
 private:
     struct udpHeaderFields_ {

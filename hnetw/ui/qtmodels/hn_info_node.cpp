@@ -45,3 +45,15 @@ bool HnInfoNode::isChild() const
 {
     return parent_;
 }
+
+HnInfoNode* HnInfoNode::childAt(int index) const
+{
+    return children_.at(index);
+}
+
+int HnInfoNode::rowNo() const
+{
+    if (!isChild()) return -1;
+
+    return static_cast<int>(parent_->children_.indexOf(const_cast<HnInfoNode*>(this)));
+}

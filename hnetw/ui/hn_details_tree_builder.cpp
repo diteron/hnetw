@@ -11,9 +11,9 @@ HnDetailsTreeBuilder::HnDetailsTreeBuilder()
 HnDetailsTreeBuilder::~HnDetailsTreeBuilder()
 {}
 
-HnInfoNode* HnDetailsTreeBuilder::buildDetailsTree(HnPacket* packet)
+HnInfoNode* HnDetailsTreeBuilder::buildDetailsTree(const HnPacket* packet)
 {
-    HnInfoNode* detailsTree = new HnInfoNode("Root (TEST)");
+    HnInfoNode* detailsTree = new HnInfoNode("ROOT");
     HnInfoNode* ipHeaderTree = HnIpTree().buildPacketIpTree(packet);
     detailsTree->addChild(ipHeaderTree);
 

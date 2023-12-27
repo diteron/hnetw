@@ -17,19 +17,17 @@ public:
     virtual QModelIndex	parent(const QModelIndex& index) const override;
     virtual int	rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-    //virtual void processPacket(HnPacket* packet) override;
     void appendPacket(HnPacket* packet);
+    const HnPacket* packetAt(int index) const;
 
 public slots:
     void insertNewRows();
 
 private:
     HnPacketListRow* rowByIndex(const QModelIndex& index) const;
+    void processPacket(HnPacket* packet) override;
 
     const int columnCount_ = 6;
     QVector<HnPacketListRow*> packetsRows_;
     QVector<HnPacketListRow*> newPacketsRows_;
-
-    // Inherited via IHnCapturerObserver
-    void processPacket(HnPacket* packet) override;
 };

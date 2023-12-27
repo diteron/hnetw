@@ -27,7 +27,7 @@ public:
     int createRawSocket();
     int close();
 
-    int bindToInterface(u_long intrface, unsigned short port);
+    int bindToInterface(u_long interfaceIp, unsigned short port);
     bool setPacketCaptureMode();
 
     const SOCKET socketHandle() const;

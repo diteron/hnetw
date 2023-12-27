@@ -24,24 +24,24 @@ bool HnHost::initialize()
     if (result == SOCKET_ERROR) return false;
 
     hostName_.assign(hostName);
-    result = getAllInterfaces();
+    result = getAllInterfacesIp();
 
     return result;
 }
 
-u_long HnHost::interfaceAt(int index) const
+u_long HnHost::interfaceIpAt(int index) const
 {
-    return (index < interfaces_.size()) ? interfaces_[index] : 0;
+    return (index < interfacesIp_.size()) ? interfacesIp_[index] : 0;
 }
 
-std::vector<std::string> HnHost::interfacesStrings() const
+std::vector<std::string> HnHost::interfacesIpStrings() const
 {
     const int IPStringLen = 16;
 
     in_addr inAddr;
     char stringBuff[IPStringLen] = "";
     std::vector<std::string> strings;
-    for (u_long interface_ : interfaces_) {
+    for (u_long interface_ : interfacesIp_) {
         inAddr.s_addr = interface_;
         strings.push_back(inet_ntop(AF_INET, &inAddr, stringBuff, sizeof(stringBuff)));
     }
@@ -58,7 +58,7 @@ unsigned short HnHost::port() const
     return port_;
 }
 
-bool HnHost::getAllInterfaces()
+bool HnHost::getAllInterfacesIp()
 {
     addrinfo hints = {};
     hints.ai_family = AF_INET;
@@ -74,7 +74,7 @@ bool HnHost::getAllInterfaces()
         interfaceAddress = reinterpret_cast<sockaddr_in*>(hostinfo->ai_addr);
         ipLong = interfaceAddress->sin_addr.s_addr;
         // Possible error?
-        interfaces_.push_back(ipLong);
+        interfacesIp_.push_back(ipLong);
         hostinfo = hostinfo->ai_next;
     }
 

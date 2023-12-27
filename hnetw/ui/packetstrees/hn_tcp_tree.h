@@ -7,12 +7,12 @@ public:
     HnTcpTree();
     ~HnTcpTree();
 
-    HnInfoNode* buildPacketTree(HnPacket* packet, HnInfoNode* parent = nullptr) override;
+    HnInfoNode* buildPacketTree(const HnPacket* packet, HnInfoNode* parent = nullptr) override;
 
 private:
     void addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen);
-    HnInfoNode* createSackNode(uint8_t* rawData, int sackOffset);
-    HnInfoNode* createTimestampsNode(uint8_t* rawData, int timestampsOffset);
+    HnInfoNode* createSackNode(uint8_t* rawData, int sackOffset, int sackLen);
+    HnInfoNode* createTimestampsNode(uint8_t* rawData, int timestampsOffset, int timestampsLen);
 
     enum tcpOptions {
         endOfOptList,
@@ -25,26 +25,26 @@ private:
     };
 
     struct timestamp_ {
+        uint8_t echoReplyTimestamp : 4;     // TODO: Check bits order
         uint8_t senderTimestamp : 4;
-        uint8_t echoReplyTimestamp : 4;
     };
 
     struct tcpHeaderFields_ {
         QString header =          "Transmission Control Protocol";
         QString srcPort =         "Source Port: ";
         QString destPort =        "Destination Port: ";
-        QString seqNumber =       "Sequence number: ";
-        QString ackNumber =       "Acknowledgment number: ";
+        QString seqNumber =       "Sequence Number: ";
+        QString ackNumber =       "Acknowledgment Number: ";
         QString dataOffset =      "Data Offset: ";
         QString reserved =        "Reserved: ";
-        QString cwr_f =           "Congestion window reduced flag: ";
-        QString ece_f =           "ECN-Echo flag: ";
-        QString urg_f =           "Urgent flag: ";
-        QString ack_f =           "Acknowledgment flag: ";
-        QString psh_f =           "Push flag: ";
-        QString rst_f =           "Reset flag: ";
-        QString syn_f =           "SYN flag: ";
-        QString fin_f =           "FIN flag: ";
+        QString cwr_f =           "Congestion Window Reduced Flag: ";
+        QString ece_f =           "ECN-Echo Flag: ";
+        QString urg_f =           "Urgent Flag: ";
+        QString ack_f =           "Acknowledgment Flag: ";
+        QString psh_f =           "Push Flag: ";
+        QString rst_f =           "Reset Flag: ";
+        QString syn_f =           "Syn Flag: ";
+        QString fin_f =           "Fin Flag: ";
         QString windowSize =      "Window Size: ";
         QString checkSum =        "Checksum: ";
         QString urgPtr =          "Urgent Pointer: ";

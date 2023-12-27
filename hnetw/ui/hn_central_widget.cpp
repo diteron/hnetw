@@ -5,6 +5,7 @@
 HnCentralWidget::HnCentralWidget(QWidget* parent) : QWidget(parent)
 {
     layout_ = new QVBoxLayout(this);
+    layout_->setContentsMargins(3, 3, 3, 3);
 }
 
 HnCentralWidget::~HnCentralWidget()
