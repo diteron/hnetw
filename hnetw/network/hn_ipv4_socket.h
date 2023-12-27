@@ -32,6 +32,7 @@ public:
 
     const SOCKET socketHandle() const;
     const socket_type socketType() const;
+    bool isInit() const;
 
 private:
     SOCKET socketHandle_ = INVALID_SOCKET;

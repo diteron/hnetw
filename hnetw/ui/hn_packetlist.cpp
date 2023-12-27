@@ -14,7 +14,8 @@ HnPacketList::HnPacketList(HnPacketListModel* model, QWidget* parent) : QTreeVie
 
     int fontHeight = fontMetrics().height();
     setMinimumSize(fontHeight, fontHeight);
-    setStyleSheet("QTreeView { color: black; font: 10pt 'Cascadia Mono SemiLight'; }");
+
+    setStyleSheet("QTreeView { font: 10pt 'Cascadia Mono SemiLight'; }");
     setColumnWidth(HnPacketListRow::id,          100);
     setColumnWidth(HnPacketListRow::time,        170);
     setColumnWidth(HnPacketListRow::source,      200);

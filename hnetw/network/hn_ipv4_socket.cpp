@@ -118,3 +118,8 @@ const HnIPv4Socket::socket_type HnIPv4Socket::socketType() const
 {
     return socketType_;
 }
+
+bool HnIPv4Socket::isInit() const
+{
+    return socketHandle_ != INVALID_SOCKET ? true : false;
+}

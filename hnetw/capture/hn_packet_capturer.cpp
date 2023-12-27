@@ -55,6 +55,18 @@ void HnPacketCapturer::pauseCapturing()
     capturing_ = false;
 }
 
+bool HnPacketCapturer::stopCapturing()
+{
+    capturing_ = false;
+    if (captureSocket_.isInit()) {
+        if (captureSocket_.close() != HnIPv4Socket::Success) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;

@@ -19,6 +19,7 @@ public:
     bool setInterfaceToCapture(u_long interfaceIp, unsigned short port);
     void startCapturing();
     void pauseCapturing();
+    bool stopCapturing();
 
 private:
     void capturePackets();

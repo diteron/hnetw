@@ -16,6 +16,7 @@ public:
     virtual QModelIndex	index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
     virtual QModelIndex	parent(const QModelIndex& index) const override;
     virtual int	rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     void appendPacket(HnPacket* packet);
     const HnPacket* packetAt(int index) const;
@@ -27,7 +28,17 @@ private:
     HnPacketListRow* rowByIndex(const QModelIndex& index) const;
     void processPacket(HnPacket* packet) override;
 
+
     const int columnCount_ = 6;
+    const QStringList headerColumns_ = {
+        "No",
+        "Time",
+        "Source",
+        "Destination",
+        "Protocol",
+        "Length"
+    };
+
     QVector<HnPacketListRow*> packetsRows_;
     QVector<HnPacketListRow*> newPacketsRows_;
 };

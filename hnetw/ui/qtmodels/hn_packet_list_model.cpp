@@ -68,11 +68,18 @@ int HnPacketListModel::rowCount(const QModelIndex& parent) const
     return static_cast<int>(packetsRows_.count());
 }
 
-//void HnPacketListModel::processPacket(HnPacket* packet)
-//{
-//    HnPacketListRow* newRow = new HnPacketListRow(packet);
-//    packetsRows_.append(newRow);
-//}
+QVariant HnPacketListModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal && section < columnCount_) {
+        switch (role) {
+        case Qt::DisplayRole:
+            return QVariant::fromValue(headerColumns_[section]);
+        default:
+            break;
+        }
+    }
+    return QVariant();
+}
 
 HnPacketListRow* HnPacketListModel::rowByIndex(const QModelIndex& index) const
 {

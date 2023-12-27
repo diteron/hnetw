@@ -6,7 +6,7 @@ HnPacketDetails::HnPacketDetails(QWidget* parent) : QTreeView(parent)
     setHeaderHidden(true);
     detailsViewModel_ = new HnPacketDetailsModel(this);
     setModel(detailsViewModel_);
-    setStyleSheet("QTreeView { color: black; font: 10pt 'Cascadia Mono SemiLight'; }");
+    setStyleSheet("QTreeView { font: 10pt 'Cascadia Mono SemiLight'; }");
 }
 
 HnPacketDetails::~HnPacketDetails()
