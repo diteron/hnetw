@@ -5,6 +5,9 @@
 
 #include "hn_packet_list_row.h"
 
+HnPacketListRow::HnPacketListRow()
+{}
+
 HnPacketListRow::HnPacketListRow(HnPacket* packet) : packet_(packet)
 {
     setId(packet_->id());
@@ -15,8 +18,17 @@ HnPacketListRow::HnPacketListRow(HnPacket* packet) : packet_(packet)
     setLength(packet_->length());
 }
 
+HnPacketListRow::HnPacketListRow(const HnPacketListRow& other)
+{
+    packet_ = new HnPacket();
+    *packet_ = *(other.packet_);
+    this->rowColumns_ = other.rowColumns_;
+}
+
 HnPacketListRow::~HnPacketListRow()
-{}
+{
+    delete packet_;
+}
 
 const QString HnPacketListRow::columnString(int column)
 {
@@ -70,7 +82,7 @@ QString HnPacketListRow::time_tToString(std::time_t time)       // Possible erro
 
 QString HnPacketListRow::ipToString(u_long ip)
 {
-    char strIpBuffer[16];
+    char strIpBuffer[16] = "";
     in_addr addr;
     addr.s_addr = ip;
     inet_ntop(AF_INET, &addr, strIpBuffer, 16);

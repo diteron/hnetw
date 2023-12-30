@@ -19,6 +19,8 @@ public:
     void setPacket(const HnPacket* packet);
     void setRootNode(HnInfoNode* node);
 
+    void clear();
+
 private:
     HnInfoNode* nodeByIndex(const QModelIndex& index) const;
     QModelIndex indexFromNode(HnInfoNode* node) const;

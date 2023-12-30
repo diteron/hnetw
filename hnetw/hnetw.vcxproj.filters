@@ -47,9 +47,6 @@
     <ClInclude Include="packet\proto_headers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="capture\hn_capturer_observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="network\hnetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -89,6 +86,12 @@
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="capture\hn_packet_queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="capture\hn_packet_dissector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,7 +106,7 @@
     <ClCompile Include="ui\hn_menubar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\hn_packetlist.cpp">
+    <ClCompile Include="ui\hn_packet_list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\qtmodels\hn_packet_list_model.cpp">
@@ -131,9 +134,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="network\hn_host.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="capture\hn_capturer_observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="packet\packets\hn_tcp_packet.cpp">
@@ -166,6 +166,12 @@
     <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="capture\hn_packet_dissector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="capture\hn_packet_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ui\hn_menubar.h">
@@ -174,7 +180,7 @@
     <QtMoc Include="ui\qtmodels\hn_packet_list_model.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ui\hn_packetlist.h">
+    <QtMoc Include="ui\hn_packet_list.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui\qtmodels\hn_packet_details_model.h">

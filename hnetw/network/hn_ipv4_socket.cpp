@@ -119,7 +119,7 @@ const HnIPv4Socket::socket_type HnIPv4Socket::socketType() const
     return socketType_;
 }
 
-bool HnIPv4Socket::isInit() const
+bool HnIPv4Socket::isValid() const
 {
     return socketHandle_ != INVALID_SOCKET ? true : false;
 }

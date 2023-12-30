@@ -4,6 +4,7 @@
 
 class HnPacket {
 public:
+    HnPacket();
     HnPacket(int id);
     virtual ~HnPacket();
 

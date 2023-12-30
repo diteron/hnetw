@@ -14,16 +14,22 @@ int main(int argc, char* argv[])
 
     if (HNetwork::initialize() != HNetwork::Success)
         return 1;
-   
 
     QApplication app(argc, argv);
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0) && defined(Q_OS_WIN)
     app.setStyle(QStyleFactory::create("fusion"));
 #endif
+
     HnMainWindow mainWnd(startWidth, startHeight);
+    if (!mainWnd.setupNetwork()) {
+        HNetwork::shutdown();
+        return 1;
+    }
+    
     mainWnd.setMinimumSize(minWidth, minHeight);
     mainWnd.show();
-    mainWnd.startCapture();
+
     int errCode = app.exec();
 
     HNetwork::shutdown();

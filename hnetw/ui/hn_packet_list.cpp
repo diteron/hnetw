@@ -1,6 +1,6 @@
 #include <stdafx.h>
 
-#include "hn_packetlist.h"
+#include "hn_packet_list.h"
 #include "qtmodels/hn_packet_list_row.h"
 
 HnPacketList::HnPacketList(HnPacketListModel* model, QWidget* parent) : QTreeView(parent), listModel_(model)
@@ -9,7 +9,7 @@ HnPacketList::HnPacketList(HnPacketListModel* model, QWidget* parent) : QTreeVie
     setRootIsDecorated(false);
     setUniformRowHeights(true);     // Fixes performance issues when displaying a large number of packets
     
-    setModel(model);
+    setModel(listModel_);
     setSelectionMode(QAbstractItemView::SingleSelection);
 
     int fontHeight = fontMetrics().height();
@@ -33,9 +33,16 @@ void HnPacketList::setDetailsView(HnPacketDetails* detailsView)
     packetDetailsView_ = detailsView;
 }
 
-void HnPacketList::captureInProgress(bool inProgress)
+void HnPacketList::setCaptureInProgress(bool inProgress)
 {
     captureInProgress_ = inProgress;
+}
+
+void HnPacketList::clear()
+{
+    selectionModel()->clear();
+    packetDetailsView_->clear();
+    listModel_->clear();
 }
 
 void HnPacketList::mousePressEvent(QMouseEvent * event)

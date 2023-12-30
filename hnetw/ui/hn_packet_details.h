@@ -9,6 +9,7 @@ public:
     ~HnPacketDetails();
 
     void displayPacket(const HnPacket* packet);
+    void clear();
 
 private:
     HnPacketDetailsModel* detailsViewModel_ = nullptr;

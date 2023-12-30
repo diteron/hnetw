@@ -7,7 +7,7 @@ const bool HnUdpPacket::registeredPacket = HnPacketFactory::instance()->
 
 HnUdpPacket::HnUdpPacket(int id) : HnPacket(id)
 {
-    HnPacket::UDP;
+    type_ = HnPacket::UDP;
     typeString_ = "UDP";
 }
 

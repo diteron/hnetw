@@ -2,34 +2,37 @@
 
 #include <packet/hn_packet_factory.h>
 #include <network/hn_ipv4_socket.h>
-#include "hn_capturer_observer.h"
+#include <ui/qtmodels/hn_packet_list_model.h>
+#include "hn_packet_dissector.h"
 
 class HnPacketCapturer : public QObject {
 
     Q_OBJECT
 
 public:
-    HnPacketCapturer();
+    HnPacketCapturer(QObject* parent = nullptr);
     ~HnPacketCapturer();
 
-    void connectObserver(IHnCapturerObserver* observer);
-    void disconnectObserver(IHnCapturerObserver* observer);
-    void notifyObservers(HnPacket* packet) const;
-
+    void setPacketsDissector(HnPacketDissector* dissector);
     bool setInterfaceToCapture(u_long interfaceIp, unsigned short port);
+
     void startCapturing();
-    void pauseCapturing();
+    bool pauseCapturing();
     bool stopCapturing();
+    bool isCapturing() const;
 
 private:
     void capturePackets();
 
     HnIPv4Socket captureSocket_;
     bool socketSetToCapture_ = false;
-    bool capturing_ = false;
+
+    std::atomic<bool> capturePermitted_ = false;
+    std::atomic<bool> captureInProgress_ = false;
+
+    int capturedPacketsCnt_ = 0;
+    std::time_t captureStarted_ = 0;
     const int BuffSize_ = 65536;
-    char* buffer_ = nullptr;
 
-    QVector<IHnCapturerObserver*> observers_;
+    HnPacketDissector* dissector_ = nullptr;
 };
-

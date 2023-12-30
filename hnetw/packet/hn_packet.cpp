@@ -3,13 +3,16 @@
 
 using namespace std::chrono;
 
-HnPacket::HnPacket(int id) 
+HnPacket::HnPacket()
+{}
+
+HnPacket::HnPacket(int id)
     : id_(id)
 {}
 
 HnPacket::~HnPacket()
 {
-    if (rawData_) delete rawData_;
+    delete[] rawData_;
 }
 
 void HnPacket::setPacketData(uint8_t* rawData, int rawDataLen)

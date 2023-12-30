@@ -3,41 +3,32 @@
 
 #include "hn_packet_capturer.h"
 
-HnPacketCapturer::HnPacketCapturer()
-{
-    buffer_ = new char[BuffSize_];
-}
+HnPacketCapturer::HnPacketCapturer(QObject* parent) : QObject(parent)
+{}
 
 HnPacketCapturer::~HnPacketCapturer()
 {
-    if (capturing_) capturing_ = false;
+    stopCapturing();
 }
 
-void HnPacketCapturer::connectObserver(IHnCapturerObserver* observer)
+void HnPacketCapturer::setPacketsDissector(HnPacketDissector* dissector)
 {
-    if (observer)
-        observers_.append(observer);
-}
-
-void HnPacketCapturer::disconnectObserver(IHnCapturerObserver* observer)
-{
-    observers_.removeOne(observer);
-}
-
-void HnPacketCapturer::notifyObservers(HnPacket* packet) const
-{
-    for (IHnCapturerObserver* observer : observers_)
-        observer->processPacket(packet);
+    dissector_ = dissector;
 }
 
 bool HnPacketCapturer::setInterfaceToCapture(u_long interfaceIp, unsigned short port)
 {
     if (captureSocket_.createRawSocket() != HnIPv4Socket::Success)
         return false;
-    if (captureSocket_.bindToInterface(interfaceIp, port) != HnIPv4Socket::Success)
+
+    if (captureSocket_.bindToInterface(interfaceIp, port) != HnIPv4Socket::Success) {
+        captureSocket_.close();
         return false;
-    if (captureSocket_.setPacketCaptureMode() != true)
+    }
+    if (captureSocket_.setPacketCaptureMode() != true) {
+        captureSocket_.close();
         return false;
+    }
 
     socketSetToCapture_ = true;
     return true;
@@ -45,20 +36,26 @@ bool HnPacketCapturer::setInterfaceToCapture(u_long interfaceIp, unsigned short 
 
 void HnPacketCapturer::startCapturing()
 {
-    capturing_ = true;
+    capturePermitted_ = true;
+    
+    if (capturedPacketsCnt_ == 0)
+        captureStarted_ = clock();      // Set start time when it is a first start or after restarting capture
+
     std::thread capturing(&HnPacketCapturer::capturePackets, this);
     capturing.detach();
 }
 
-void HnPacketCapturer::pauseCapturing()
+bool HnPacketCapturer::pauseCapturing()
 {
-    capturing_ = false;
-}
+    capturePermitted_ = false;
 
-bool HnPacketCapturer::stopCapturing()
-{
-    capturing_ = false;
-    if (captureSocket_.isInit()) {
+    while (captureInProgress_.load()) {
+        QThread::msleep(10);
+    }
+    
+    dissector_->stopDissection();
+
+    if (captureSocket_.isValid()) {
         if (captureSocket_.close() != HnIPv4Socket::Success) {
             return false;
         }
@@ -67,29 +64,44 @@ bool HnPacketCapturer::stopCapturing()
     return true;
 }
 
+bool HnPacketCapturer::stopCapturing()
+{
+    if (!pauseCapturing()) return false;
+    capturedPacketsCnt_ = 0;
+
+    return true;
+}
+
+bool HnPacketCapturer::isCapturing() const
+{
+    return captureInProgress_;
+}
+
 void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;
 
-    static unsigned int capturedPacketsCnt = 0;
+    dissector_->startDissection();
+
     int bytesRead = 0;
-    static std::time_t captureStarted = clock(), currentPacketTime;
+    std::time_t currentPacketTime = 0;
 
-    while (capturing_) {
-        std::memset(buffer_, 0, BuffSize_);
-        bytesRead = recvfrom(captureSocket_.socketHandle(), buffer_, BuffSize_, 0, 0, 0);
-        if (bytesRead > 0 && capturing_) {
-            currentPacketTime = clock() - captureStarted;
-            ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer_);
-            uint8_t* rawData = new uint8_t[bytesRead];      // Memory management is in the captured packet object
-            std::memcpy(rawData, buffer_, bytesRead);
+    while (capturePermitted_.load()) {
+        captureInProgress_ = true;
 
-            HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, ++capturedPacketsCnt);
-            if (capturedPacket == nullptr) continue;
-            capturedPacket->setPacketData(rawData, bytesRead);
-            capturedPacket->setArrivalTime(currentPacketTime);
+        char* buffer = new char[BuffSize_];
 
-            notifyObservers(capturedPacket);
+        bytesRead = recvfrom(captureSocket_.socketHandle(), buffer, BuffSize_, 0, 0, 0);
+        if (bytesRead > 0 && capturePermitted_.load()) {
+            currentPacketTime = clock() - captureStarted_;
+            raw_packet rawPacket = { ++capturedPacketsCnt_, currentPacketTime, buffer, bytesRead };
+            dissector_->enqueuePacket(rawPacket);
+        }
+        else {
+            delete[] buffer;
         }
     }
+
+    captureInProgress_ = false;
+    dissector_->stopDissection();
 }

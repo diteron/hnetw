@@ -4,7 +4,9 @@
 
 class HnPacketListRow {
 public:
+    HnPacketListRow();
     HnPacketListRow(HnPacket* packet);
+    HnPacketListRow(const HnPacketListRow& other);
     ~HnPacketListRow();
 
     enum columnsNames {

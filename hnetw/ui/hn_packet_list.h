@@ -12,7 +12,9 @@ public:
     ~HnPacketList();
 
     void setDetailsView(HnPacketDetails* detailsView);
-    void captureInProgress(bool inProgress);
+    void setCaptureInProgress(bool inProgress);
+
+    void clear();
 
 protected:
     virtual void mousePressEvent(QMouseEvent* event) override;
@@ -22,7 +24,7 @@ protected:
 private:
     HnPacketListModel* listModel_ = nullptr;
 
-    bool captureInProgress_ = true;
+    bool captureInProgress_ = false;
     bool tailAtEnd_ = false;
     HnPacketDetails* packetDetailsView_ = nullptr;
 

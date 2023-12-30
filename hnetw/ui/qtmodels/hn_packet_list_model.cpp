@@ -3,21 +3,14 @@
 #include "hn_packet_list_model.h"
 
 HnPacketListModel::HnPacketListModel(QObject* parent) : QAbstractItemModel(parent)
-{
-    packetsRows_.reserve(100'000);
-    newPacketsRows_.reserve(1'000);
-}
+{}
 
 HnPacketListModel::~HnPacketListModel()
 {
-    if (!packetsRows_.isEmpty()) {
-        qDeleteAll(packetsRows_);
-        packetsRows_.clear();
-    }
-    if (!newPacketsRows_.isEmpty()) {
-        qDeleteAll(newPacketsRows_);
-        newPacketsRows_.clear();
-    }
+    qDeleteAll(packetsRows_);
+    packetsRows_.clear();
+    visibleRows_.clear();
+    newPacketsRows_.clear();
 }
 
 int HnPacketListModel::columnCount(const QModelIndex& parent) const
@@ -50,10 +43,10 @@ QVariant HnPacketListModel::data(const QModelIndex& index, int role) const
 
 QModelIndex HnPacketListModel::index(int row, int column, const QModelIndex& parent) const
 {
-    if (row >= packetsRows_.count() || row < 0 || column >= columnCount_)
+    if (row >= visibleRows_.count() || row < 0 || column >= columnCount_)
         return QModelIndex();
 
-    HnPacketListRow* plistRow = packetsRows_[row];
+    HnPacketListRow* plistRow = visibleRows_[row];
 
     return createIndex(row, column, plistRow);
 }
@@ -65,7 +58,7 @@ QModelIndex HnPacketListModel::parent(const QModelIndex& index) const
 
 int HnPacketListModel::rowCount(const QModelIndex& parent) const
 {
-    return static_cast<int>(packetsRows_.count());
+    return static_cast<int>(visibleRows_.count());
 }
 
 QVariant HnPacketListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -86,35 +79,57 @@ HnPacketListRow* HnPacketListModel::rowByIndex(const QModelIndex& index) const
     return static_cast<HnPacketListRow*>(index.internalPointer());
 }
 
-void HnPacketListModel::processPacket(HnPacket* packet)
+void HnPacketListModel::appendRow(HnPacketListRow* row)
 {
-    appendPacket(packet);
-}
+    std::unique_lock<std::mutex> lock(mutex_);
+    while (modelIsChanging_.load()) {
+        cond_var_.wait(lock);
+    }
 
-void HnPacketListModel::appendPacket(HnPacket* packet)
-{
-    HnPacketListRow* newRow = new HnPacketListRow(packet);
-    newPacketsRows_ << newRow;
+    packetsRows_.append(row);
+    newPacketsRows_.append(row);
     if (newPacketsRows_.count() < 2) {
+        // Queue rows insertion on next update (insertNewRows will be executed on the main GUI thread)
         QTimer::singleShot(0, this, &HnPacketListModel::insertNewRows);
     }
 }
 
 const HnPacket* HnPacketListModel::packetAt(int index) const
 {
-    return packetsRows_.at(index)->packet();
+    return visibleRows_.at(index)->packet();
+}
+
+void HnPacketListModel::clear()
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+    modelIsChanging_ = true;
+
+    beginResetModel();
+    qDeleteAll(packetsRows_);
+    packetsRows_.resize(0);
+    visibleRows_.resize(0);
+    newPacketsRows_.resize(0);
+    endResetModel();
+
+    modelIsChanging_ = false;
+    cond_var_.notify_one();
 }
 
 void HnPacketListModel::insertNewRows()
 {
-    int lastRowPos = static_cast<int>(packetsRows_.count());
+    std::lock_guard<std::mutex> lock(mutex_);
+    modelIsChanging_ = true;
+
+    int lastRowPos = static_cast<int>(visibleRows_.count());
     if (newPacketsRows_.count() > 0) {
         beginInsertRows(QModelIndex(), lastRowPos, lastRowPos + static_cast<int>(newPacketsRows_.count()));
-        for (HnPacketListRow* newRow : newPacketsRows_) {
-            packetsRows_ << newRow;
+        for (HnPacketListRow* row : newPacketsRows_) {
+            visibleRows_.append(row);
         }
         endInsertRows();
         newPacketsRows_.resize(0);
     }
-}
 
+    modelIsChanging_ = false;
+    cond_var_.notify_one();
+}

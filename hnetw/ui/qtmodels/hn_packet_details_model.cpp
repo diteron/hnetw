@@ -1,6 +1,7 @@
 #include <stdafx.h>
+
+#include <ui/hn_details_tree_builder.h>
 #include "hn_packet_details_model.h"
-#include "ui/hn_details_tree_builder.h"
 
 HnPacketDetailsModel::HnPacketDetailsModel(QObject* parent) 
     : QAbstractItemModel(parent)
@@ -8,7 +9,7 @@ HnPacketDetailsModel::HnPacketDetailsModel(QObject* parent)
 
 HnPacketDetailsModel::~HnPacketDetailsModel()
 {
-    if (rootNode_) delete rootNode_;
+    delete rootNode_;
 }
 
 int HnPacketDetailsModel::columnCount(const QModelIndex & parent) const
@@ -85,6 +86,14 @@ void HnPacketDetailsModel::setRootNode(HnInfoNode* node)
     if (rowCount < 1) return;
     beginInsertRows(QModelIndex(), 0, rowCount - 1);
     endInsertRows();
+}
+
+void HnPacketDetailsModel::clear()
+{
+    beginResetModel();
+    if (rootNode_) delete rootNode_;
+    rootNode_ = nullptr;
+    endResetModel();
 }
 
 HnInfoNode* HnPacketDetailsModel::nodeByIndex(const QModelIndex& index) const

@@ -6,28 +6,55 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
     : QMainWindow(parent)
 {
     this->resize(startWidth, startHeight);
+    
     menuBar_ = new HnMenuBar(this->width(), this);
     this->setMenuBar(menuBar_);
-    
+   
+    setupToolBar();
+
     centralWidget_ = new HnCentralWidget(this);
     this->setCentralWidget(centralWidget_);
 
     setupPacketsViews();
-    setupCapturer();
 }
 
 HnMainWindow::~HnMainWindow()
-{}
-
-void HnMainWindow::setCapturer(HnPacketCapturer* capturer)
 {
-    packetCapturer_ = capturer;
+    delete packetDissector_;
 }
 
-void HnMainWindow::startCapture()
+bool HnMainWindow::setupNetwork()
 {
-    if (!packetCapturer_) return;
-    packetCapturer_->startCapturing();
+    setupCapturer();
+    return setupHost();
+}
+
+void HnMainWindow::printErrorMessage(QString errMessage)
+{
+    QApplication::beep();
+    QMessageBox::critical(this, QApplication::applicationName(), errMessage);
+}
+
+void HnMainWindow::setupToolBar()
+{
+    toolBar_ = new QToolBar(this);
+    toolBar_->setMovable(false);
+
+    actionStart_ = new QAction("Start", toolBar_);
+    actionPause_ = new QAction("Pause", toolBar_);
+    actionPause_->setEnabled(false);
+    actionRestart_ = new QAction("Restart", toolBar_);
+    actionRestart_->setEnabled(false);
+
+    connect(actionStart_, &QAction::triggered, this, &HnMainWindow::startCapture);
+    connect(actionPause_, &QAction::triggered, this, &HnMainWindow::pauseCapture);
+    connect(actionRestart_, &QAction::triggered, this, &HnMainWindow::restartCapture);
+
+    toolBar_->addAction(actionStart_);
+    toolBar_->addAction(actionPause_);
+    toolBar_->addAction(actionRestart_);
+
+    this->addToolBar(toolBar_);
 }
 
 void HnMainWindow::setupPacketsViews()
@@ -43,13 +70,83 @@ void HnMainWindow::setupPacketsViews()
     centralWidget_->addWidget(mainSplitter_);
 }
 
-void HnMainWindow::setupCapturer()
+bool HnMainWindow::setupHost()
 {
     host_ = HnHost(0);
-    host_.initialize();
+    bool result = host_.initialize();
+    if (!result) {
+        printErrorMessage("Failed to initialize host!");
+        return false;
+    }
 
-    packetCapturer_ = new HnPacketCapturer();
-    packetCapturer_->setInterfaceToCapture(host_.interfaceIpAt(1), host_.port());
-    packetCapturer_->connectObserver(packetListModel_);
+    currentInterfaceIp_ = host_.interfaceIpAt(1);       // TODO: Add dialog for interface selection
+    currentPort_ = host_.port();
+
+    return true;
 }
 
+void HnMainWindow::setupCapturer()
+{
+    packetDissector_ = new HnPacketDissector();
+    packetDissector_->setPacketListModel(packetListModel_);
+    packetCapturer_ = new HnPacketCapturer(this);
+    packetCapturer_->setPacketsDissector(packetDissector_);
+}
+
+void HnMainWindow::startCapture()
+{
+    if (!setupCaptureInterface()) {
+        return;
+    }
+
+    packetCapturer_->startCapturing();
+    packetList_->setCaptureInProgress(true);
+    
+    actionStart_->setEnabled(false);
+    actionPause_->setEnabled(true);
+    actionRestart_->setEnabled(true);
+}
+
+void HnMainWindow::pauseCapture()
+{
+    bool result = packetCapturer_->pauseCapturing();
+    if (!result) {
+        printErrorMessage("Failed to pause capture!");
+        return;
+    }
+
+    actionStart_->setEnabled(true);
+    actionPause_->setEnabled(false);
+    actionRestart_->setEnabled(false);
+
+    packetList_->setCaptureInProgress(false);
+}
+
+void HnMainWindow::restartCapture()
+{
+    bool result = packetCapturer_->stopCapturing();
+    if (!result) {
+        printErrorMessage("Failed to restart capture!");
+        return;
+    }
+
+    packetList_->setCaptureInProgress(false);
+    packetList_->clear();
+
+    actionStart_->setEnabled(true);
+    actionPause_->setEnabled(false);
+    actionRestart_->setEnabled(false);
+
+    startCapture();
+}
+
+bool HnMainWindow::setupCaptureInterface()
+{
+    bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
+    if (!result) {
+        printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");
+        return false;
+    }
+
+    return true;
+}

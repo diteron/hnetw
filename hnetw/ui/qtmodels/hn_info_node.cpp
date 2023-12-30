@@ -7,7 +7,7 @@ HnInfoNode::HnInfoNode(QString label, HnInfoNode* parent)
 
 HnInfoNode::~HnInfoNode()
 {
-    if (!children_.isEmpty()) qDeleteAll(children_);
+    qDeleteAll(children_);
 }
 
 void HnInfoNode::addChild(HnInfoNode* child)

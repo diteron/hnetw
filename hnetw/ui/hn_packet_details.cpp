@@ -16,3 +16,8 @@ void HnPacketDetails::displayPacket(const HnPacket * packet)
 {
     detailsViewModel_->setPacket(packet);
 }
+
+void HnPacketDetails::clear()
+{
+    detailsViewModel_->clear();
+}

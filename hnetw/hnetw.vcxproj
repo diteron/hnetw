@@ -111,8 +111,9 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="capture\hn_capturer_observer.cpp" />
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
+    <ClCompile Include="capture\hn_packet_dissector.cpp" />
+    <ClCompile Include="capture\hn_packet_queue.cpp" />
     <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp" />
@@ -131,13 +132,14 @@
     <ClCompile Include="ui\qtmodels\hn_packet_details_model.cpp" />
     <ClCompile Include="ui\qtmodels\hn_packet_list_row.cpp" />
     <ClCompile Include="ui\qtmodels\hn_packet_list_model.cpp" />
-    <ClCompile Include="ui\hn_packetlist.cpp" />
+    <ClCompile Include="ui\hn_packet_list.cpp" />
     <ClCompile Include="ui\hn_central_widget.cpp" />
     <ClCompile Include="ui\hn_main_window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
     <QtMoc Include="capture\hn_packet_capturer.h" />
-    <ClInclude Include="capture\hn_capturer_observer.h" />
+    <ClInclude Include="capture\hn_packet_queue.h" />
+    <ClInclude Include="capture\hn_packet_dissector.h" />
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_ip_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_tcp_tree.h" />
@@ -157,7 +159,7 @@
     <QtMoc Include="ui\qtmodels\hn_packet_details_model.h" />
     <ClInclude Include="ui\qtmodels\hn_packet_list_row.h" />
     <QtMoc Include="ui\qtmodels\hn_packet_list_model.h" />
-    <QtMoc Include="ui\hn_packetlist.h" />
+    <QtMoc Include="ui\hn_packet_list.h" />
     <ClInclude Include="ui\hn_central_widget.h" />
     <ClInclude Include="ui\hn_main_window.h" />
     <ClInclude Include="stdafx.h" />
