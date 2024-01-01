@@ -62,11 +62,17 @@ void HnMainWindow::setupPacketsViews()
     packetListModel_ = new HnPacketListModel(centralWidget_);
     packetList_ = new HnPacketList(packetListModel_, centralWidget_);
     packetDetails_ = new HnPacketDetails(centralWidget_);
+    packetBytesView_ = new HnByteView(centralWidget_);
     packetList_->setDetailsView(packetDetails_);
+    packetList_->setBytesView(packetBytesView_);
+
+    treeBytesSplitter_ = new QSplitter(Qt::Horizontal, centralWidget_);
+    treeBytesSplitter_->addWidget(packetDetails_);
+    treeBytesSplitter_->addWidget(packetBytesView_);
 
     mainSplitter_ = new QSplitter(Qt::Vertical, centralWidget_);
     mainSplitter_->addWidget(packetList_);
-    mainSplitter_->addWidget(packetDetails_);
+    mainSplitter_->addWidget(treeBytesSplitter_);
     centralWidget_->addWidget(mainSplitter_);
 }
 
@@ -79,7 +85,8 @@ bool HnMainWindow::setupHost()
         return false;
     }
 
-    currentInterfaceIp_ = host_.interfaceIpAt(1);       // TODO: Add dialog for interface selection
+    host_.interfacesIpStrings();
+    currentInterfaceIp_ = host_.interfaceIpAt(2);       // TODO: Add dialog for interface selection
     currentPort_ = host_.port();
 
     return true;

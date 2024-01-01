@@ -6,7 +6,6 @@
 #include <packet/hn_packet_factory.h>
 #include <ui/qtmodels/hn_packet_list_row.h>
 
-//extern void packet_list_append(HnPacketListRow* row);
 
 HnPacketDissector::HnPacketDissector() : packetQueue_()
 {}
@@ -44,7 +43,6 @@ void HnPacketDissector::stopDissection()
 void HnPacketDissector::dissectPackets()
 {
     while (captureInProgress_.load()) {
-
         raw_packet rawPacket = packetQueue_.dequeue();
 
         int id = rawPacket.id;
@@ -70,7 +68,6 @@ void HnPacketDissector::dissectPackets()
         if (captureInProgress_.load()) {
             HnPacketListRow* newRow = new HnPacketListRow(capturedPacket);
             packetListModel_->appendRow(newRow);
-            //packet_list_append(newRow);
         }
     }
 

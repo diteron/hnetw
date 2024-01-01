@@ -33,6 +33,11 @@ void HnPacketList::setDetailsView(HnPacketDetails* detailsView)
     packetDetailsView_ = detailsView;
 }
 
+void HnPacketList::setBytesView(HnByteView* bytesView)
+{
+    bytesView_ = bytesView;
+}
+
 void HnPacketList::setCaptureInProgress(bool inProgress)
 {
     captureInProgress_ = inProgress;
@@ -42,6 +47,7 @@ void HnPacketList::clear()
 {
     selectionModel()->clear();
     packetDetailsView_->clear();
+    bytesView_->clear();
     listModel_->clear();
 }
 
@@ -65,6 +71,8 @@ void HnPacketList::selectionChanged(const QItemSelection& selected, const QItemS
     int selectedRow = selectedRows.at(0).row();     // Only one row can be selected (QAbstractItemView::SingleSelection)
     const HnPacket* packetToDisplay = listModel_->packetAt(selectedRow);
     packetDetailsView_->displayPacket(packetToDisplay);
+    bytesView_->setRawData(packetToDisplay->rawData(), packetToDisplay->length());
+    bytesView_->printPacketBytes();
 }
 
 void HnPacketList::rowsInserted(const QModelIndex& parent, int start, int end)

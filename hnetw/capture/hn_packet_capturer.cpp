@@ -49,9 +49,9 @@ bool HnPacketCapturer::pauseCapturing()
 {
     capturePermitted_ = false;
 
-    while (captureInProgress_.load()) {
-        QThread::msleep(10);
-    }
+    //while (captureInProgress_.load()) {
+    //    QThread::msleep(10);
+    //}
     
     dissector_->stopDissection();
 

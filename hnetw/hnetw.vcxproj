@@ -114,6 +114,7 @@
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="capture\hn_packet_dissector.cpp" />
     <ClCompile Include="capture\hn_packet_queue.cpp" />
+    <ClCompile Include="ui\hn_byte_view.cpp" />
     <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp" />
@@ -140,6 +141,7 @@
     <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
     <ClInclude Include="capture\hn_packet_dissector.h" />
+    <ClInclude Include="ui\hn_byte_view.h" />
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_ip_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_tcp_tree.h" />

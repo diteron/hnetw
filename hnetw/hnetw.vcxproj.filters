@@ -92,6 +92,9 @@
     <ClInclude Include="capture\hn_packet_dissector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ui\hn_byte_view.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -170,6 +173,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="capture\hn_packet_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\hn_byte_view.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

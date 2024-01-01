@@ -9,6 +9,7 @@
 #include "hn_central_widget.h"
 #include "hn_menubar.h"
 #include "hn_packet_list.h"
+#include "hn_byte_view.h"
 #include "qtmodels/hn_packet_list_model.h"
 #include "hn_packet_details.h"
 #include "qtmodels/hn_packet_details_model.h"
@@ -43,10 +44,12 @@ private:
 
     HnCentralWidget* centralWidget_ = nullptr;
     QSplitter* mainSplitter_ = nullptr;
+    QSplitter* treeBytesSplitter_ = nullptr;
     HnPacketList* packetList_ = nullptr;
     HnPacketListModel* packetListModel_ = nullptr;
     HnPacketDetails* packetDetails_ = nullptr;
     HnPacketDetailsModel* packetDetailsModel_ = nullptr;
+    HnByteView* packetBytesView_ = nullptr;
 
 private slots:
     void startCapture();
