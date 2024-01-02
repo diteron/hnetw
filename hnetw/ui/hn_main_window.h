@@ -16,6 +16,9 @@
 
 
 class HnMainWindow : public QMainWindow {
+
+    Q_OBJECT
+
 public:
     HnMainWindow(int startWidth, int startHeight, QWidget* parent = nullptr);
     ~HnMainWindow();
@@ -28,6 +31,7 @@ private:
     void setupPacketsViews();
     bool setupHost();
     void setupCapturer();
+    void stopCapture();
 
     HnMenuBar* menuBar_ = nullptr;
     QToolBar* toolBar_ = nullptr;
@@ -35,6 +39,7 @@ private:
     HnHost host_;
     HnPacketCapturer* packetCapturer_ = nullptr;
     HnPacketDissector* packetDissector_ = nullptr;
+    bool captureInProgress_ = false;
     u_long currentInterfaceIp_ = 0;
     unsigned short currentPort_ = 0;
 
@@ -52,9 +57,9 @@ private:
     HnByteView* packetBytesView_ = nullptr;
 
 private slots:
+    void handleInterfaceChange(int id);
     void startCapture();
     void pauseCapture();
     void restartCapture();
     bool setupCaptureInterface();
 };
-

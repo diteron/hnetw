@@ -29,9 +29,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="ui\hn_main_window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\hn_central_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\hn_byte_view.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\hn_interface_dialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,6 +178,9 @@
     <ClCompile Include="ui\hn_byte_view.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui\hn_interface_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ui\hn_menubar.h">
@@ -193,6 +196,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="capture\hn_packet_capturer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ui\hn_main_window.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

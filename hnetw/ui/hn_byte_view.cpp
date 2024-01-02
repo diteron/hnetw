@@ -33,7 +33,9 @@ void HnByteView::clear()
 {
     rawData_ = nullptr;
     verticalScrollBar()->setValue(0);
+    verticalScrollBar()->setRange(0, 0);
     horizontalScrollBar()->setValue(0);
+    horizontalScrollBar()->setRange(0, 0);
     viewport()->update();
 }
 

@@ -114,6 +114,7 @@
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="capture\hn_packet_dissector.cpp" />
     <ClCompile Include="capture\hn_packet_queue.cpp" />
+    <ClCompile Include="ui\hn_interface_dialog.cpp" />
     <ClCompile Include="ui\hn_byte_view.cpp" />
     <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp" />
@@ -141,6 +142,7 @@
     <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
     <ClInclude Include="capture\hn_packet_dissector.h" />
+    <ClInclude Include="ui\hn_interface_dialog.h" />
     <ClInclude Include="ui\hn_byte_view.h" />
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_ip_tree.h" />
@@ -163,7 +165,7 @@
     <QtMoc Include="ui\qtmodels\hn_packet_list_model.h" />
     <QtMoc Include="ui\hn_packet_list.h" />
     <ClInclude Include="ui\hn_central_widget.h" />
-    <ClInclude Include="ui\hn_main_window.h" />
+    <QtMoc Include="ui\hn_main_window.h" />
     <ClInclude Include="stdafx.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>

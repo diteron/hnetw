@@ -8,6 +8,7 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
     this->resize(startWidth, startHeight);
     
     menuBar_ = new HnMenuBar(this->width(), this);
+    this->connect(menuBar_, &HnMenuBar::interfaceIdChanged, this, &HnMainWindow::handleInterfaceChange);
     this->setMenuBar(menuBar_);
    
     setupToolBar();
@@ -86,8 +87,10 @@ bool HnMainWindow::setupHost()
     }
 
     host_.interfacesIpStrings();
-    currentInterfaceIp_ = host_.interfaceIpAt(2);       // TODO: Add dialog for interface selection
     currentPort_ = host_.port();
+
+    menuBar_->setInterfacesIp(host_.interfacesIpStrings());
+    menuBar_->showChangeInterfaceDialog();
 
     return true;
 }
@@ -100,6 +103,35 @@ void HnMainWindow::setupCapturer()
     packetCapturer_->setPacketsDissector(packetDissector_);
 }
 
+void HnMainWindow::stopCapture()
+{
+    bool result = packetCapturer_->stopCapturing();
+    if (!result) {
+        printErrorMessage("Failed to restart capture!");
+        return;
+    }
+
+    packetList_->setCaptureInProgress(false);
+    packetList_->clear();
+
+    actionStart_->setEnabled(true);
+    actionPause_->setEnabled(false);
+    actionRestart_->setEnabled(false);
+}
+
+void HnMainWindow::handleInterfaceChange(int id) 
+{
+    if (id < 0) {
+        printErrorMessage("Incorrect interface id!");
+        return;
+    }
+
+    u_long newInterfaceIp = host_.interfaceIpAt(id);
+    currentInterfaceIp_ = newInterfaceIp;
+    if (captureInProgress_)
+        stopCapture();
+}
+
 void HnMainWindow::startCapture()
 {
     if (!setupCaptureInterface()) {
@@ -108,6 +140,7 @@ void HnMainWindow::startCapture()
 
     packetCapturer_->startCapturing();
     packetList_->setCaptureInProgress(true);
+    captureInProgress_ = true;
     
     actionStart_->setEnabled(false);
     actionPause_->setEnabled(true);
@@ -122,6 +155,7 @@ void HnMainWindow::pauseCapture()
         return;
     }
 
+    captureInProgress_ = false;
     actionStart_->setEnabled(true);
     actionPause_->setEnabled(false);
     actionRestart_->setEnabled(false);
@@ -149,6 +183,11 @@ void HnMainWindow::restartCapture()
 
 bool HnMainWindow::setupCaptureInterface()
 {
+    if (currentInterfaceIp_ == 0) {
+        printErrorMessage("Interface for capture is not set!");
+        return false;
+    }
+
     bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
     if (!result) {
         printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");

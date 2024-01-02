@@ -25,7 +25,6 @@ bool HnHost::initialize()
 
     hostName_.assign(hostName);
     result = getAllInterfacesIp();
-
     return result;
 }
 
