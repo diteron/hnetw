@@ -28,6 +28,7 @@ public:
 
 private:
     void setupToolBar();
+    void setupStatusBar();
     void setupPacketsViews();
     bool setupHost();
     void setupCapturer();

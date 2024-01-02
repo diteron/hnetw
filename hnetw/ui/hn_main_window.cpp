@@ -11,16 +11,11 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
     this->connect(menuBar_, &HnMenuBar::interfaceIdChanged, this, &HnMainWindow::handleInterfaceChange);
     this->setMenuBar(menuBar_);
    
-    setupToolBar();
-
-    statusBar_ = new QStatusBar(this);
-    this->setStatusBar(statusBar_);
-    statusBarIpLabel_ = new QLabel("Interface IP is not selected", statusBar_);
-    statusBar_->insertPermanentWidget(0, statusBarIpLabel_, 1);  // stretch > 0 moves single widget in the status bar to the left side
-
     centralWidget_ = new HnCentralWidget(this);
     this->setCentralWidget(centralWidget_);
 
+    setupToolBar();
+    setupStatusBar();
     setupPacketsViews();
 }
 
@@ -61,6 +56,14 @@ void HnMainWindow::setupToolBar()
     toolBar_->addAction(actionRestart_);
 
     this->addToolBar(toolBar_);
+}
+
+void HnMainWindow::setupStatusBar()
+{
+    statusBar_ = new QStatusBar(this);
+    this->setStatusBar(statusBar_);
+    statusBarIpLabel_ = new QLabel("Interface IP is not selected", statusBar_);
+    statusBar_->insertPermanentWidget(0, statusBarIpLabel_, 1);     // stretch > 0 moves single widget in the status bar to the left side
 }
 
 void HnMainWindow::setupPacketsViews()
