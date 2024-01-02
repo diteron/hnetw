@@ -9,6 +9,8 @@ public:
 	void setPort(unsigned short port);
 	bool initialize();
 	u_long interfaceIpAt(int index) const;
+
+	const char* interfaceIpStringAt(int index) const;
 	std::vector<std::string> interfacesIpStrings() const;
 
 	std::string hostname() const;

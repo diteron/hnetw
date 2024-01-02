@@ -3,7 +3,7 @@
 #include "hn_main_window.h"
 
 HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), interfacesIpStrings_()
 {
     this->resize(startWidth, startHeight);
     
@@ -12,6 +12,11 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
     this->setMenuBar(menuBar_);
    
     setupToolBar();
+
+    statusBar_ = new QStatusBar(this);
+    this->setStatusBar(statusBar_);
+    statusBarIpLabel_ = new QLabel("Interface IP is not selected", statusBar_);
+    statusBar_->insertPermanentWidget(0, statusBarIpLabel_, 1);  // stretch > 0 moves single widget in the status bar to the left side
 
     centralWidget_ = new HnCentralWidget(this);
     this->setCentralWidget(centralWidget_);
@@ -86,8 +91,8 @@ bool HnMainWindow::setupHost()
         return false;
     }
 
-    host_.interfacesIpStrings();
     currentPort_ = host_.port();
+    interfacesIpStrings_ = host_.interfacesIpStrings();
 
     menuBar_->setInterfacesIp(host_.interfacesIpStrings());
     menuBar_->showChangeInterfaceDialog();
@@ -128,8 +133,17 @@ void HnMainWindow::handleInterfaceChange(int id)
 
     u_long newInterfaceIp = host_.interfaceIpAt(id);
     currentInterfaceIp_ = newInterfaceIp;
-    if (captureInProgress_)
+
+    if (captureInProgress_) {
         stopCapture();
+    }
+    else {
+        packetCapturer_->resetStatistics();
+        packetList_->clear();
+    }
+
+    QString ipString = interfacesIpStrings_[id].c_str();
+    statusBarIpLabel_->setText("Capturing interface IP: " + ipString);
 }
 
 void HnMainWindow::startCapture()

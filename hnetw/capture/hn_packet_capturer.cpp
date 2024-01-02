@@ -77,6 +77,12 @@ bool HnPacketCapturer::isCapturing() const
     return captureInProgress_;
 }
 
+void HnPacketCapturer::resetStatistics()
+{
+    capturedPacketsCnt_ = 0;
+    captureStarted_ = clock();
+}
+
 void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;

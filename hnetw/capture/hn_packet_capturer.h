@@ -20,6 +20,7 @@ public:
     bool pauseCapturing();
     bool stopCapturing();
     bool isCapturing() const;
+    void resetStatistics();
 
 private:
     void capturePackets();

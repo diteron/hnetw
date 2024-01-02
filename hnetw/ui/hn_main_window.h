@@ -35,11 +35,14 @@ private:
 
     HnMenuBar* menuBar_ = nullptr;
     QToolBar* toolBar_ = nullptr;
+    QStatusBar* statusBar_ = nullptr;
+    QLabel* statusBarIpLabel_ = nullptr;
 
     HnHost host_;
     HnPacketCapturer* packetCapturer_ = nullptr;
     HnPacketDissector* packetDissector_ = nullptr;
     bool captureInProgress_ = false;
+    std::vector<std::string> interfacesIpStrings_;
     u_long currentInterfaceIp_ = 0;
     unsigned short currentPort_ = 0;
 

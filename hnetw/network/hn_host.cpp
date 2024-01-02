@@ -33,6 +33,17 @@ u_long HnHost::interfaceIpAt(int index) const
     return (index < interfacesIp_.size()) ? interfacesIp_[index] : 0;
 }
 
+const char* HnHost::interfaceIpStringAt(int index) const
+{
+    const int IPStringLen = 16;
+
+    in_addr inAddr;
+    char stringBuff[IPStringLen] = "";
+    inAddr.s_addr = interfacesIp_[index];
+
+    return (inet_ntop(AF_INET, &inAddr, stringBuff, sizeof(stringBuff)));
+}
+
 std::vector<std::string> HnHost::interfacesIpStrings() const
 {
     const int IPStringLen = 16;
