@@ -46,7 +46,7 @@ void HnPacketDissector::dissectPackets()
         raw_packet rawPacket = packetQueue_.dequeue();
 
         int id = rawPacket.id;
-        std::time_t currentPacketTime = rawPacket.time;
+        std::clock_t currentPacketTime = rawPacket.time;
         pBuffer buffer = rawPacket.buffer;
         int bytesRead = rawPacket.length;
 

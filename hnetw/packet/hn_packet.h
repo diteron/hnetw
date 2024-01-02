@@ -17,12 +17,12 @@ public:
     };
     
     void setPacketData(uint8_t* rawData, int rawDataLen);
-    void setArrivalTime(std::time_t arrivalTime);
+    void setArrivalTime(std::clock_t arrivalTime);
 
     const int id() const;
     std::string typeString() const;
     const int type() const;
-    const std::time_t arrivalTime() const;
+    const std::clock_t arrivalTime() const;
     const ipv4_hdr* ipv4Header() const;
     const uint8_t* rawData() const;
     const int length() const;
@@ -34,7 +34,7 @@ protected:
     int id_ = 0;
     int type_ = Undefined;
     std::string typeString_ = "Undefined";
-    std::time_t arrivalTime_ = 0;
+    std::clock_t arrivalTime_ = 0;
     ipv4_hdr* ipv4Header_ = nullptr;
     int ipv4HeaderLength_ = 0;
     uint8_t* rawData_ = nullptr;

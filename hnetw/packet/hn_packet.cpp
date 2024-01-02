@@ -23,7 +23,7 @@ void HnPacket::setPacketData(uint8_t* rawData, int rawDataLen)
     ipv4HeaderLength_ = ipv4Header_->header_length * 4; // The length in the header is specified in 32-bit words (min 5, so 5 * 4 = 20 bytes)
 }
 
-void HnPacket::setArrivalTime(std::time_t arrivalTime)
+void HnPacket::setArrivalTime(std::clock_t arrivalTime)
 {
     arrivalTime_ = arrivalTime;
 }
@@ -43,7 +43,7 @@ const int HnPacket::type() const
     return type_;
 }
 
-const std::time_t HnPacket::arrivalTime() const
+const std::clock_t HnPacket::arrivalTime() const
 {
     return arrivalTime_;
 }

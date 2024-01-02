@@ -7,7 +7,7 @@
 typedef char* pBuffer;
 struct raw_packet {
     int id;
-    std::time_t time;
+    std::clock_t time;
     pBuffer buffer;
     int length;
 };

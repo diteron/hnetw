@@ -41,7 +41,7 @@ void HnPacketListRow::setId(int id)
     rowColumns_[HnPacketListRow::id] = QString::number(id);
 }
 
-void HnPacketListRow::setTime(std::time_t time)
+void HnPacketListRow::setTime(std::clock_t time)
 {
     rowColumns_[HnPacketListRow::time] = time_tToString(time);
 }
@@ -71,13 +71,10 @@ void HnPacketListRow::setLength(int length)
     rowColumns_[HnPacketListRow::length] = QString::number(length);
 }
 
-QString HnPacketListRow::time_tToString(std::time_t time)       // Possible errors?
+QString HnPacketListRow::time_tToString(std::clock_t time)       // Possible errors?
 {
-    std::stringstream strStream;
-    strStream << time;
-    std::string str = strStream.str();
-    QString qstr(str.c_str());
-    return qstr;
+    double timeInSeconds = static_cast<double>(time) / CLOCKS_PER_SEC;
+    return QString::number(timeInSeconds, 10, 3);
 }
 
 QString HnPacketListRow::ipToString(u_long ip)

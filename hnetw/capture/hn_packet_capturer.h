@@ -32,7 +32,7 @@ private:
     std::atomic<bool> captureInProgress_ = false;
 
     int capturedPacketsCnt_ = 0;
-    std::time_t captureStarted_ = 0;
+    std::clock_t captureStarted_ = 0;
     const int BuffSize_ = 65536;
 
     HnPacketDissector* dissector_ = nullptr;

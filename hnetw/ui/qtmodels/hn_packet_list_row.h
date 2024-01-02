@@ -23,13 +23,13 @@ public:
 
 private:
     void setId(int id);
-    void setTime(std::time_t time);
+    void setTime(std::clock_t time);
     void setSourceIp(uint32_t srcIp);
     void setDestinationIp(uint32_t destIp);
     void setProtocolType(QString type);
     void setLength(int length);
 
-    QString time_tToString(std::time_t time);
+    QString time_tToString(std::clock_t time);
     QString ipToString(u_long ip);
 
     HnPacket* packet_ = nullptr;

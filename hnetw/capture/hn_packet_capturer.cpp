@@ -48,10 +48,6 @@ void HnPacketCapturer::startCapturing()
 bool HnPacketCapturer::pauseCapturing()
 {
     capturePermitted_ = false;
-
-    //while (captureInProgress_.load()) {
-    //    QThread::msleep(10);
-    //}
     
     dissector_->stopDissection();
 
@@ -90,7 +86,7 @@ void HnPacketCapturer::capturePackets()
     dissector_->startDissection();
 
     int bytesRead = 0;
-    std::time_t currentPacketTime = 0;
+    std::clock_t currentPacketTime = 0;
 
     while (capturePermitted_.load()) {
         captureInProgress_ = true;
