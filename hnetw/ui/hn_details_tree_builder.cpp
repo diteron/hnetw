@@ -14,8 +14,7 @@ HnDetailsTreeBuilder::~HnDetailsTreeBuilder()
 HnInfoNode* HnDetailsTreeBuilder::buildDetailsTree(const HnPacket* packet)
 {
     HnInfoNode* detailsTree = new HnInfoNode("ROOT");
-    HnInfoNode* ipHeaderTree = HnIpTree().buildPacketIpTree(packet);
-    detailsTree->addChild(ipHeaderTree);
+    detailsTree->addChild(HnIpTree().buildPacketTree(packet));
 
     switch (packet->type()) {
         case HnPacket::TCP: 

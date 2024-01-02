@@ -1,14 +1,15 @@
 #pragma once
 
 #include <packet/proto_headers.h>
+#include "hn_details_tree.h"
 #include "../qtmodels/hn_info_node.h"
 
-class HnIpTree {
+class HnIpTree : public HnDetailsTree {
 public:
     HnIpTree();
     ~HnIpTree();
 
-    HnInfoNode* buildPacketIpTree(const HnPacket* packet);
+    HnInfoNode* buildPacketTree(const HnPacket* packet, HnInfoNode* parent = nullptr) override;
 
 private:
     QString getIpString(uint32_t ip);

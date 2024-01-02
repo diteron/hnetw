@@ -9,7 +9,7 @@ HnTcpTree::HnTcpTree() : HnDetailsTree()
 HnTcpTree::~HnTcpTree()
 {}
 
-HnInfoNode* HnTcpTree::buildPacketTree(const HnPacket * packet, HnInfoNode* parent)
+HnInfoNode* HnTcpTree::buildPacketTree(const HnPacket* packet, HnInfoNode* parent)
 {
     if (packet->type() != HnPacket::TCP) return nullptr;
 
