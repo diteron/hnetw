@@ -71,7 +71,7 @@
     <ClInclude Include="ui\hn_details_tree_builder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_details_tree.h">
+    <ClInclude Include="ui\packetstrees\hn_proto_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\packetstrees\hn_tcp_tree.h">
@@ -93,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\hn_interface_dialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_other_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_proto_tree_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -157,7 +163,7 @@
     <ClCompile Include="ui\hn_details_tree_builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_details_tree.cpp">
+    <ClCompile Include="ui\packetstrees\hn_proto_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp">
@@ -179,6 +185,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\hn_interface_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_other_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_proto_tree_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

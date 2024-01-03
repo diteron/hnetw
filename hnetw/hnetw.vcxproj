@@ -116,10 +116,12 @@
     <ClCompile Include="capture\hn_packet_queue.cpp" />
     <ClCompile Include="ui\hn_interface_dialog.cpp" />
     <ClCompile Include="ui\hn_byte_view.cpp" />
+    <ClCompile Include="ui\packetstrees\hn_other_tree.cpp" />
+    <ClCompile Include="ui\packetstrees\hn_proto_tree_factory.cpp" />
     <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp" />
     <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp" />
-    <ClCompile Include="ui\packetstrees\hn_details_tree.cpp" />
+    <ClCompile Include="ui\packetstrees\hn_proto_tree.cpp" />
     <ClCompile Include="ui\hn_details_tree_builder.cpp" />
     <ClCompile Include="ui\qtmodels\hn_info_node.cpp" />
     <ClCompile Include="packet\packets\hn_other_packet.cpp" />
@@ -144,10 +146,12 @@
     <ClInclude Include="capture\hn_packet_dissector.h" />
     <ClInclude Include="ui\hn_interface_dialog.h" />
     <ClInclude Include="ui\hn_byte_view.h" />
+    <ClInclude Include="ui\packetstrees\hn_other_tree.h" />
+    <ClInclude Include="ui\packetstrees\hn_proto_tree_factory.h" />
     <ClInclude Include="ui\packetstrees\hn_udp_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_ip_tree.h" />
     <ClInclude Include="ui\packetstrees\hn_tcp_tree.h" />
-    <ClInclude Include="ui\packetstrees\hn_details_tree.h" />
+    <ClInclude Include="ui\packetstrees\hn_proto_tree.h" />
     <ClInclude Include="ui\hn_details_tree_builder.h" />
     <ClInclude Include="ui\qtmodels\hn_info_node.h" />
     <ClInclude Include="packet\packets\hn_other_packet.h" />

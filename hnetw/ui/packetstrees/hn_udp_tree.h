@@ -1,15 +1,21 @@
 #pragma once
 
-#include "hn_details_tree.h"
+#include "hn_proto_tree.h"
 
-class HnUdpTree : public HnDetailsTree {
+class HnUdpTree : public HnProtoTree {
 public:
-    HnInfoNode* buildPacketTree(const HnPacket* packet, HnInfoNode* parent = nullptr) override;
+    HnUdpTree(const HnPacket* packet, HnInfoNode* parent = nullptr);
+    ~HnUdpTree();
 
 private:
     struct udpHeaderFields_ {
         QString header =        "User Datagram Protocol";
-
+        QString srcPort =       "Source Port: ";
+        QString destPort =      "Destination Port: ";
+        QString length =        "Length: ";
+        QString checksum =      "Checksum: ";
     } udpHeaderFields;
+
+    static const bool registeredTree;
 };
 

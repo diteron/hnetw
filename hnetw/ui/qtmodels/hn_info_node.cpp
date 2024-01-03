@@ -48,6 +48,9 @@ bool HnInfoNode::isChild() const
 
 HnInfoNode* HnInfoNode::childAt(int index) const
 {
+    if (index >= children_.count())
+        return nullptr;
+
     return children_.at(index);
 }
 

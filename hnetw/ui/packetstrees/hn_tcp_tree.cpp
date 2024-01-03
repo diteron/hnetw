@@ -1,41 +1,39 @@
 #include <stdafx.h>
 #include "hn_tcp_tree.h"
 
+#include "hn_proto_tree_factory.h"
 #include "hn_ip_tree.h"
 
-HnTcpTree::HnTcpTree() : HnDetailsTree()
-{}
+const bool HnTcpTree::registeredTree = HnProtoTreeFactory::instance()->
+                                       registerProtoTree(HnPacket::TCP, treeBuilder<HnTcpTree>);
 
-HnTcpTree::~HnTcpTree()
-{}
-
-HnInfoNode* HnTcpTree::buildPacketTree(const HnPacket* packet, HnInfoNode* parent)
+HnTcpTree::HnTcpTree(const HnPacket* packet, HnInfoNode* parent) 
+    : HnProtoTree(packet, parent)
 {
-    if (packet->type() != HnPacket::TCP) return nullptr;
-
     // Get TCP header from raw data
     int ipHeaderLen = packet->ipv4Header()->header_length * 4;
     tcp_hdr* tcpHeader = reinterpret_cast<tcp_hdr*>(const_cast<uint8_t*>(packet->rawData() + ipHeaderLen));
-    
+
     unsigned int dataOffset = static_cast<unsigned int>(tcpHeader->data_offset);
 
-    rootNode_ = new HnInfoNode(tcpHeaderFields.header, parent);
-    QString srcPortValue =  QString::number(ntohs(tcpHeader->src_port));
+    QString srcPortValue = QString::number(ntohs(tcpHeader->src_port));
     QString destProtValue = QString::number(ntohs(tcpHeader->dest_port));
-    QString seqNumValue =   QString::number(ntohl(tcpHeader->seq_num));
-    QString ackNumValue =   QString::number(ntohl(tcpHeader->ack_num));
+    QString seqNumValue = QString::number(ntohl(tcpHeader->seq_num));
+    QString ackNumValue = QString::number(ntohl(tcpHeader->ack_num));
     QString dataOffsValue = QString::number(dataOffset) + " (" + QString::number(dataOffset * 4) + " bytes)";
-    QString cwrFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->cwr_f));
-    QString eceFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->ecn_echo_f));
-    QString urgFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->urgent_f));
-    QString ackFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->ack_f));
-    QString pshFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->push_f));
-    QString rstFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->reset_f));
-    QString synFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->sync_f));
-    QString finFlagValue =  QString::number(static_cast<unsigned int>(tcpHeader->finish_f));
-    QString wndSizeValue =  QString::number(ntohs(tcpHeader->window));
+    QString cwrFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->cwr_f));
+    QString eceFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->ecn_echo_f));
+    QString urgFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->urgent_f));
+    QString ackFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->ack_f));
+    QString pshFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->push_f));
+    QString rstFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->reset_f));
+    QString synFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->sync_f));
+    QString finFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->finish_f));
+    QString wndSizeValue = QString::number(ntohs(tcpHeader->window));
     QString checksumValue = "0x" + QString::number(ntohs(tcpHeader->checksum), 16);
-    QString urgPrtValue =   QString::number(ntohs(tcpHeader->urgent_pointer));
+    QString urgPrtValue = QString::number(ntohs(tcpHeader->urgent_pointer));
+
+    rootNode_ = new HnInfoNode(tcpHeaderFields.header, parent);
 
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.srcPort + srcPortValue));
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.destPort + destProtValue));
@@ -55,9 +53,10 @@ HnInfoNode* HnTcpTree::buildPacketTree(const HnPacket* packet, HnInfoNode* paren
     rootNode_->addChild(new HnInfoNode(tcpHeaderFields.urgPtr + urgPrtValue));
 
     addTcpOptions(const_cast<uint8_t*>(packet->rawData()), packet->length(), ipHeaderLen, tcpHeader->data_offset * 4);
-
-    return rootNode_;
 }
+
+HnTcpTree::~HnTcpTree()
+{}
 
 void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen)
 {

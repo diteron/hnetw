@@ -1,13 +1,11 @@
 #pragma once
 
-#include "hn_details_tree.h"
+#include "hn_proto_tree.h"
 
-class HnTcpTree : public HnDetailsTree {
+class HnTcpTree : public HnProtoTree {
 public:
-    HnTcpTree();
+    HnTcpTree(const HnPacket* packet, HnInfoNode* parent = nullptr);
     ~HnTcpTree();
-
-    HnInfoNode* buildPacketTree(const HnPacket* packet, HnInfoNode* parent = nullptr) override;
 
 private:
     void addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen);
@@ -61,5 +59,7 @@ private:
         QString senderTime_opt =  "Sender Timestamp: ";
         QString echoRepTime_opt = "Echo Reply Timestamp: ";
     } tcpHeaderFields;
+
+    static const bool registeredTree;
 };
 
