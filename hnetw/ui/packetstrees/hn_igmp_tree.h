@@ -12,12 +12,10 @@ private:
     void createIgmpTree(struct igmp_v2_hdr* igmpHeader, HnInfoNode* parent, int version = 2);
     void createIgmpV3Tree(int ipHeaderLen, const HnPacket* packet, HnInfoNode* parent);
     
-    void createMembShipQryMsg(int ipHeaderLen, struct igmp_v3_membs_qry* membShipQryHdr,
-                              const HnPacket* packet, HnInfoNode* parent);
+    void createMembshipQryMsg(int ipHeaderLen, const HnPacket* packet, HnInfoNode* parent);
     HnInfoNode* createSourcesTree(const HnPacket* packet, int srcNum, int ipHeaderLen);
     
-    void createMembShipRepMsg(int ipHeaderLen, struct igmp_v3_membs_rep* membShipRepHdr,
-                              const HnPacket* packet, HnInfoNode* parent);
+    void createMembshipRepMsg(int ipHeaderLen, const HnPacket* packet, HnInfoNode* parent);
     HnInfoNode* createGroupRecordsTree(uint8_t* groupRecordsBlock, int groupRecordsNum);
     int createGroupRecord(uint8_t* recordBlock, HnInfoNode* recordsRoot);
     HnInfoNode* addSourcesAddresses(uint8_t* sourcesBlock, int sourcesNum);
@@ -25,11 +23,11 @@ private:
     QString getIpString(uint32_t ip);
 
     enum msgTypes {
-        membShipQry = 0x11,
-        membShipRep_v1,
-        membShipRep_v2 = 0x16,
+        membshipQry = 0x11,
+        membshipRep_v1,
+        membshipRep_v2 = 0x16,
         leaveGroup,
-        membShipRep_v3 = 0x22,
+        membshipRep_v3 = 0x22,
     };
 
     struct igmpHeaderFields_ {
@@ -45,7 +43,7 @@ private:
         QString group_addr =       "Group Address: ";
     } igmpHeaderFields;
 
-    struct igmpV3MembShipQryFields_ {
+    struct igmpV3MembshipQryFields_ {
         QString header =           "Internet Group Management Protocol Version 3";
         QString msg_type =         "Message Type: ";
         QString max_resp_time =    "Max Resp Time: ";
@@ -57,16 +55,16 @@ private:
         QString qqic =             "Querier's Query Interval Code: ";
         QString src_num =          "Number of source addresses: ";
         QString src_addr =         "Source address ";
-    } igmpV3MembShipQryFields;
+    } igmpV3MembshipQryFields;
 
-    struct igmpV3MembShipRepFields_ {
+    struct igmpV3MembshipRepFields_ {
         QString header =           "Internet Group Management Protocol Version 3";
         QString msg_type =         "Message Type: ";
         QString reserved8 =        "Reserved: ";
         QString checksum =         "Checksum: ";
         QString reserved16 =       "Reserved: ";
         QString group_rec_num =    "Number of Group Records: ";
-    } igmpV3MembShipRepFields;
+    } igmpV3MembshipRepFields;
 
     struct groupRecordFields_ {
         QString header =           "Group Record ";
