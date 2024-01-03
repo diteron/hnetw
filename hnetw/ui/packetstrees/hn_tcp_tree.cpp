@@ -16,22 +16,22 @@ HnTcpTree::HnTcpTree(const HnPacket* packet, HnInfoNode* parent)
 
     unsigned int dataOffset = static_cast<unsigned int>(tcpHeader->data_offset);
 
-    QString srcPortValue = QString::number(ntohs(tcpHeader->src_port));
-    QString destProtValue = QString::number(ntohs(tcpHeader->dest_port));
-    QString seqNumValue = QString::number(ntohl(tcpHeader->seq_num));
-    QString ackNumValue = QString::number(ntohl(tcpHeader->ack_num));
-    QString dataOffsValue = QString::number(dataOffset) + " (" + QString::number(dataOffset * 4) + " bytes)";
-    QString cwrFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->cwr_f));
-    QString eceFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->ecn_echo_f));
-    QString urgFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->urgent_f));
-    QString ackFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->ack_f));
-    QString pshFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->push_f));
-    QString rstFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->reset_f));
-    QString synFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->sync_f));
-    QString finFlagValue = QString::number(static_cast<unsigned int>(tcpHeader->finish_f));
-    QString wndSizeValue = QString::number(ntohs(tcpHeader->window));
-    QString checksumValue = "0x" + QString::number(ntohs(tcpHeader->checksum), 16);
-    QString urgPrtValue = QString::number(ntohs(tcpHeader->urgent_pointer));
+    QString srcPortValue =    QString::number(ntohs(tcpHeader->src_port));
+    QString destProtValue =   QString::number(ntohs(tcpHeader->dest_port));
+    QString seqNumValue =     QString::number(ntohl(tcpHeader->seq_num));
+    QString ackNumValue =     QString::number(ntohl(tcpHeader->ack_num));
+    QString dataOffsValue =   QString::number(dataOffset) + " (" + QString::number(dataOffset * 4) + " bytes)";
+    QString cwrFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->cwr_f));
+    QString eceFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->ecn_echo_f));
+    QString urgFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->urgent_f));
+    QString ackFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->ack_f));
+    QString pshFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->push_f));
+    QString rstFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->reset_f));
+    QString synFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->sync_f));
+    QString finFlagValue =    QString::number(static_cast<unsigned int>(tcpHeader->finish_f));
+    QString wndSizeValue =    QString::number(ntohs(tcpHeader->window));
+    QString checksumValue =   "0x" + QString::number(ntohs(tcpHeader->checksum), 16);
+    QString urgPrtValue =     QString::number(ntohs(tcpHeader->urgent_pointer));
 
     rootNode_ = new HnInfoNode(tcpHeaderFields.header, parent);
 
