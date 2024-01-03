@@ -114,6 +114,8 @@
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="capture\hn_packet_dissector.cpp" />
     <ClCompile Include="capture\hn_packet_queue.cpp" />
+    <ClCompile Include="packet\packets\hn_igmp_packet.cpp" />
+    <ClCompile Include="ui\packetstrees\hn_igmp_tree.cpp" />
     <ClCompile Include="ui\hn_interface_dialog.cpp" />
     <ClCompile Include="ui\hn_byte_view.cpp" />
     <ClCompile Include="ui\packetstrees\hn_other_tree.cpp" />
@@ -144,6 +146,8 @@
     <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
     <ClInclude Include="capture\hn_packet_dissector.h" />
+    <ClInclude Include="packet\packets\hn_igmp_packet.h" />
+    <ClInclude Include="ui\packetstrees\hn_igmp_tree.h" />
     <ClInclude Include="ui\hn_interface_dialog.h" />
     <ClInclude Include="ui\hn_byte_view.h" />
     <ClInclude Include="ui\packetstrees\hn_other_tree.h" />

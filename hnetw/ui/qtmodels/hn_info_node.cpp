@@ -3,7 +3,10 @@
 
 HnInfoNode::HnInfoNode(QString label, HnInfoNode* parent) 
     : label_(label), parent_(parent)
-{}
+{
+    if (parent_)
+        parent_->addChild(this);
+}
 
 HnInfoNode::~HnInfoNode()
 {

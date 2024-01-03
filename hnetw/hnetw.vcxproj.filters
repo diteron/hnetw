@@ -101,6 +101,12 @@
     <ClInclude Include="ui\packetstrees\hn_proto_tree_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="packet\packets\hn_igmp_packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_igmp_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -191,6 +197,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\packetstrees\hn_proto_tree_factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\packets\hn_igmp_packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_igmp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
