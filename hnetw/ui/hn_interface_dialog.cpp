@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_interface_dialog.h"
 
 HnInterfaceDialog::HnInterfaceDialog(QWidget* parent) : QDialog(parent), interfacesIp_()
