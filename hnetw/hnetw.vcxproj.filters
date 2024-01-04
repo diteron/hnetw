@@ -44,7 +44,7 @@
     <ClInclude Include="packet\proto_headers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="network\hnetwork.h">
+    <ClInclude Include="network\hn_network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="network\hn_ipv4_socket.h">
@@ -116,6 +116,9 @@
     <ClInclude Include="ui\utils\hn_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hnetwork_app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -151,7 +154,7 @@
     <ClCompile Include="capture\hn_packet_capturer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="network\hnetwork.cpp">
+    <ClCompile Include="network\hn_network.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="network\hn_ipv4_socket.cpp">
@@ -221,6 +224,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\utils\hn_converter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hnetwork_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

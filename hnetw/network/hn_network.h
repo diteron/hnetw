@@ -1,6 +1,6 @@
 #pragma once
 
-class HNetwork {
+class HnNetwork {
 public:
     typedef int init_result;
 

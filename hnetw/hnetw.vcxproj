@@ -114,6 +114,7 @@
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="capture\hn_packet_dissector.cpp" />
     <ClCompile Include="capture\hn_packet_queue.cpp" />
+    <ClCompile Include="hnetwork_app.cpp" />
     <ClCompile Include="ui\packetstrees\hn_icmp_tree.cpp" />
     <ClCompile Include="packet\packets\hn_icmp_packet.cpp" />
     <ClCompile Include="packet\packets\hn_igmp_packet.cpp" />
@@ -133,7 +134,7 @@
     <ClCompile Include="packet\packets\hn_tcp_packet.cpp" />
     <ClCompile Include="network\hn_host.cpp" />
     <ClCompile Include="network\hn_ipv4_socket.cpp" />
-    <ClCompile Include="network\hnetwork.cpp" />
+    <ClCompile Include="network\hn_network.cpp" />
     <ClCompile Include="packet\packets\hn_packet.cpp" />
     <ClCompile Include="packet\packets\hn_udp_packet.cpp" />
     <ClCompile Include="ui\hn_packet_details.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
     <ClCompile Include="ui\utils\hn_converter.cpp" />
+    <ClInclude Include="hnetwork_app.h" />
     <ClInclude Include="ui\utils\hn_converter.h" />
     <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
@@ -169,7 +171,7 @@
     <ClInclude Include="packet\packets\hn_tcp_packet.h" />
     <ClInclude Include="network\hn_host.h" />
     <ClInclude Include="network\hn_ipv4_socket.h" />
-    <ClInclude Include="network\hnetwork.h" />
+    <ClInclude Include="network\hn_network.h" />
     <ClInclude Include="packet\packets\hn_packet.h" />
     <ClInclude Include="packet\packets\hn_udp_packet.h" />
     <ClInclude Include="packet\proto_headers.h" />

@@ -1,7 +1,7 @@
 #include <stdafx.h>
-#include "hnetwork.h"
+#include "hn_network.h"
 
-HNetwork::init_result HNetwork::initialize()
+HnNetwork::init_result HnNetwork::initialize()
 {
     WSADATA wsadata;
     int startupResult = WSAStartup(MAKEWORD(2, 2), &wsadata);
@@ -14,12 +14,12 @@ HNetwork::init_result HNetwork::initialize()
     return Success;
 }
 
-void HNetwork::shutdown()
+void HnNetwork::shutdown()
 {
     WSACleanup();
 }
 
-int HNetwork::getLastError()
+int HnNetwork::getLastError()
 {
     return WSAGetLastError();
 }
