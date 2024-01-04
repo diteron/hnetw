@@ -16,9 +16,6 @@ private:
     void buildUnknownMsg();
 
     void buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, int ipHdrAndDataBlockLen);
-    
-    QString getIpString(uint32_t ip);
-    QString getTimestampString(uint32_t timestamp);
 
     struct icmpHeaderFields_ {
         QString header =     "Internet Control Message Protocol";

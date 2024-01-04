@@ -13,8 +13,6 @@ public:
     HnInfoNode* buildTree(const HnPacket* packet, HnInfoNode* parent = nullptr);
 
 private:
-    QString getIpString(uint32_t ip);
-
     struct ipHeaderFields_ {
         QString header = "Internet Protocol Version 4";
         QString version = "IP Version: ";

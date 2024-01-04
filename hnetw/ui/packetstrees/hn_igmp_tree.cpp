@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <ui/utils/hn_converter.h>
 
 #include "hn_proto_tree_factory.h"
 #include "hn_igmp_tree.h"
@@ -70,7 +71,7 @@ void HnIgmpTree::createIgmpTree(struct igmp_v2_hdr* igmpHeader, HnInfoNode* pare
     }
 
     QString checksumVal =       "0x" + QString::number(ntohs(igmpHeader->checksum), 16);
-    QString groupAddrVal =      getIpString(igmpHeader->group_addr);
+    QString groupAddrVal =      HnConverter::uint32ToIpString(igmpHeader->group_addr);
     rootNode_->addChild(new HnInfoNode(igmpHeaderFields.checksum + checksumVal));
     rootNode_->addChild(new HnInfoNode(igmpHeaderFields.group_addr + groupAddrVal));
 }
@@ -97,7 +98,7 @@ void HnIgmpTree::createMembshipQryMsg(int ipHeaderLen, const HnPacket* packet, H
     double respTimeInSec =    static_cast<double>(membshipQryHdr->common_v2_part.resp_time / 10);
     QString maxRespTimeVal =  QString::number(respTimeInSec, 10, 1) + " sec";
     QString checksumVal =     "0x" + QString::number(ntohs(membshipQryHdr->common_v2_part.checksum), 16);
-    QString groupAddrVal =    getIpString(membshipQryHdr->common_v2_part.group_addr);
+    QString groupAddrVal =    HnConverter::uint32ToIpString(membshipQryHdr->common_v2_part.group_addr);
     QString qrvVal =          QString::number(membshipQryHdr->qrv);
     QString sFlgVal =         QString::number(membshipQryHdr->s_flg);
     QString resvVal =         QString::number(membshipQryHdr->resv);
@@ -132,7 +133,7 @@ HnInfoNode* HnIgmpTree::createSourcesTree(const HnPacket* packet, int srcNum, in
     int currentSrcOffset = 0;
     for (int i = 0; i < srcNum; ++i) {
         srcAddrValue = ntohl(*(reinterpret_cast<uint32_t*>(sourcesBlock + currentSrcOffset)));
-        QString srcAddrIpValue = getIpString(srcAddrValue);
+        QString srcAddrIpValue = HnConverter::uint32ToIpString(srcAddrValue);
         sourcesHdr->addChild(new HnInfoNode(igmpV3MembshipQryFields.src_addr +
                                             QString::number(i + 1) + ": " + srcAddrIpValue));
         currentSrcOffset += 4;
@@ -188,7 +189,7 @@ int HnIgmpTree::createGroupRecord(uint8_t* recordBlock, HnInfoNode* recordsRoot)
     QString recTypeVal =       QString::number(groupRecord->rec_type);
     QString auxDataLenVal =    QString::number(groupRecord->aux_data_len);
     QString srcNumVal =        QString::number(ntohs(groupRecord->src_num));
-    QString mcastAddrVal =     getIpString(groupRecord->mcast_addr);
+    QString mcastAddrVal =     HnConverter::uint32ToIpString(groupRecord->mcast_addr);
     
     HnInfoNode* recordRoot = new HnInfoNode("Group Record: " + mcastAddrVal);
 
@@ -217,19 +218,10 @@ HnInfoNode* HnIgmpTree::addSourcesAddresses(uint8_t* sourcesBlock, int sourcesNu
     uint32_t currentSourceIp = 0;
     for (int i = 0; i < sourcesNum; ++i) {
         currentSourceIp = ntohl(*(reinterpret_cast<uint32_t*>(sourcesBlock + sourceOffset)));
-        QString currenSrcIp = getIpString(currentSourceIp);
+        QString currenSrcIp = HnConverter::uint32ToIpString(currentSourceIp);
         sourcesRoot->addChild(new HnInfoNode("Source: " + currenSrcIp));
         sourceOffset += 4;
     }
 
     return sourcesRoot;
-}
-
-QString HnIgmpTree::getIpString(uint32_t ip)
-{
-    char strIpBuffer[16];
-    in_addr addr;
-    addr.s_addr = ip;
-    inet_ntop(AF_INET, &addr, strIpBuffer, 16);
-    return QString(strIpBuffer);
 }

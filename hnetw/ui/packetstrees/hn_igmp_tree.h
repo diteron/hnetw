@@ -19,8 +19,6 @@ private:
     HnInfoNode* createGroupRecordsTree(uint8_t* groupRecordsBlock, int groupRecordsNum);
     int createGroupRecord(uint8_t* recordBlock, HnInfoNode* recordsRoot);
     HnInfoNode* addSourcesAddresses(uint8_t* sourcesBlock, int sourcesNum);
-    
-    QString getIpString(uint32_t ip);
 
     enum MsgTypes {
         membshipQry = 0x11,

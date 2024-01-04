@@ -2,6 +2,7 @@
 #include <packet/hn_packet_factory.h>
 #include <ui/packetstrees/hn_proto_tree_factory.h>
 #include <ui/packetstrees/hn_ip_tree.h>
+#include <ui/utils/hn_converter.h>
 
 #include "hn_icmp_tree.h"
 
@@ -11,8 +12,6 @@ const bool HnIcmpTree::registeredTree = HnProtoTreeFactory::instance()->
 HnIcmpTree::HnIcmpTree(const HnPacket* packet, HnInfoNode* parent) 
     : HnProtoTree(packet, parent)
 {
-    getTimestampString(595101450);
-
     int ipHeaderLen = packet->ipv4Header()->header_length * 4; 
     icmp_hdr* icmpHeader = reinterpret_cast<icmp_hdr*>(const_cast<uint8_t*>(packet->rawData() + ipHeaderLen));
     
@@ -121,7 +120,7 @@ void HnIcmpTree::buildRedirectMsg(uint8_t * msgBlock, int msgBlockLen)
 {
     icmp_redirect* redirectHdr = reinterpret_cast<icmp_redirect*>(msgBlock);
 
-    QString gwayAddrVal = getIpString(ntohl(redirectHdr->ip));
+    QString gwayAddrVal = HnConverter::uint32ToIpString(ntohl(redirectHdr->ip));
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.gway_addr + gwayAddrVal));
 
     int ipHdrAndDataBlockLen = msgBlockLen - sizeof(redirectHdr->ip);
@@ -146,9 +145,9 @@ void HnIcmpTree::buildTimestampMsg(uint8_t * msgBlock, int msgBlockLen)
 
     QString idVal =       QString::number(ntohs(timestampHdr->id));
     QString seqNumVal =   QString::number(ntohs(timestampHdr->seq_num));
-    QString origVal =     getTimestampString(ntohl(timestampHdr->origin_ts));
-    QString recvVal =     getTimestampString(ntohl(timestampHdr->recv_ts));
-    QString transmVal =   getTimestampString(ntohl(timestampHdr->transm_ts));
+    QString origVal =     HnConverter::msSinceMidntUtcToTimeString(ntohl(timestampHdr->origin_ts));
+    QString recvVal =     HnConverter::msSinceMidntUtcToTimeString(ntohl(timestampHdr->recv_ts));
+    QString transmVal =   HnConverter::msSinceMidntUtcToTimeString(ntohl(timestampHdr->transm_ts));
 
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.id + idVal));
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.seq_num + seqNumVal));
@@ -179,39 +178,4 @@ void HnIcmpTree::buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, int ipHdrAndD
                                                                               encapsPacket);
     rootNode_->addChild(ipTree->rootNode());
     rootNode_->addChild(encapsPacketTree->rootNode());
-}
-
-QString HnIcmpTree::getIpString(uint32_t ip)
-{
-    char strIpBuffer[16];
-    in_addr addr;
-    addr.s_addr = ip;
-    inet_ntop(AF_INET, &addr, strIpBuffer, 16);
-    return QString(strIpBuffer);
-}
-
-QString HnIcmpTree::getTimestampString(uint32_t timestamp)
-{
-    QString timeString = "";
-
-    int ms = timestamp % 1000;
-    timeString.append(QString::number(ms) + " seconds after midnight UTC");
-    timestamp /= 1000;
-
-    int sec = timestamp % 60;
-    timeString.prepend(QString::number(sec) + ".");
-    timestamp /= 60;
-
-    int min = timestamp % 60;
-    timeString.prepend(QString::number(min) + " minutes, ");
-    timestamp /= 60;
-
-    int hours = timestamp % 24;
-    timeString.prepend(QString::number(hours) + " hours, ");
-    timestamp /= 24;
-
-    int days = timestamp;
-    timeString.prepend(QString::number(days) + " days, ");
-
-    return timeString;
 }

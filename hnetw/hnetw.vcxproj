@@ -145,6 +145,8 @@
     <ClCompile Include="ui\hn_main_window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
+    <ClCompile Include="ui\utils\hn_converter.cpp" />
+    <ClInclude Include="ui\utils\hn_converter.h" />
     <QtMoc Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
     <ClInclude Include="capture\hn_packet_dissector.h" />

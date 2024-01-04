@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <ui/utils/hn_converter.h>
 #include "hn_ip_tree.h"
 
 HnIpTree::HnIpTree(const HnPacket* packet, HnInfoNode* parent) 
@@ -22,8 +23,8 @@ HnIpTree::HnIpTree(const HnPacket* packet, HnInfoNode* parent)
     QString ttlValue =          QString::number(static_cast<unsigned int>(packet->ipv4Header()->time_to_live));
     QString protocolValue =     packet->typeString().c_str();
     QString checkSumValue =     "0x" + QString::number(ntohs(packet->ipv4Header()->checksum), 16);
-    QString srcIpValue =        getIpString(packet->ipv4Header()->src_address);
-    QString destIpValue =       getIpString(packet->ipv4Header()->dest_address);
+    QString srcIpValue =        HnConverter::uint32ToIpString(packet->ipv4Header()->src_address);
+    QString destIpValue =       HnConverter::uint32ToIpString(packet->ipv4Header()->dest_address);
 
     rootNode_->addChild(new HnInfoNode(ipHeaderFields.version + ipVersionValue));
     rootNode_->addChild(new HnInfoNode(ipHeaderFields.headerLength + headerLenValue));
@@ -70,8 +71,8 @@ HnInfoNode* HnIpTree::buildTree(const HnPacket* packet, HnInfoNode* parent)
     QString ttlValue =          QString::number(static_cast<unsigned int>(packet->ipv4Header()->time_to_live));
     QString protocolValue =     packet->typeString().c_str();
     QString checkSumValue =     "0x" + QString::number(ntohs(packet->ipv4Header()->checksum), 16);
-    QString srcIpValue =        getIpString(packet->ipv4Header()->src_address);
-    QString destIpValue =       getIpString(packet->ipv4Header()->dest_address);
+    QString srcIpValue =        HnConverter::uint32ToIpString(packet->ipv4Header()->src_address);
+    QString destIpValue =       HnConverter::uint32ToIpString(packet->ipv4Header()->dest_address);
 
     rootNode_->addChild(new HnInfoNode(ipHeaderFields.version + ipVersionValue));
     rootNode_->addChild(new HnInfoNode(ipHeaderFields.headerLength + headerLenValue));
@@ -90,13 +91,4 @@ HnInfoNode* HnIpTree::buildTree(const HnPacket* packet, HnInfoNode* parent)
     rootNode_->addChild(new HnInfoNode(ipHeaderFields.destIp + destIpValue));
 
     return rootNode_;
-}
-
-QString HnIpTree::getIpString(uint32_t ip)
-{
-    char strIpBuffer[16];
-    in_addr addr;
-    addr.s_addr = ip;
-    inet_ntop(AF_INET, &addr, strIpBuffer, 16);
-    return QString(strIpBuffer);
 }
