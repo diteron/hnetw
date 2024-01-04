@@ -2,7 +2,7 @@
 #include "hn_packet_dissector.h"
 
 #include <packet/proto_headers.h>
-#include <packet/hn_packet.h>
+#include <packet/packets/hn_packet.h>
 #include <packet/hn_packet_factory.h>
 #include <ui/qtmodels/hn_packet_list_row.h>
 
@@ -51,7 +51,7 @@ void HnPacketDissector::dissectPackets()
         int bytesRead = rawPacket.length;
 
         ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer);
-        uint8_t* rawData = new uint8_t[bytesRead];      // Memory management is in the created packet row
+        uint8_t* rawData = new uint8_t[bytesRead];      // Cleanup is in the captured packet
         std::memcpy(rawData, buffer, bytesRead);
 
         HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, id);

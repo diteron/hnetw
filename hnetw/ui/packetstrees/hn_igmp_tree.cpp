@@ -226,7 +226,8 @@ HnInfoNode* HnIgmpTree::addSourcesAddresses(uint8_t* sourcesBlock, int sourcesNu
 }
 
 QString HnIgmpTree::getIpString(uint32_t ip)
-{   char strIpBuffer[16];
+{
+    char strIpBuffer[16];
     in_addr addr;
     addr.s_addr = ip;
     inet_ntop(AF_INET, &addr, strIpBuffer, 16);

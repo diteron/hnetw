@@ -1,6 +1,6 @@
 #pragma once
 
-#include <packet/hn_packet.h>
+#include <packet/packets/hn_packet.h>
 #include "qtmodels/hn_packet_details_model.h"
 
 class HnPacketDetails : public QTreeView {

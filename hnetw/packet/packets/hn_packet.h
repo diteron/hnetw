@@ -1,6 +1,6 @@
 #pragma once
 
-#include "proto_headers.h"
+#include <packet/proto_headers.h>
 
 class HnPacket {
 public:
@@ -8,7 +8,7 @@ public:
     HnPacket(int id);
     virtual ~HnPacket();
 
-    enum packetTypes {
+    enum PacketTypes {
         Undefined = -1,
         ICMP = 1,
         IGMP = 2,

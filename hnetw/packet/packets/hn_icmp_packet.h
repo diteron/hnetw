@@ -1,11 +1,10 @@
 #pragma once
-
 #include "hn_packet.h"
 
-class HnIgmpPacket : public HnPacket {
+class HnIcmpPacket : public HnPacket {
 public:
-    HnIgmpPacket(int id);
-    ~HnIgmpPacket();
+    HnIcmpPacket(int id);
+    ~HnIcmpPacket();
 
 private:
     static const bool registeredPacket;

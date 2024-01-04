@@ -2,7 +2,7 @@
 
 #include <map>
 #include <unordered_map>
-#include "hn_packet.h"
+#include "packets/hn_packet.h"
 
 class HnPacketFactory {
 public:

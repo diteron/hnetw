@@ -2,7 +2,7 @@
 
 #include <mutex>
 
-#include <packet/hn_packet.h>
+#include <packet/packets/hn_packet.h>
 #include <capture/hn_packet_capturer.h>
 #include <capture/hn_packet_dissector.h>
 #include <network/hn_host.h>

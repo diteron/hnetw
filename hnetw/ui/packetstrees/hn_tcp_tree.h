@@ -12,7 +12,7 @@ private:
     HnInfoNode* createSackNode(uint8_t* rawData, int sackOffset, int sackLen);
     HnInfoNode* createTimestampsNode(uint8_t* rawData, int timestampsOffset, int timestampsLen);
 
-    enum tcpOptions {
+    enum TcpOptions {
         endOfOptList,
         noOperation,
         maxSegSize,

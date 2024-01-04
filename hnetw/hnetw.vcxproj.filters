@@ -38,7 +38,7 @@
     <ClInclude Include="ui\hn_packet_details.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="packet\hn_packet.h">
+    <ClInclude Include="packet\packets\hn_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="packet\proto_headers.h">
@@ -107,6 +107,12 @@
     <ClInclude Include="ui\packetstrees\hn_igmp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="packet\packets\hn_icmp_packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\packetstrees\hn_icmp_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,7 +142,7 @@
     <ClCompile Include="ui\qtmodels\hn_packet_details_model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="packet\hn_packet.cpp">
+    <ClCompile Include="packet\packets\hn_packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="capture\hn_packet_capturer.cpp">
@@ -203,6 +209,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\packetstrees\hn_igmp_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet\packets\hn_icmp_packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\packetstrees\hn_icmp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

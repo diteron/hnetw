@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-    const int startWidth = 1100, startHeight = 620;
+    const int startWidth = 1220, startHeight = 650;
     const int minWidth = 900, minHeight = 510;
 
     if (HNetwork::initialize() != HNetwork::Success)

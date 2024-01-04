@@ -22,7 +22,7 @@ private:
     
     QString getIpString(uint32_t ip);
 
-    enum msgTypes {
+    enum MsgTypes {
         membshipQry = 0x11,
         membshipRep_v1,
         membshipRep_v2 = 0x16,

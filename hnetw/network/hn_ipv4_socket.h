@@ -7,14 +7,14 @@ public:
     HnIPv4Socket(SOCKET socketHandle = INVALID_SOCKET);
     ~HnIPv4Socket();
 
-    enum socketTypes {
+    enum SocketTypes {
         Undefined,
         Stream,
         Datagram,
         Raw
     };
 
-    enum errorCodes {
+    enum ErrorCodes {
         Success,
         Sock_already_init,
         WSA_error,

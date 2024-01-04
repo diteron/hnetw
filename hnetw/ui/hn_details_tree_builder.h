@@ -1,6 +1,6 @@
 #pragma once
 
-#include <packet/hn_packet.h>
+#include <packet/packets/hn_packet.h>
 #include <packet/proto_headers.h>
 #include "qtmodels/hn_info_node.h"
 

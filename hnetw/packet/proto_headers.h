@@ -65,6 +65,56 @@ struct igmp_v3_group_rec {
     uint32_t    mcast_addr;
 };
 
+/*------------------ ICMP headers ------------------*/
+
+struct icmp_hdr {
+    uint8_t type;
+    uint8_t code;
+    uint16_t checksum;
+};
+
+struct icmp_dest_unreach {
+    uint32_t unused;
+    // Next will be IP header and rest of original datagram's data (or only 8 bytes)
+};
+
+struct icmp_time_exceed {
+    uint32_t unused;
+    // Next will be IP header and rest of original datagram's data (or only 8 bytes)
+};
+
+struct icmp_param_probl {
+    uint8_t ptr;
+    uint16_t unused16;
+    uint8_t unused8;
+    // Next will be IP header and rest of original datagram's data (or only 8 bytes)
+};
+
+struct icmp_redirect {
+    uint32_t ip;
+    // Next will be IP header and rest of original datagram's data (or only 8 bytes)
+};
+
+struct icmp_echo_req_rep {
+    uint16_t id;
+    uint16_t seq_num;
+    uint32_t data;
+};
+
+struct icmp_timestamp {
+    uint16_t id;
+    uint16_t seq_num;
+    uint32_t origin_ts;
+    uint32_t recv_ts;
+    uint32_t transm_ts;
+};
+
+struct tcp_hdr_8 {
+    uint16_t   src_port;
+    uint16_t   dest_port;
+    uint32_t   seq_num;
+};
+
 /*------------------ Transport layer headers ------------------*/
 
 struct tcp_hdr {

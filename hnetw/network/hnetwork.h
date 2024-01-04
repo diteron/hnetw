@@ -4,7 +4,7 @@ class HNetwork {
 public:
     typedef int init_result;
 
-    enum errorCodes {
+    enum ErrorCodes {
         Success,
         Startup_err,
         Vers_err

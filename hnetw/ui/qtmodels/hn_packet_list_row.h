@@ -1,6 +1,6 @@
 #pragma once
 
-#include <packet/hn_packet.h>
+#include <packet/packets/hn_packet.h>
 
 class HnPacketListRow {
 public:
@@ -9,7 +9,7 @@ public:
     HnPacketListRow(const HnPacketListRow& other);
     ~HnPacketListRow();
 
-    enum columnsNames {
+    enum ColumnsNames {
         id,
         time,
         source,
