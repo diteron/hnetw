@@ -12,7 +12,7 @@ HnPacketDetails::HnPacketDetails(QWidget* parent) : QTreeView(parent)
 HnPacketDetails::~HnPacketDetails()
 {}
 
-void HnPacketDetails::displayPacket(const HnPacket * packet)
+void HnPacketDetails::displayPacket(const HnPacket* packet)
 {
     detailsViewModel_->setPacket(packet);
 }

@@ -51,7 +51,7 @@ void HnPacketList::clear()
     listModel_->clear();
 }
 
-void HnPacketList::mousePressEvent(QMouseEvent * event)
+void HnPacketList::mousePressEvent(QMouseEvent* event)
 {
     setAutoScroll(false);
     QTreeView::mousePressEvent(event);

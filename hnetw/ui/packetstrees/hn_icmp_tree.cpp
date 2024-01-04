@@ -116,7 +116,7 @@ void HnIcmpTree::buildParamProblemMsg(uint8_t* msgBlock, int msgBlockLen)
 
 }
 
-void HnIcmpTree::buildRedirectMsg(uint8_t * msgBlock, int msgBlockLen)
+void HnIcmpTree::buildRedirectMsg(uint8_t* msgBlock, int msgBlockLen)
 {
     icmp_redirect* redirectHdr = reinterpret_cast<icmp_redirect*>(msgBlock);
 
@@ -128,7 +128,7 @@ void HnIcmpTree::buildRedirectMsg(uint8_t * msgBlock, int msgBlockLen)
                           ipHdrAndDataBlockLen);
 }
 
-void HnIcmpTree::buildEchoReqReplMsg(uint8_t * msgBlock, int msgBlockLen)
+void HnIcmpTree::buildEchoReqReplMsg(uint8_t* msgBlock, int msgBlockLen)
 {
     icmp_echo_req_rep* echoHdr = reinterpret_cast<icmp_echo_req_rep*>(msgBlock);
 
@@ -139,7 +139,7 @@ void HnIcmpTree::buildEchoReqReplMsg(uint8_t * msgBlock, int msgBlockLen)
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.seq_num + seqNumVal));
 }
 
-void HnIcmpTree::buildTimestampMsg(uint8_t * msgBlock, int msgBlockLen)
+void HnIcmpTree::buildTimestampMsg(uint8_t* msgBlock, int msgBlockLen)
 {
     icmp_timestamp* timestampHdr = reinterpret_cast<icmp_timestamp*>(msgBlock);
 

@@ -11,7 +11,7 @@ HnCentralWidget::HnCentralWidget(QWidget* parent) : QWidget(parent)
 HnCentralWidget::~HnCentralWidget()
 {}
 
-void HnCentralWidget::addWidget(QWidget * widget)
+void HnCentralWidget::addWidget(QWidget* widget)
 {
     widget->setParent(this);
     layout_->addWidget(widget);

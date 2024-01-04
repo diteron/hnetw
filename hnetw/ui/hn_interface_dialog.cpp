@@ -37,7 +37,7 @@ void HnInterfaceDialog::addChangeInterfaceRow()
 {
     interfacesLabel_ = new QLabel("Select interface IP:   ", this);
     interfacesCbox_ = new QComboBox(this);
-    interfacesCbox_->setFixedSize(150, interfacesCbox_->height());
+    interfacesCbox_->setFixedSize(150, 25);
     layout_->addRow(interfacesLabel_, interfacesCbox_);
     interfacesCbox_->setCurrentIndex(0);
 }
