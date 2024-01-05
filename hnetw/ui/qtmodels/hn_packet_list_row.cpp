@@ -71,7 +71,7 @@ void HnPacketListRow::setLength(int length)
     rowColumns_[HnPacketListRow::length] = QString::number(length);
 }
 
-QString HnPacketListRow::time_tToString(std::clock_t time)       // Possible errors?
+QString HnPacketListRow::time_tToString(std::clock_t time)
 {
     double timeInSeconds = static_cast<double>(time) / CLOCKS_PER_SEC;
     return QString::number(timeInSeconds, 10, 3);

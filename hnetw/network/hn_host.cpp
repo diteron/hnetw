@@ -83,7 +83,6 @@ bool HnHost::getAllInterfacesIp()
     while (hostinfo != NULL) {
         interfaceAddress = reinterpret_cast<sockaddr_in*>(hostinfo->ai_addr);
         ipLong = interfaceAddress->sin_addr.s_addr;
-        // Possible error?
         interfacesIp_.push_back(ipLong);
         hostinfo = hostinfo->ai_next;
     }
