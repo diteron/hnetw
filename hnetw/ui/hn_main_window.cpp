@@ -1,5 +1,7 @@
 #include <stdafx.h>
 
+#include <packet/hn_packet_factory.h>
+#include <ui/packetstrees/hn_proto_tree_factory.h>
 #include "hn_main_window.h"
 
 HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
@@ -22,6 +24,9 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
 HnMainWindow::~HnMainWindow()
 {
     delete packetDissector_;
+    // Delete a packet and protocol tree factories
+    delete HnPacketFactory::instance();
+    delete HnProtoTreeFactory::instance();
 }
 
 bool HnMainWindow::setupNetwork()
