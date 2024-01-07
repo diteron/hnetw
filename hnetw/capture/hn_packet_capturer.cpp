@@ -3,7 +3,7 @@
 
 #include "hn_packet_capturer.h"
 
-HnPacketCapturer::HnPacketCapturer(QObject* parent) : QObject(parent)
+HnPacketCapturer::HnPacketCapturer()
 {}
 
 HnPacketCapturer::~HnPacketCapturer()

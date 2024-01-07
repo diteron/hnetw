@@ -149,7 +149,7 @@
     <ClCompile Include="ui\utils\hn_converter.cpp" />
     <ClInclude Include="hnetwork_app.h" />
     <ClInclude Include="ui\utils\hn_converter.h" />
-    <QtMoc Include="capture\hn_packet_capturer.h" />
+    <ClInclude Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />
     <ClInclude Include="capture\hn_packet_dissector.h" />
     <ClInclude Include="ui\packetstrees\hn_icmp_tree.h" />

@@ -23,6 +23,7 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
 
 HnMainWindow::~HnMainWindow()
 {
+    delete packetCapturer_;
     delete packetDissector_;
     // Delete a packet and protocol tree factories
     delete HnPacketFactory::instance();
@@ -112,7 +113,7 @@ void HnMainWindow::setupCapturer()
 {
     packetDissector_ = new HnPacketDissector();
     packetDissector_->setPacketListModel(packetListModel_);
-    packetCapturer_ = new HnPacketCapturer(this);
+    packetCapturer_ = new HnPacketCapturer();
     packetCapturer_->setPacketsDissector(packetDissector_);
 }
 

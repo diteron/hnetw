@@ -5,12 +5,9 @@
 #include <ui/qtmodels/hn_packet_list_model.h>
 #include "hn_packet_dissector.h"
 
-class HnPacketCapturer : public QObject {
-
-    Q_OBJECT
-
+class HnPacketCapturer {
 public:
-    HnPacketCapturer(QObject* parent = nullptr);
+    HnPacketCapturer();
     ~HnPacketCapturer();
 
     void setPacketsDissector(HnPacketDissector* dissector);

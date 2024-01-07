@@ -119,6 +119,9 @@
     <ClInclude Include="hnetwork_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="capture\hn_packet_capturer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -241,9 +244,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui\qtmodels\hn_packet_details_model.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="capture\hn_packet_capturer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui\hn_main_window.h">
