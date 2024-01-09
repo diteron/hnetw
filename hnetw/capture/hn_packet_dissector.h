@@ -2,6 +2,7 @@
 
 #include <ui/qtmodels/hn_packet_list_model.h>
 #include "hn_packet_queue.h"
+#include "hn_capture_file.h"
 
 class HnPacketDissector {
 public:
@@ -9,6 +10,7 @@ public:
     ~HnPacketDissector();
 
     void setPacketListModel(HnPacketListModel* pListModel);
+    void setCaptureFile(HnCaptureFile* capFile);
 
     void enqueuePacket(raw_packet rawPacket);
     void setCaptureInProgress(bool inProgress);
@@ -16,11 +18,15 @@ public:
     void stopDissection();
     void dissectPackets();
 
+    void reset();
+
 private:
     HnPacketQueue packetQueue_;
     HnPacketListModel* packetListModel_ = nullptr;
+    HnCaptureFile* captureFile_ = nullptr;
 
     std::atomic<bool> captureInProgress_ = false;
     int dissectedPacketsCnt_ = 0;
+    long currentPacketOffset_ = 0;
 };
 

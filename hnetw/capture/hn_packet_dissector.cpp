@@ -18,6 +18,11 @@ void HnPacketDissector::setPacketListModel(HnPacketListModel* pListModel)
     packetListModel_ = pListModel;
 }
 
+void HnPacketDissector::setCaptureFile(HnCaptureFile* capFile)
+{
+    captureFile_ = capFile;
+}
+
 void HnPacketDissector::enqueuePacket(raw_packet rawPacket)
 {
     packetQueue_.enqueue(rawPacket);
@@ -31,6 +36,11 @@ void HnPacketDissector::setCaptureInProgress(bool inProgress)
 void HnPacketDissector::startDissection()
 {
     captureInProgress_ = true;
+
+    if (!captureFile_) {
+        return;
+    }
+
     std::thread dissection(&HnPacketDissector::dissectPackets, this);
     dissection.detach();
 }
@@ -66,10 +76,19 @@ void HnPacketDissector::dissectPackets()
         ++dissectedPacketsCnt_;
 
         if (captureInProgress_.load()) {
-            HnPacketListRow* newRow = new HnPacketListRow(capturedPacket);
+            captureFile_->writePacket(capturedPacket->rawData(), capturedPacket->length());
+            HnPacketListRow* newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
+            currentPacketOffset_ += bytesRead;
             packetListModel_->appendRow(newRow);
         }
+
+        delete capturedPacket;
     }
 
     packetQueue_.clear();
+}
+
+void HnPacketDissector::reset()
+{
+    currentPacketOffset_ = 0;
 }

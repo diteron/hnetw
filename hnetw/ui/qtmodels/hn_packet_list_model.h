@@ -18,7 +18,7 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     void appendRow(HnPacketListRow* row);
-    const HnPacket* packetAt(int index) const;
+    const HnPacketListRow* rowAt(int index) const;
 
     void clear();
 

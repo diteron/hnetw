@@ -20,7 +20,8 @@ HnByteView::~HnByteView()
 void HnByteView::setRawData(const uint8_t* rawData, int len)
 {
     clear();
-    rawData_ = rawData;
+    rawData_ = new uint8_t[len];
+    std::memcpy(rawData_, rawData, len);
     rawDataLen_ = len;
 }
 
@@ -31,6 +32,7 @@ void HnByteView::printPacketBytes()
 
 void HnByteView::clear()
 {
+    delete[] rawData_;
     rawData_ = nullptr;
     verticalScrollBar()->setValue(0);
     verticalScrollBar()->setRange(0, 0);

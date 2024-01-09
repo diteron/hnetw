@@ -5,7 +5,7 @@
 class HnPacket {
 public:
     HnPacket();
-    HnPacket(int id);
+    HnPacket(int id = -1);
     virtual ~HnPacket();
 
     enum PacketTypes {

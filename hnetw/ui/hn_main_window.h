@@ -3,6 +3,7 @@
 #include <mutex>
 
 #include <packet/packets/hn_packet.h>
+#include <capture/hn_capture_file.h>
 #include <capture/hn_packet_capturer.h>
 #include <capture/hn_packet_dissector.h>
 #include <network/hn_host.h>
@@ -13,7 +14,7 @@
 #include "qtmodels/hn_packet_list_model.h"
 #include "hn_packet_details.h"
 #include "qtmodels/hn_packet_details_model.h"
-
+#include "hn_save_file_dialog.h"
 
 class HnMainWindow : public QMainWindow {
 
@@ -31,18 +32,22 @@ private:
     void setupStatusBar();
     void setupPacketsViews();
     bool setupHost();
-    void setupCapturer();
+    bool setupCapturer();
     void stopCapture();
 
     HnMenuBar* menuBar_ = nullptr;
+    HnSaveFileDialog* saveDialog_ = nullptr;
     QToolBar* toolBar_ = nullptr;
+    
     QStatusBar* statusBar_ = nullptr;
     QLabel* statusBarIpLabel_ = nullptr;
 
-    HnHost host_;
+    HnCaptureFile* captureFile_ = nullptr;
     HnPacketCapturer* packetCapturer_ = nullptr;
     HnPacketDissector* packetDissector_ = nullptr;
     bool captureInProgress_ = false;
+
+    HnHost host_;
     std::vector<std::string> interfacesIpStrings_;
     u_long currentInterfaceIp_ = 0;
     unsigned short currentPort_ = 0;
@@ -61,9 +66,11 @@ private:
     HnByteView* packetBytesView_ = nullptr;
 
 private slots:
+    void handleOpenFile(QString fname);
+    void handleSaveFile(QString fname);
     void handleInterfaceChange(int id);
     void startCapture();
+    bool setupCaptureInterface();
     void pauseCapture();
     void restartCapture();
-    bool setupCaptureInterface();
 };

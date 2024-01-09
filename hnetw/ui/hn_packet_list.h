@@ -1,5 +1,6 @@
 #pragma once
 
+#include <capture/hn_capture_file.h>
 #include "qtmodels/hn_packet_list_model.h"
 #include "hn_packet_details.h"
 #include "hn_byte_view.h"
@@ -14,6 +15,7 @@ public:
 
     void setDetailsView(HnPacketDetails* detailsView);
     void setBytesView(HnByteView* bytesView);
+    void setCaptureFile(HnCaptureFile* capFile);
     void setCaptureInProgress(bool inProgress);
 
     void clear();
@@ -32,6 +34,7 @@ private:
     HnPacketDetails* packetDetailsView_ = nullptr;
     HnByteView* bytesView_ = nullptr;
 
+    HnCaptureFile* captureFile_ = nullptr;
 
 protected slots:
     void rowsInserted(const QModelIndex& parent, int start, int end) override;

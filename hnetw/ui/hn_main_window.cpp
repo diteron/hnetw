@@ -10,8 +10,11 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
     this->resize(startWidth, startHeight);
     
     menuBar_ = new HnMenuBar(this->width(), this);
+    this->connect(menuBar_, &HnMenuBar::saveFileTriggered, this, &HnMainWindow::handleSaveFile);
     this->connect(menuBar_, &HnMenuBar::interfaceIdChanged, this, &HnMainWindow::handleInterfaceChange);
     this->setMenuBar(menuBar_);
+
+    saveDialog_ = new HnSaveFileDialog(this);
    
     centralWidget_ = new HnCentralWidget(this);
     this->setCentralWidget(centralWidget_);
@@ -23,6 +26,7 @@ HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)
 
 HnMainWindow::~HnMainWindow()
 {
+    delete captureFile_;
     delete packetCapturer_;
     delete packetDissector_;
     // Delete a packet and protocol tree factories
@@ -32,8 +36,7 @@ HnMainWindow::~HnMainWindow()
 
 bool HnMainWindow::setupNetwork()
 {
-    setupCapturer();
-    return setupHost();
+    return setupCapturer() && setupHost();
 }
 
 void HnMainWindow::printErrorMessage(QString errMessage)
@@ -109,12 +112,23 @@ bool HnMainWindow::setupHost()
     return true;
 }
 
-void HnMainWindow::setupCapturer()
+bool HnMainWindow::setupCapturer()
 {
+    captureFile_ = new HnCaptureFile();
+    if (!captureFile_->createFile()) {
+        printErrorMessage("Failed to create temporary capture file!");
+        return false;
+    }
+
     packetDissector_ = new HnPacketDissector();
     packetDissector_->setPacketListModel(packetListModel_);
+    packetDissector_->setCaptureFile(captureFile_);
     packetCapturer_ = new HnPacketCapturer();
     packetCapturer_->setPacketsDissector(packetDissector_);
+
+    packetList_->setCaptureFile(captureFile_);
+
+    return true;
 }
 
 void HnMainWindow::stopCapture()
@@ -133,7 +147,18 @@ void HnMainWindow::stopCapture()
     actionRestart_->setEnabled(false);
 }
 
-void HnMainWindow::handleInterfaceChange(int id) 
+void HnMainWindow::handleOpenFile(QString fname)
+{
+    stopCapture();
+}
+
+void HnMainWindow::handleSaveFile(QString fname)
+{
+    pauseCapture();
+    captureFile_->saveFile(fname.toStdString());
+}
+
+void HnMainWindow::handleInterfaceChange(int id)
 {
     if (id < 0) {
         printErrorMessage("Incorrect interface id!");
@@ -170,6 +195,22 @@ void HnMainWindow::startCapture()
     actionRestart_->setEnabled(true);
 }
 
+bool HnMainWindow::setupCaptureInterface()
+{
+    if (currentInterfaceIp_ == 0) {
+        printErrorMessage("Interface for capture is not set!");
+        return false;
+    }
+
+    bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
+    if (!result) {
+        printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");
+        return false;
+    }
+
+    return true;
+}
+
 void HnMainWindow::pauseCapture()
 {
     bool result = packetCapturer_->pauseCapturing();
@@ -188,34 +229,32 @@ void HnMainWindow::pauseCapture()
 
 void HnMainWindow::restartCapture()
 {
-    bool result = packetCapturer_->stopCapturing();
-    if (!result) {
-        printErrorMessage("Failed to restart capture!");
+    pauseCapture();
+    int execRes = saveDialog_->exec();
+
+    if (execRes == QDialog::Accepted) {
+        bool result = packetCapturer_->stopCapturing();
+        if (!result) {
+            printErrorMessage("Failed to restart capture!");
+            return;
+        }
+
+        QString fileName = QFileDialog::getSaveFileName(this, nullptr, "Untitled.hnw", "Hnetwork File (*.hnw)");
+        captureFile_->saveFile(fileName.toStdString());
+    }
+    else if (execRes == QDialog::Rejected && !saveDialog_->isDiscarded()) {
+        bool result = packetCapturer_->stopCapturing();
+        if (!result) {
+            printErrorMessage("Failed to restart capture!");
+            return;
+        }
+    }
+    else {
         return;
     }
 
-    packetList_->setCaptureInProgress(false);
     packetList_->clear();
-
-    actionStart_->setEnabled(true);
-    actionPause_->setEnabled(false);
-    actionRestart_->setEnabled(false);
+    captureFile_->reset();
 
     startCapture();
-}
-
-bool HnMainWindow::setupCaptureInterface()
-{
-    if (currentInterfaceIp_ == 0) {
-        printErrorMessage("Interface for capture is not set!");
-        return false;
-    }
-
-    bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
-    if (!result) {
-        printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");
-        return false;
-    }
-
-    return true;
 }

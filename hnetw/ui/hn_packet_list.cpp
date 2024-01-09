@@ -1,5 +1,6 @@
 #include <stdafx.h>
 
+#include <packet/hn_packet_factory.h>
 #include "hn_packet_list.h"
 #include "qtmodels/hn_packet_list_row.h"
 
@@ -38,6 +39,11 @@ void HnPacketList::setBytesView(HnByteView* bytesView)
     bytesView_ = bytesView;
 }
 
+void HnPacketList::setCaptureFile(HnCaptureFile* capFile)
+{
+    captureFile_ = capFile;
+}
+
 void HnPacketList::setCaptureInProgress(bool inProgress)
 {
     captureInProgress_ = inProgress;
@@ -69,10 +75,14 @@ void HnPacketList::selectionChanged(const QItemSelection& selected, const QItemS
     if (selectedRows.count() <= 0) return;
 
     int selectedRow = selectedRows.at(0).row();     // Only one row can be selected (QAbstractItemView::SingleSelection)
-    const HnPacket* packetToDisplay = listModel_->packetAt(selectedRow);
+    const HnPacketListRow* row = listModel_->rowAt(selectedRow);
+
+    HnPacket* packetToDisplay = captureFile_->readPacket(row->packetOffset(), row->packetLength());
     packetDetailsView_->displayPacket(packetToDisplay);
-    bytesView_->setRawData(packetToDisplay->rawData(), packetToDisplay->length());
+    bytesView_->setRawData(packetToDisplay->rawData(), packetToDisplay->length());  // TODO: Move this function to HnByteView class
     bytesView_->printPacketBytes();
+
+    delete packetToDisplay;
 }
 
 void HnPacketList::rowsInserted(const QModelIndex& parent, int start, int end)

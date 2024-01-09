@@ -122,6 +122,12 @@
     <ClInclude Include="capture\hn_packet_capturer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="capture\hn_capture_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\hn_save_file_dialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -230,6 +236,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hnetwork_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="capture\hn_capture_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\hn_save_file_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

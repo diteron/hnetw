@@ -10,7 +10,7 @@ public:
 
     static HnPacketFactory* instance();
     bool registerPacket(const int packetType, PacketBuilder const& builder);
-    HnPacket* buildPacket(int packetType, int id);
+    HnPacket* buildPacket(int packetType, int id = -1);
     std::vector<int> getRegisteredPackets();
 
 private:

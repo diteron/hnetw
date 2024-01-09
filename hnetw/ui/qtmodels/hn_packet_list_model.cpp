@@ -25,9 +25,6 @@ QVariant HnPacketListModel::data(const QModelIndex& index, int role) const
     HnPacketListRow* row = rowByIndex(index);
     if (!row)
         return QVariant();
-    const HnPacket* rowPacket = row->packet();
-    if (!rowPacket)
-        return QVariant();
 
     switch (role) {
         case Qt::DisplayRole:
@@ -94,9 +91,9 @@ void HnPacketListModel::appendRow(HnPacketListRow* row)
     }
 }
 
-const HnPacket* HnPacketListModel::packetAt(int index) const
+const HnPacketListRow* HnPacketListModel::rowAt(int index) const
 {
-    return visibleRows_.at(index)->packet();
+    return visibleRows_.at(index);
 }
 
 void HnPacketListModel::clear()

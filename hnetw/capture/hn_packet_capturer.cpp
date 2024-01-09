@@ -64,6 +64,7 @@ bool HnPacketCapturer::stopCapturing()
 {
     if (!pauseCapturing()) return false;
     capturedPacketsCnt_ = 0;
+    dissector_->reset();
 
     return true;
 }

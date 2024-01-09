@@ -35,3 +35,9 @@ QString HnConverter::msSinceMidntUtcToTimeString(uint32_t milliseconds)
 
     return timeString;
 }
+
+QString HnConverter::time_tToString(std::clock_t time)
+{
+    double timeInSeconds = static_cast<double>(time) / CLOCKS_PER_SEC;
+    return QString::number(timeInSeconds, 10, 3);
+}

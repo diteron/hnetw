@@ -111,10 +111,12 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="capture\hn_capture_file.cpp" />
     <ClCompile Include="capture\hn_packet_capturer.cpp" />
     <ClCompile Include="capture\hn_packet_dissector.cpp" />
     <ClCompile Include="capture\hn_packet_queue.cpp" />
     <ClCompile Include="hnetwork_app.cpp" />
+    <ClCompile Include="ui\hn_save_file_dialog.cpp" />
     <ClCompile Include="ui\packetstrees\hn_icmp_tree.cpp" />
     <ClCompile Include="packet\packets\hn_icmp_packet.cpp" />
     <ClCompile Include="packet\packets\hn_igmp_packet.cpp" />
@@ -147,7 +149,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ui\hn_menubar.cpp" />
     <ClCompile Include="ui\utils\hn_converter.cpp" />
+    <ClInclude Include="capture\hn_capture_file.h" />
     <ClInclude Include="hnetwork_app.h" />
+    <ClInclude Include="ui\hn_save_file_dialog.h" />
     <ClInclude Include="ui\utils\hn_converter.h" />
     <ClInclude Include="capture\hn_packet_capturer.h" />
     <ClInclude Include="capture\hn_packet_queue.h" />

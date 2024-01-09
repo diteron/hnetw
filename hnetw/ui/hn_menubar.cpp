@@ -5,6 +5,7 @@
 HnMenuBar::HnMenuBar(int width, QWidget* parent) : QMenuBar(parent), interfacesIpStrings_()
 {
     setGeometry(QRect(0, 0, width, 22));
+    createFileSubmenu();
     createCaptureSubmenu();
 }
 
@@ -22,7 +23,20 @@ void HnMenuBar::showChangeInterfaceDialog()
     handleInterfaceChange();
 }
 
-void HnMenuBar::createCaptureSubmenu() 
+void HnMenuBar::createFileSubmenu()
+{
+    addSubmenu(&menuFile_, "File");
+    addSubmenuAction(this, menuFile_, &fileOpenAction_, "openAction",
+                     "Open", "Ctrl+O");
+    fileOpenAction_->connect(fileOpenAction_, &QAction::triggered,
+                             this, &HnMenuBar::handleOpenFile);
+    addSubmenuAction(this, menuFile_, &fileSaveAction_, "saveAction",
+                     "Save", "Ctrl+S");
+    fileSaveAction_->connect(fileSaveAction_, &QAction::triggered,
+                             this, &HnMenuBar::handleSaveFile);
+}
+
+void HnMenuBar::createCaptureSubmenu()
 {
     changeInterfaceDlg_ = new HnInterfaceDialog(this);
 
@@ -45,6 +59,18 @@ void HnMenuBar::addSubmenuAction(QWidget* parent, QMenu* submenu, QAction** acti
     submenu->addAction(*action);
     (*action)->setText(title);
     (*action)->setShortcut(QKeySequence(shortcut));
+}
+
+void HnMenuBar::handleOpenFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, nullptr, nullptr, "Hnetwork File (*.hnw)");
+    emit openFileTriggered(fileName);
+}
+
+void HnMenuBar::handleSaveFile()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, nullptr, "Untitled.hnw", "Hnetwork File (*.hnw)");
+    emit saveFileTriggered(fileName);
 }
 
 void HnMenuBar::handleInterfaceChange()

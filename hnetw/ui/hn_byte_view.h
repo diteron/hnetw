@@ -25,7 +25,7 @@ private:
     void printBytes(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos);
     void printAsciiChars(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos);
 
-    const uint8_t* rawData_ = nullptr;
+    uint8_t* rawData_ = nullptr;
     int rawDataLen_ = 0;
 
     const int addrCharsNum_ = 4;
