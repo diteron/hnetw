@@ -235,6 +235,8 @@ void HnMainWindow::handleOpenFile(QString fname)
 
 void HnMainWindow::handleSaveFile(QString fname)
 {
+    if (fname.isEmpty()) return;
+
     if (captureInProgress_) {
         pauseCapture();
     }
