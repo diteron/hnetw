@@ -62,16 +62,15 @@ bool HnPacketCapturer::pauseCapturing()
 bool HnPacketCapturer::stopCapturing()
 {
     if (!pauseCapturing()) return false;
-    capturedPacketsCnt_ = 0;
-    dissector_->reset();
-
+    resetStatistics();
+    
     return true;
 }
 
 void HnPacketCapturer::resetStatistics()
 {
     capturedPacketsCnt_ = 0;
-    captureStarted_ = clock();
+    dissector_->reset();
 }
 
 void HnPacketCapturer::capturePackets()
@@ -95,6 +94,4 @@ void HnPacketCapturer::capturePackets()
             delete[] buffer;
         }
     }
-
-    //dissector_->stopDissection();
 }
