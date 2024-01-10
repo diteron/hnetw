@@ -16,7 +16,6 @@ public:
     void startCapturing();
     bool pauseCapturing();
     bool stopCapturing();
-    bool isCapturing() const;
     void resetStatistics();
 
 private:
@@ -26,7 +25,6 @@ private:
     bool socketSetToCapture_ = false;
 
     std::atomic<bool> capturePermitted_ = false;
-    std::atomic<bool> captureInProgress_ = false;
 
     int capturedPacketsCnt_ = 0;
     std::clock_t captureStarted_ = 0;

@@ -9,7 +9,6 @@ HnPacketListModel::~HnPacketListModel()
 {
     qDeleteAll(packetsRows_);
     packetsRows_.clear();
-    visibleRows_.clear();
     newPacketsRows_.clear();
 }
 
@@ -40,10 +39,10 @@ QVariant HnPacketListModel::data(const QModelIndex& index, int role) const
 
 QModelIndex HnPacketListModel::index(int row, int column, const QModelIndex& parent) const
 {
-    if (row >= visibleRows_.count() || row < 0 || column >= columnCount_)
+    if (row >= packetsRows_.count() || row < 0 || column >= columnCount_)
         return QModelIndex();
 
-    HnPacketListRow* plistRow = visibleRows_[row];
+    HnPacketListRow* plistRow = packetsRows_[row];
 
     return createIndex(row, column, plistRow);
 }
@@ -55,7 +54,7 @@ QModelIndex HnPacketListModel::parent(const QModelIndex& index) const
 
 int HnPacketListModel::rowCount(const QModelIndex& parent) const
 {
-    return static_cast<int>(visibleRows_.count());
+    return static_cast<int>(packetsRows_.count());
 }
 
 QVariant HnPacketListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -83,7 +82,6 @@ void HnPacketListModel::appendRow(HnPacketListRow* row)
         cond_var_.wait(lock);
     }
 
-    packetsRows_.append(row);
     newPacketsRows_.append(row);
     if (newPacketsRows_.count() < 2) {
         // Queue rows insertion on next update (insertNewRows will be executed on the main GUI thread)
@@ -93,7 +91,7 @@ void HnPacketListModel::appendRow(HnPacketListRow* row)
 
 const HnPacketListRow* HnPacketListModel::rowAt(int index) const
 {
-    return visibleRows_.at(index);
+    return packetsRows_.at(index);
 }
 
 void HnPacketListModel::clear()
@@ -104,7 +102,6 @@ void HnPacketListModel::clear()
     beginResetModel();
     qDeleteAll(packetsRows_);
     packetsRows_.resize(0);
-    visibleRows_.resize(0);
     newPacketsRows_.resize(0);
     endResetModel();
 
@@ -117,11 +114,11 @@ void HnPacketListModel::insertNewRows()
     std::lock_guard<std::mutex> lock(mutex_);
     modelIsChanging_ = true;
 
-    int lastRowPos = static_cast<int>(visibleRows_.count());
+    int lastRowPos = static_cast<int>(packetsRows_.count());
     if (newPacketsRows_.count() > 0) {
         beginInsertRows(QModelIndex(), lastRowPos, lastRowPos + static_cast<int>(newPacketsRows_.count()));
         for (HnPacketListRow* row : newPacketsRows_) {
-            visibleRows_.append(row);
+            packetsRows_.append(row);
         }
         endInsertRows();
         newPacketsRows_.resize(0);

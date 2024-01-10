@@ -28,14 +28,9 @@ void HnPacketDissector::enqueuePacket(raw_packet rawPacket)
     packetQueue_.enqueue(rawPacket);
 }
 
-void HnPacketDissector::setCaptureInProgress(bool inProgress)
-{
-    captureInProgress_ = inProgress;
-}
-
 void HnPacketDissector::startDissection()
 {
-    captureInProgress_ = true;
+    isCapturePermitted_ = true;
 
     if (!captureFile_) {
         return;
@@ -47,22 +42,22 @@ void HnPacketDissector::startDissection()
 
 void HnPacketDissector::stopDissection()
 {
-    captureInProgress_ = false;
+    isCapturePermitted_ = false;
 }
 
 void HnPacketDissector::dissectPackets()
 {
-    while (captureInProgress_.load()) {
+    while (isCapturePermitted_.load()) {
         raw_packet rawPacket = packetQueue_.dequeue();
 
         int id = rawPacket.id;
         std::clock_t currentPacketTime = rawPacket.time;
         pBuffer buffer = rawPacket.buffer;
-        int bytesRead = rawPacket.length;
+        int readBytesCnt = rawPacket.length;
 
         ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer);
-        uint8_t* rawData = new uint8_t[bytesRead];      // Cleanup is in the captured packet
-        std::memcpy(rawData, buffer, bytesRead);
+        uint8_t* rawData = new uint8_t[readBytesCnt];      // Cleanup is in the captured packet
+        std::memcpy(rawData, buffer, readBytesCnt);
 
         HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, id);
         delete[] buffer;
@@ -71,14 +66,14 @@ void HnPacketDissector::dissectPackets()
             continue;
         }
 
-        capturedPacket->setPacketData(rawData, bytesRead);
+        capturedPacket->setPacketData(rawData, readBytesCnt);
         capturedPacket->setArrivalTime(currentPacketTime);
         ++dissectedPacketsCnt_;
 
-        if (captureInProgress_.load()) {
+        if (isCapturePermitted_.load()) {
             captureFile_->writePacket(capturedPacket->rawData(), capturedPacket->length());
             HnPacketListRow* newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
-            currentPacketOffset_ += bytesRead;
+            currentPacketOffset_ += readBytesCnt;
             packetListModel_->appendRow(newRow);
         }
 
@@ -91,4 +86,5 @@ void HnPacketDissector::dissectPackets()
 void HnPacketDissector::reset()
 {
     currentPacketOffset_ = 0;
+    packetQueue_.clear();
 }

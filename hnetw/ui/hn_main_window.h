@@ -27,6 +27,9 @@ public:
     bool setupNetwork();
     void printErrorMessage(QString errMessage);
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private:
     void setupToolBar();
     void setupStatusBar();

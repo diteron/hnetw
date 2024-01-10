@@ -12,11 +12,12 @@ public:
     bool createFile();
     std::FILE* fileHandle() const;
     bool isValid() const;
+    long size() const;
 
     HnPacket* readPacket(long offset, int packetLen) const;
     bool writePacket(const uint8_t* rawData, int packetLen);
     bool saveFile(std::string fileName) const;
-    bool reset();
+    bool recreate();
 
 private:
     uint8_t* readRawData(long offset, int packetLen) const;

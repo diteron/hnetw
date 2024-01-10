@@ -39,7 +39,6 @@ private:
     };
 
     QVector<HnPacketListRow*> packetsRows_;
-    QVector<HnPacketListRow*> visibleRows_;
     QVector<HnPacketListRow*> newPacketsRows_;
 
     mutable std::mutex mutex_;

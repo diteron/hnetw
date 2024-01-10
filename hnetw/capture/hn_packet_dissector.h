@@ -13,7 +13,6 @@ public:
     void setCaptureFile(HnCaptureFile* capFile);
 
     void enqueuePacket(raw_packet rawPacket);
-    void setCaptureInProgress(bool inProgress);
     void startDissection();
     void stopDissection();
     void dissectPackets();
@@ -25,7 +24,7 @@ private:
     HnPacketListModel* packetListModel_ = nullptr;
     HnCaptureFile* captureFile_ = nullptr;
 
-    std::atomic<bool> captureInProgress_ = false;
+    std::atomic<bool> isCapturePermitted_ = false;
     int dissectedPacketsCnt_ = 0;
     long currentPacketOffset_ = 0;
 };

@@ -43,6 +43,12 @@ bool HnCaptureFile::isValid() const
     return file_;
 }
 
+long HnCaptureFile::size() const
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+    return fileSize_;
+}
+
 HnPacket* HnCaptureFile::readPacket(long offset, int packetLen) const
 {
     uint8_t* rawData = readRawData(offset, packetLen);
@@ -106,8 +112,10 @@ error:
     return false;
 }
 
-bool HnCaptureFile::reset()
+bool HnCaptureFile::recreate()
 {
+    std::lock_guard<std::mutex> lock(mutex_);
+    fileSize_ = 0;
     closeFile();
     if (!createFile()) return false;
 

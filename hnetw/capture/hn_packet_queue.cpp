@@ -40,5 +40,4 @@ void HnPacketQueue::clear()
 {
     std::lock_guard<std::mutex> lock(mutex_);
     queue_ = std::queue<raw_packet>();
-    cond_var_.notify_one();
 }

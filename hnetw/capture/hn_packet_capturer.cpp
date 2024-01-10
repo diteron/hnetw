@@ -14,6 +14,7 @@ HnPacketCapturer::~HnPacketCapturer()
 void HnPacketCapturer::setPacketsDissector(HnPacketDissector* dissector)
 {
     dissector_ = dissector;
+    dissector_->startDissection();
 }
 
 bool HnPacketCapturer::setInterfaceToCapture(u_long interfaceIp, unsigned short port)
@@ -48,8 +49,6 @@ void HnPacketCapturer::startCapturing()
 bool HnPacketCapturer::pauseCapturing()
 {
     capturePermitted_ = false;
-    
-    dissector_->stopDissection();
 
     if (captureSocket_.isValid()) {
         if (captureSocket_.close() != HnIPv4Socket::Success) {
@@ -69,11 +68,6 @@ bool HnPacketCapturer::stopCapturing()
     return true;
 }
 
-bool HnPacketCapturer::isCapturing() const
-{
-    return captureInProgress_;
-}
-
 void HnPacketCapturer::resetStatistics()
 {
     capturedPacketsCnt_ = 0;
@@ -84,17 +78,14 @@ void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;
 
-    dissector_->startDissection();
-
     int bytesRead = 0;
     std::clock_t currentPacketTime = 0;
 
     while (capturePermitted_.load()) {
-        captureInProgress_ = true;
-
         char* buffer = new char[BuffSize_];
 
-        bytesRead = recvfrom(captureSocket_.socketHandle(), buffer, BuffSize_, 0, 0, 0);
+        bytesRead = recv(captureSocket_.socketHandle(), buffer, BuffSize_, 0);
+
         if (bytesRead > 0 && capturePermitted_.load()) {
             currentPacketTime = clock() - captureStarted_;
             raw_packet rawPacket = { ++capturedPacketsCnt_, currentPacketTime, buffer, bytesRead };
@@ -105,6 +96,5 @@ void HnPacketCapturer::capturePackets()
         }
     }
 
-    captureInProgress_ = false;
-    dissector_->stopDissection();
+    //dissector_->stopDissection();
 }

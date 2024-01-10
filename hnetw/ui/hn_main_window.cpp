@@ -29,6 +29,7 @@ HnMainWindow::~HnMainWindow()
     delete captureFile_;
     delete packetCapturer_;
     delete packetDissector_;
+
     // Delete a packet and protocol tree factories
     delete HnPacketFactory::instance();
     delete HnProtoTreeFactory::instance();
@@ -43,6 +44,49 @@ void HnMainWindow::printErrorMessage(QString errMessage)
 {
     QApplication::beep();
     QMessageBox::critical(this, QApplication::applicationName(), errMessage);
+}
+
+void HnMainWindow::closeEvent(QCloseEvent* event)
+{
+    if (captureFile_->size() == 0) {
+        event->accept();
+        return;
+    }
+
+    pauseCapture();
+    int execRes = saveDialog_->exec();
+
+    if (execRes == QDialog::Accepted) {
+        bool result = packetCapturer_->stopCapturing();
+        if (!result) {
+            printErrorMessage("Failed to stop capture!");
+            event->ignore();
+            return;
+        }
+
+        QString fileName = QFileDialog::getSaveFileName(this, nullptr, "Untitled.hnw", "Hnetwork File (*.hnw)");
+        result = captureFile_->saveFile(fileName.toStdString());
+        if (!result) {
+            printErrorMessage("Failed to save file!");
+            event->ignore();
+            return;
+        }
+
+        event->accept();
+    }
+    else if (execRes == QDialog::Rejected && !saveDialog_->isDiscarded()) {
+        bool result = packetCapturer_->stopCapturing();
+        if (!result) {
+            printErrorMessage("Failed to stop capture!");
+            event->ignore();
+            return;
+        }
+
+        event->accept();
+    }
+    else {
+        event->ignore();
+    }
 }
 
 void HnMainWindow::setupToolBar()
@@ -135,7 +179,7 @@ void HnMainWindow::stopCapture()
 {
     bool result = packetCapturer_->stopCapturing();
     if (!result) {
-        printErrorMessage("Failed to restart capture!");
+        printErrorMessage("Failed to stop capture!");
         return;
     }
 
@@ -154,8 +198,13 @@ void HnMainWindow::handleOpenFile(QString fname)
 
 void HnMainWindow::handleSaveFile(QString fname)
 {
+    if (captureFile_->size() == 0) return;
+
     pauseCapture();
-    captureFile_->saveFile(fname.toStdString());
+    bool result = captureFile_->saveFile(fname.toStdString());
+    if (!result) {
+        printErrorMessage("Failed to save file!");
+    }
 }
 
 void HnMainWindow::handleInterfaceChange(int id)
@@ -228,24 +277,30 @@ void HnMainWindow::pauseCapture()
 }
 
 void HnMainWindow::restartCapture()
-{
+{   
+    if (captureFile_->size() == 0) return;
+    
     pauseCapture();
     int execRes = saveDialog_->exec();
 
     if (execRes == QDialog::Accepted) {
-        bool result = packetCapturer_->stopCapturing();
+        QString fileName = QFileDialog::getSaveFileName(this, nullptr, "Untitled.hnw", "Hnetwork File (*.hnw)");
+        bool result = captureFile_->saveFile(fileName.toStdString());
         if (!result) {
-            printErrorMessage("Failed to restart capture!");
+            printErrorMessage("Failed to save file!");
             return;
         }
 
-        QString fileName = QFileDialog::getSaveFileName(this, nullptr, "Untitled.hnw", "Hnetwork File (*.hnw)");
-        captureFile_->saveFile(fileName.toStdString());
+        result = packetCapturer_->stopCapturing();
+        if (!result) {
+            printErrorMessage("Failed to stop capture!");
+            return;
+        }
     }
     else if (execRes == QDialog::Rejected && !saveDialog_->isDiscarded()) {
         bool result = packetCapturer_->stopCapturing();
         if (!result) {
-            printErrorMessage("Failed to restart capture!");
+            printErrorMessage("Failed to stop capture!");
             return;
         }
     }
@@ -254,7 +309,11 @@ void HnMainWindow::restartCapture()
     }
 
     packetList_->clear();
-    captureFile_->reset();
+    
+    if (!captureFile_->recreate()) {
+        printErrorMessage("Failed to recreate capture file!");
+        return;
+    }
 
     startCapture();
 }
