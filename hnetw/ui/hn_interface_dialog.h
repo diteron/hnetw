@@ -5,8 +5,9 @@ public:
     HnInterfaceDialog(QWidget* parent = nullptr);
     ~HnInterfaceDialog();
 
-    void setInterfacesIp(const std::vector<std::string>& ipStrings);
-    int selectedInterfaceId();
+    void addInterfacesIp(const std::vector<std::string>& ipStrings);
+    int selectedInterfaceId() const;
+    void deselectInterfaceIp();
 
     int exec() override;
 

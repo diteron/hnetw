@@ -77,7 +77,7 @@ void HnPacketDetailsModel::setPacket(const HnPacket* packet)
 void HnPacketDetailsModel::setRootNode(HnInfoNode* node)
 {
     beginResetModel();
-    if (rootNode_) delete rootNode_;
+    delete rootNode_;
     rootNode_ = node;
     endResetModel();
     if (!node) return;
@@ -91,7 +91,7 @@ void HnPacketDetailsModel::setRootNode(HnInfoNode* node)
 void HnPacketDetailsModel::clear()
 {
     beginResetModel();
-    if (rootNode_) delete rootNode_;
+    delete rootNode_;
     rootNode_ = nullptr;
     endResetModel();
 }

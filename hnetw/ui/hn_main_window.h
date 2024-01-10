@@ -38,6 +38,8 @@ private:
     bool setupCapturer();
     void stopCapture();
 
+    void showSaveDialog();
+
     HnMenuBar* menuBar_ = nullptr;
     HnSaveFileDialog* saveDialog_ = nullptr;
     QToolBar* toolBar_ = nullptr;
@@ -52,7 +54,7 @@ private:
 
     HnHost host_;
     std::vector<std::string> interfacesIpStrings_;
-    u_long currentInterfaceIp_ = 0;
+    u_long currentInterfaceIp_ = 0L;
     unsigned short currentPort_ = 0;
 
     QAction* actionStart_ = nullptr;

@@ -14,17 +14,26 @@ HnInterfaceDialog::HnInterfaceDialog(QWidget* parent) : QDialog(parent), interfa
 HnInterfaceDialog::~HnInterfaceDialog()
 {}
 
-void HnInterfaceDialog::setInterfacesIp(const std::vector<std::string>& ipStrings)
+void HnInterfaceDialog::addInterfacesIp(const std::vector<std::string>& ipStrings)
 {
+    interfacesCbox_->addItem("Not Selected");
+
     for (const auto& string : ipStrings) {
         interfacesIp_ << string.c_str();
     }
     interfacesCbox_->addItems(interfacesIp_);
 }
 
-int HnInterfaceDialog::selectedInterfaceId()
+int HnInterfaceDialog::selectedInterfaceId() const
 {
-    return selectedInterfaceId_;
+    return selectedInterfaceId_ - 1;    // Idex 0 is "Not Selected"
+}
+
+void HnInterfaceDialog::deselectInterfaceIp()
+{
+    selectedInterfaceId_ = 0;
+    interfacesCbox_->setCurrentIndex(0);
+
 }
 
 int HnInterfaceDialog::exec()

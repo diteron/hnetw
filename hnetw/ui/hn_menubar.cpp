@@ -15,12 +15,17 @@ HnMenuBar::~HnMenuBar()
 void HnMenuBar::setInterfacesIp(std::vector<std::string> ipStrings)
 {
     interfacesIpStrings_ = ipStrings;
-    changeInterfaceDlg_->setInterfacesIp(interfacesIpStrings_);
+    changeInterfaceDlg_->addInterfacesIp(interfacesIpStrings_);
 }
 
 void HnMenuBar::showChangeInterfaceDialog()
 {
     handleInterfaceChange();
+}
+
+void HnMenuBar::deselectInterfaceIp()
+{
+    changeInterfaceDlg_->deselectInterfaceIp();
 }
 
 void HnMenuBar::createFileSubmenu()

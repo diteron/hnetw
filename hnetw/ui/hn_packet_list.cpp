@@ -77,7 +77,9 @@ void HnPacketList::selectionChanged(const QItemSelection& selected, const QItemS
     int selectedRow = selectedRows.at(0).row();     // Only one row can be selected (QAbstractItemView::SingleSelection)
     const HnPacketListRow* row = listModel_->rowAt(selectedRow);
 
-    HnPacket* packetToDisplay = captureFile_->readPacket(row->packetOffset(), row->packetLength());
+    HnPacket* packetToDisplay = captureFile_->readPacket(row->packetOffset(), true);
+    if (packetToDisplay == nullptr) return;
+
     packetDetailsView_->displayPacket(packetToDisplay);
     bytesView_->setRawData(packetToDisplay->rawData(), packetToDisplay->length());  // TODO: Move this function to HnByteView class
     bytesView_->printPacketBytes();

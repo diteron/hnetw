@@ -12,6 +12,7 @@ public:
 
     void setInterfacesIp(std::vector<std::string> ipStrings);
     void showChangeInterfaceDialog();
+    void deselectInterfaceIp();
 
 private:
     void createFileSubmenu();

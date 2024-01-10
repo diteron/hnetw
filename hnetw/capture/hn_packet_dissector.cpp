@@ -47,13 +47,19 @@ void HnPacketDissector::stopDissection()
 
 void HnPacketDissector::dissectPackets()
 {
+    int id = -1;
+    std::clock_t currentPacketTime = -1;
+    pBuffer buffer = nullptr;
+    int readBytesCnt = 0;
+    int writtenBytesCnt = 0;
+
     while (isCapturePermitted_.load()) {
         raw_packet rawPacket = packetQueue_.dequeue();
 
-        int id = rawPacket.id;
-        std::clock_t currentPacketTime = rawPacket.time;
-        pBuffer buffer = rawPacket.buffer;
-        int readBytesCnt = rawPacket.length;
+        id = rawPacket.id;
+        currentPacketTime = rawPacket.time;
+        buffer = rawPacket.buffer;
+        readBytesCnt = rawPacket.length;
 
         ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer);
         uint8_t* rawData = new uint8_t[readBytesCnt];      // Cleanup is in the captured packet
@@ -71,9 +77,14 @@ void HnPacketDissector::dissectPackets()
         ++dissectedPacketsCnt_;
 
         if (isCapturePermitted_.load()) {
-            captureFile_->writePacket(capturedPacket->rawData(), capturedPacket->length());
+            writtenBytesCnt = captureFile_->writePacket(capturedPacket);
+            if (writtenBytesCnt == 0) {
+                delete capturedPacket;
+                continue;
+            }
+
             HnPacketListRow* newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
-            currentPacketOffset_ += readBytesCnt;
+            currentPacketOffset_ += writtenBytesCnt;
             packetListModel_->appendRow(newRow);
         }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <capture/hn_capture_file.h>
 #include "hn_packet_list_row.h"
 
 class HnPacketListModel : public QAbstractItemModel {
@@ -18,6 +19,7 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     void appendRow(HnPacketListRow* row);
+    void addRowsFromCapFile(HnCaptureFile* capFile);
     const HnPacketListRow* rowAt(int index) const;
 
     void clear();

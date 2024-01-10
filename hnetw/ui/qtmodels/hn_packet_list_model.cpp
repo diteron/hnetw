@@ -89,6 +89,27 @@ void HnPacketListModel::appendRow(HnPacketListRow* row)
     }
 }
 
+void HnPacketListModel::addRowsFromCapFile(HnCaptureFile* capFile)
+{
+    std::unique_lock<std::mutex> lock(mutex_);
+    while (modelIsChanging_.load()) {
+        cond_var_.wait(lock);
+    }
+
+    HnPacket* packet = nullptr;
+
+    long packetOffset = 0;
+    while ((packet = capFile->readPacket()) != nullptr) {
+        HnPacketListRow* row = new HnPacketListRow(packet, packetOffset);
+        packetOffset = capFile->filePos();
+        newPacketsRows_ << row;
+        delete packet;
+    }
+
+    // Queue rows insertion on next update (insertNewRows will be executed on the main GUI thread)
+    QTimer::singleShot(0, this, &HnPacketListModel::insertNewRows);
+}
+
 const HnPacketListRow* HnPacketListModel::rowAt(int index) const
 {
     return packetsRows_.at(index);
@@ -117,9 +138,7 @@ void HnPacketListModel::insertNewRows()
     int lastRowPos = static_cast<int>(packetsRows_.count());
     if (newPacketsRows_.count() > 0) {
         beginInsertRows(QModelIndex(), lastRowPos, lastRowPos + static_cast<int>(newPacketsRows_.count()));
-        for (HnPacketListRow* row : newPacketsRows_) {
-            packetsRows_.append(row);
-        }
+        packetsRows_ << newPacketsRows_;
         endInsertRows();
         newPacketsRows_.resize(0);
     }

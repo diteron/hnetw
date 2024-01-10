@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <cstdio>
 #include <stdint.h>
@@ -9,19 +9,22 @@ public:
     HnCaptureFile();
     ~HnCaptureFile();
 
-    bool createFile();
+    bool open(std::string fileName);
+    bool create();
     std::FILE* fileHandle() const;
     bool isValid() const;
+    bool isLiveCapture() const;
     long size() const;
+    long filePos() const;
 
-    HnPacket* readPacket(long offset, int packetLen) const;
-    bool writePacket(const uint8_t* rawData, int packetLen);
+    HnPacket* readPacket(long offset = 0L, bool restoreFilePos = false) const;
+    int writePacket(HnPacket* packet);
     bool saveFile(std::string fileName) const;
     bool recreate();
 
 private:
-    uint8_t* readRawData(long offset, int packetLen) const;
-    void closeFile();
+    uint8_t* readRawData(int length) const;
+    void removeFile();
 
     std::FILE* file_ = nullptr;
     std::string fileName_ = "";
@@ -29,6 +32,7 @@ private:
 
     long currOffset_ = 0;
     long fileSize_ = 0;
+    bool isLiveCapture_ = false;
 
     mutable std::mutex mutex_;
     std::condition_variable cond_var_;
