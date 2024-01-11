@@ -168,6 +168,23 @@ bool HnMainWindow::setupCapturer()
     return true;
 }
 
+
+bool HnMainWindow::setupCaptureInterface()
+{
+    if (currentInterfaceIp_ == 0L) {
+        printErrorMessage("Interface for capture is not set!");
+        return false;
+    }
+
+    bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
+    if (!result) {
+        printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");
+        return false;
+    }
+
+    return true;
+}
+
 void HnMainWindow::stopCapture()
 {
     bool result = packetCapturer_->stopCapturing();
@@ -290,22 +307,6 @@ void HnMainWindow::startCapture()
     actionStart_->setEnabled(false);
     actionPause_->setEnabled(true);
     actionRestart_->setEnabled(true);
-}
-
-bool HnMainWindow::setupCaptureInterface()
-{
-    if (currentInterfaceIp_ == 0L) {
-        printErrorMessage("Interface for capture is not set!");
-        return false;
-    }
-
-    bool result = packetCapturer_->setInterfaceToCapture(currentInterfaceIp_, currentPort_);
-    if (!result) {
-        printErrorMessage("Failed to set interface for capture!\nTry running as Administrator.");
-        return false;
-    }
-
-    return true;
 }
 
 void HnMainWindow::pauseCapture()

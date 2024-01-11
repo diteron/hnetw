@@ -36,6 +36,7 @@ private:
     void setupPacketsViews();
     bool setupHost();
     bool setupCapturer();
+    bool setupCaptureInterface();
     void stopCapture();
 
     void showSaveDialog();
@@ -75,7 +76,6 @@ private slots:
     void handleSaveFile(QString fname);
     void handleInterfaceChange(int id);
     void startCapture();
-    bool setupCaptureInterface();
     void pauseCapture();
     void restartCapture();
 };
