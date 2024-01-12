@@ -206,7 +206,7 @@ void HnMainWindow::stopCapture()
     actionRestart_->setEnabled(false);
 }
 
-void HnMainWindow::showSaveDialog()
+int HnMainWindow::showSaveDialog()
 {
     if (captureFile_->size() > 0 && captureFile_->isLiveCapture()) {
         if (captureInProgress_) {
@@ -219,19 +219,21 @@ void HnMainWindow::showSaveDialog()
             bool result = captureFile_->saveFile(fileName.toStdString());
             if (!result) {
                 printErrorMessage("Failed to save file!");
-                return;
+                return HnSaveFileDialog::Accepted;
             }
         }
         else if (execRes == QDialog::Rejected && saveDialog_->isDiscarded()) {
             startCapture();
-            return;
+            return HnSaveFileDialog::Discarded;
         }
     }
+
+    return HnSaveFileDialog::Rejected;
 }
 
 void HnMainWindow::handleOpenFile(QString fname)
 {
-    showSaveDialog();
+    if (showSaveDialog() == HnSaveFileDialog::Discarded) return;
 
     if (fname.isEmpty()) return;
 
@@ -276,13 +278,12 @@ void HnMainWindow::handleInterfaceChange(int id)
         return;
     }
 
-    showSaveDialog();
+    if (showSaveDialog() == HnSaveFileDialog::Discarded) return;
 
     u_long newInterfaceIp = host_.interfaceIpAt(id);
     currentInterfaceIp_ = newInterfaceIp;
 
-    if (captureInProgress_)
-        stopCapture();
+    stopCapture();
 
     QString ipString = interfacesIpStrings_[id].c_str();
     statusBarIpLabel_->setText("Capturing interface IP: " + ipString);
@@ -329,7 +330,7 @@ void HnMainWindow::restartCapture()
 {   
     if (captureFile_->size() == 0) return;
     
-    showSaveDialog();
+    if (showSaveDialog() == HnSaveFileDialog::Discarded) return;
 
     bool result = packetCapturer_->stopCapturing();
     if (!result) {

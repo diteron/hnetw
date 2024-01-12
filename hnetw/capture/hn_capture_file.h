@@ -4,6 +4,16 @@
 #include <stdint.h>
 #include <packet/packets/hn_packet.h>
 
+typedef char* pBuffer;
+struct raw_packet {
+    int id;
+    std::clock_t time;
+    uint8_t* data;
+    int length;
+
+    ~raw_packet() { delete[] data; }
+};
+
 class HnCaptureFile {
 public:
     HnCaptureFile();
@@ -17,13 +27,18 @@ public:
     long size() const;
     long filePos() const;
 
+    raw_packet* getNextPacketToDissect(long* packetOffsetBuff);
+    int writeRawPacket(raw_packet* packet);
+
     HnPacket* readPacket(long offset = 0L, bool restoreFilePos = false) const;
-    int writePacket(HnPacket* packet);
+    
     bool saveFile(std::string fileName) const;
     bool recreate();
 
 private:
+    raw_packet* readRawPacket(long offset = 0L, bool restoreFilePos = false) const;
     uint8_t* readRawData(int length) const;
+
     void removeFile();
 
     std::FILE* file_ = nullptr;
@@ -33,6 +48,9 @@ private:
     long currOffset_ = 0;
     long fileSize_ = 0;
     bool isLiveCapture_ = false;
+
+    int packetsToDissect_ = 0;
+    long currDissectedPacketOffset_ = 0;
 
     mutable std::mutex mutex_;
     std::condition_variable cond_var_;

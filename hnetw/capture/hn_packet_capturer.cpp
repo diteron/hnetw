@@ -80,18 +80,24 @@ void HnPacketCapturer::capturePackets()
     int bytesRead = 0;
     std::clock_t currentPacketTime = 0;
 
+    char* buffer = nullptr;
+    uint8_t* rawData = nullptr;
+    raw_packet* rawPacket = nullptr;
+
     while (capturePermitted_.load()) {
-        char* buffer = new char[BuffSize_];
+        buffer = new char[BuffSize_];
 
         bytesRead = recv(captureSocket_.socketHandle(), buffer, BuffSize_, 0);
 
         if (bytesRead > 0 && capturePermitted_.load()) {
+            rawData = new uint8_t[bytesRead];
+            std::memcpy(rawData, buffer, bytesRead);
+
             currentPacketTime = clock() - captureStarted_;
-            raw_packet rawPacket = { ++capturedPacketsCnt_, currentPacketTime, buffer, bytesRead };
+            rawPacket = new raw_packet { ++capturedPacketsCnt_, currentPacketTime, rawData, bytesRead };
             dissector_->enqueuePacket(rawPacket);
         }
-        else {
-            delete[] buffer;
-        }
+
+        delete[] buffer;
     }
 }

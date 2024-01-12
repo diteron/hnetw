@@ -39,7 +39,7 @@ private:
     bool setupCaptureInterface();
     void stopCapture();
 
-    void showSaveDialog();
+    int showSaveDialog();
 
     HnMenuBar* menuBar_ = nullptr;
     HnSaveFileDialog* saveDialog_ = nullptr;

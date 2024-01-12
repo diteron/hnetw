@@ -7,7 +7,7 @@
 #include <ui/qtmodels/hn_packet_list_row.h>
 
 
-HnPacketDissector::HnPacketDissector() : packetQueue_()
+HnPacketDissector::HnPacketDissector()
 {}
 
 HnPacketDissector::~HnPacketDissector()
@@ -23,9 +23,9 @@ void HnPacketDissector::setCaptureFile(HnCaptureFile* capFile)
     captureFile_ = capFile;
 }
 
-void HnPacketDissector::enqueuePacket(raw_packet rawPacket)
+void HnPacketDissector::enqueuePacket(raw_packet* rawPacket)
 {
-    packetQueue_.enqueue(rawPacket);
+    captureFile_->writeRawPacket(rawPacket);
 }
 
 void HnPacketDissector::startDissection()
@@ -47,55 +47,53 @@ void HnPacketDissector::stopDissection()
 
 void HnPacketDissector::dissectPackets()
 {
+    raw_packet* rawPacket = nullptr;
+    ipv4_hdr* ipHeader = nullptr;
+    HnPacket* capturedPacket = nullptr;
+    uint8_t* rawDataCopy = nullptr;
+    HnPacketListRow* newRow = nullptr;
+
     int id = -1;
     std::clock_t currentPacketTime = -1;
-    pBuffer buffer = nullptr;
+    uint8_t* rawData = nullptr;
     int readBytesCnt = 0;
     int writtenBytesCnt = 0;
 
     while (isCapturePermitted_.load()) {
-        raw_packet rawPacket = packetQueue_.dequeue();
+        rawPacket = captureFile_->getNextPacketToDissect(&currentPacketOffset_);
+        if (rawPacket == nullptr) continue;
 
-        id = rawPacket.id;
-        currentPacketTime = rawPacket.time;
-        buffer = rawPacket.buffer;
-        readBytesCnt = rawPacket.length;
+        id = rawPacket->id;
+        currentPacketTime = rawPacket->time;
+        rawData = rawPacket->data;
+        readBytesCnt = rawPacket->length;
 
-        ipv4_hdr* ipHeader = reinterpret_cast<ipv4_hdr*>(buffer);
-        uint8_t* rawData = new uint8_t[readBytesCnt];      // Cleanup is in the captured packet
-        std::memcpy(rawData, buffer, readBytesCnt);
+        ipHeader = reinterpret_cast<ipv4_hdr*>(rawData);
 
-        HnPacket* capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, id);
-        delete[] buffer;
+        capturedPacket = HnPacketFactory::instance()->buildPacket(ipHeader->protocol, id);
         if (capturedPacket == nullptr) {
-            delete[] rawData;
+            delete rawPacket;
             continue;
         }
 
-        capturedPacket->setPacketData(rawData, readBytesCnt);
+        rawDataCopy = new uint8_t[readBytesCnt];
+        std::memcpy(rawDataCopy, rawData, readBytesCnt);
+
+        capturedPacket->setPacketData(rawDataCopy, readBytesCnt);
         capturedPacket->setArrivalTime(currentPacketTime);
         ++dissectedPacketsCnt_;
 
         if (isCapturePermitted_.load()) {
-            writtenBytesCnt = captureFile_->writePacket(capturedPacket);
-            if (writtenBytesCnt == 0) {
-                delete capturedPacket;
-                continue;
-            }
-
-            HnPacketListRow* newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
-            currentPacketOffset_ += writtenBytesCnt;
+            newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
             packetListModel_->appendRow(newRow);
         }
 
         delete capturedPacket;
+        delete rawPacket;
     }
-
-    packetQueue_.clear();
 }
 
 void HnPacketDissector::reset()
 {
     currentPacketOffset_ = 0;
-    packetQueue_.clear();
 }

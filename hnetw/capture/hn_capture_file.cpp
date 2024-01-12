@@ -7,7 +7,7 @@
 #include <ui/qtmodels/hn_packet_list_row.h>
 #include "hn_capture_file.h"
 
-HnCaptureFile::HnCaptureFile()
+HnCaptureFile::HnCaptureFile() : mutex_(), cond_var_()
 {}
 
 HnCaptureFile::~HnCaptureFile()
@@ -83,6 +83,71 @@ long HnCaptureFile::filePos() const
     return std::ftell(file_);
 }
 
+raw_packet* HnCaptureFile::getNextPacketToDissect(long* packetOffsetBuff)
+{
+    std::unique_lock<std::mutex> lock(mutex_);
+    while (packetsToDissect_ == 0) {
+        cond_var_.wait(lock);
+    }
+
+    raw_packet* rawPacket = readRawPacket(currDissectedPacketOffset_, true);
+
+    if (rawPacket != nullptr) {
+        *packetOffsetBuff = currDissectedPacketOffset_;
+        currDissectedPacketOffset_ += rawPacket->length + sizeof(rawPacket->id) 
+                                      + sizeof(rawPacket->length) + sizeof(rawPacket->time);
+        --packetsToDissect_;
+    }
+
+    return rawPacket;
+}
+
+int HnCaptureFile::writeRawPacket(raw_packet* packet)
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    int writtenCnt = 0;
+    int totalBytesWritten = 0;
+
+    int packetLen = packet->length;
+    int id = packet->id;
+    clock_t arrivTime = packet->time;
+    const uint8_t* rawData = packet->data;
+
+    // Write packet length
+    writtenCnt = std::fwrite(&packetLen, sizeof(packetLen), 1, file_);
+    if (writtenCnt < 1) goto write_err;
+    totalBytesWritten += sizeof(packetLen);
+
+    // Write packet id
+    writtenCnt = std::fwrite(&id, sizeof(id), 1, file_);
+    if (writtenCnt < 1) goto write_err;
+    totalBytesWritten += sizeof(id);
+
+    // Write packet arrival time
+    writtenCnt = std::fwrite(&arrivTime, sizeof(arrivTime), 1, file_);
+    if (writtenCnt < 1) goto write_err;
+    totalBytesWritten += sizeof(arrivTime);
+
+    // Write packet raw data
+    writtenCnt = std::fwrite(rawData, sizeof(uint8_t), packetLen, file_);
+    if (writtenCnt < packetLen) goto write_err;
+    totalBytesWritten += writtenCnt;
+
+    fileSize_ += packetLen;
+    ++packetsToDissect_;
+
+    delete packet;
+    cond_var_.notify_one();
+
+    return totalBytesWritten;
+
+    write_err:
+        delete packet;
+        cond_var_.notify_one();
+        return 0;
+}
+
 HnPacket* HnCaptureFile::readPacket(long offset, bool ​restoreFilePos) const
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -124,45 +189,6 @@ HnPacket* HnCaptureFile::readPacket(long offset, bool ​restoreFilePos) const
     return packet;
 }
 
-int HnCaptureFile::writePacket(HnPacket* packet)
-{
-    std::lock_guard<std::mutex> lock(mutex_);
-
-    int writtenCnt = 0;
-    int totalBytesWritten = 0;
-
-    // Write packet length
-    int packetLen = packet->length();
-    writtenCnt = std::fwrite(&packetLen, sizeof(packetLen), 1, file_);
-    if (writtenCnt < 1)
-        return 0;
-    totalBytesWritten += sizeof(packetLen);
-
-    // Write packet id
-    int id = packet->id();
-    writtenCnt = std::fwrite(&id, sizeof(id), 1, file_);
-    if (writtenCnt < 1)
-        return 0;
-    totalBytesWritten += sizeof(id);
-
-    // Write packet arrival time
-    clock_t arrivTime = packet->arrivalTime();
-    writtenCnt = std::fwrite(&arrivTime, sizeof(arrivTime), 1, file_);
-    if (writtenCnt < 1)
-        return 0;
-    totalBytesWritten += sizeof(arrivTime);
-
-    // Write packet raw data
-    const uint8_t* rawData = packet->rawData();
-    writtenCnt = std::fwrite(rawData, sizeof(uint8_t), packetLen, file_);
-    if (writtenCnt < packetLen)
-        return 0;
-    totalBytesWritten += writtenCnt;
-
-    fileSize_ += packetLen;
-    return totalBytesWritten;
-}
-
 bool HnCaptureFile::saveFile(std::string fileName) const
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -195,11 +221,11 @@ bool HnCaptureFile::saveFile(std::string fileName) const
 
     return true;
 
-error:
-    std::fclose(savingFile);
-    std::fseek(file_, prevOffset, SEEK_SET);
-    delete[] buff;
-    return false;
+    error:
+        std::fclose(savingFile);
+        std::fseek(file_, prevOffset, SEEK_SET);
+        delete[] buff;
+        return false;
 }
 
 bool HnCaptureFile::recreate()
@@ -207,6 +233,7 @@ bool HnCaptureFile::recreate()
     std::lock_guard<std::mutex> lock(mutex_);
     
     fileSize_ = 0;
+    currDissectedPacketOffset_ = 0;
     
     if (isLiveCapture_)         // If capture is live - remove temporary file
         removeFile();
@@ -216,6 +243,43 @@ bool HnCaptureFile::recreate()
     if (!create()) return false;
 
     return true;
+}
+
+raw_packet* HnCaptureFile::readRawPacket(long offset, bool restoreFilePos) const
+{
+    /* We don't need to restore the file position indicator if we are reading entire saved capture file
+       But when we need to read a random packet, we must restore indicator for a correct write operation */
+    long prevOffset = 0;
+    if (restoreFilePos) {
+        prevOffset = std::ftell(file_);
+        std::fseek(file_, offset, SEEK_SET);
+    }
+
+    int readCnt = 0;
+
+    int packetLen = 0;
+    readCnt = std::fread(&packetLen, sizeof(packetLen), 1, file_);
+    if (readCnt < 1) return nullptr;
+
+    int id = -1;
+    readCnt = std::fread(&id, sizeof(id), 1, file_);
+    if (readCnt < 1) return nullptr;
+
+    clock_t arrivTime = -1;
+    readCnt = std::fread(&arrivTime, sizeof(arrivTime), 1, file_);
+    if (readCnt < 1) return nullptr;
+
+    uint8_t* rawData = readRawData(packetLen);
+    if (rawData == nullptr) return nullptr;
+
+    ipv4_hdr* ipHdr = reinterpret_cast<ipv4_hdr*>(rawData);
+
+    raw_packet* packet = new raw_packet{ id, arrivTime, rawData, packetLen };
+
+    if (restoreFilePos)
+        std::fseek(file_, prevOffset, SEEK_SET);
+
+    return packet;
 }
 
 uint8_t* HnCaptureFile::readRawData(int length) const

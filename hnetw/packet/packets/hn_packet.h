@@ -19,13 +19,13 @@ public:
     void setPacketData(uint8_t* rawData, int rawDataLen);
     void setArrivalTime(std::clock_t arrivalTime);
 
-    const int id() const;
+    int id() const;
     std::string typeString() const;
-    const int type() const;
-    const std::clock_t arrivalTime() const;
+    int type() const;
+    std::clock_t arrivalTime() const;
     const ipv4_hdr* ipv4Header() const;
     const uint8_t* rawData() const;
-    const int length() const;
+    int length() const;
 
 protected:
     template <typename derivedPacket>

@@ -28,7 +28,7 @@ void HnPacket::setArrivalTime(std::clock_t arrivalTime)
     arrivalTime_ = arrivalTime;
 }
 
-const int HnPacket::id() const
+int HnPacket::id() const
 {
     return id_;
 }
@@ -38,12 +38,12 @@ std::string HnPacket::typeString() const
     return typeString_;
 }
 
-const int HnPacket::type() const
+int HnPacket::type() const
 {
     return type_;
 }
 
-const std::clock_t HnPacket::arrivalTime() const
+std::clock_t HnPacket::arrivalTime() const
 {
     return arrivalTime_;
 }
@@ -58,7 +58,7 @@ const uint8_t* HnPacket::rawData() const
     return rawData_;
 }
 
-const int HnPacket::length() const
+int HnPacket::length() const
 {
     return rawDataLen_;
 }

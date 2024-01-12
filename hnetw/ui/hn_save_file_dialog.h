@@ -8,6 +8,12 @@ public:
     bool isDiscarded() const;
     int exec() override;
 
+    enum Results {
+        Accepted,
+        Rejected,
+        Discarded
+    };
+
 private:
     void addButtonBox();
 
@@ -21,7 +27,7 @@ private:
     QPushButton* cancelButton_ = nullptr;
     bool isDiscarded_ = false;
 
-//public slots:
+public slots:
     void save();
     void dontSave();
     void discard();
