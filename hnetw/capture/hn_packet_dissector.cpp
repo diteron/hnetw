@@ -23,21 +23,23 @@ void HnPacketDissector::setCaptureFile(HnCaptureFile* capFile)
     captureFile_ = capFile;
 }
 
-void HnPacketDissector::enqueuePacket(raw_packet* rawPacket)
+void HnPacketDissector::writePacket(raw_packet* rawPacket)
 {
     captureFile_->writeRawPacket(rawPacket);
 }
 
-void HnPacketDissector::startDissection()
+bool HnPacketDissector::startDissection()
 {
-    isCapturePermitted_ = true;
-
     if (!captureFile_) {
-        return;
+        return false;
     }
+
+    isCapturePermitted_ = true;
 
     std::thread dissection(&HnPacketDissector::dissectPackets, this);
     dissection.detach();
+
+    return true;
 }
 
 void HnPacketDissector::stopDissection()
@@ -58,10 +60,12 @@ void HnPacketDissector::dissectPackets()
     uint8_t* rawData = nullptr;
     int readBytesCnt = 0;
     int writtenBytesCnt = 0;
+    long packetOffsetBuff = 0;
 
     while (isCapturePermitted_.load()) {
-        rawPacket = captureFile_->getNextPacketToDissect(&currentPacketOffset_);
+        rawPacket = captureFile_->getNextPacketToDissect(&packetOffsetBuff);
         if (rawPacket == nullptr) continue;
+        currentPacketOffset_ = packetOffsetBuff;
 
         id = rawPacket->id;
         currentPacketTime = rawPacket->time;
@@ -84,7 +88,7 @@ void HnPacketDissector::dissectPackets()
         ++dissectedPacketsCnt_;
 
         if (isCapturePermitted_.load()) {
-            newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_);
+            newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_.load());
             packetListModel_->appendRow(newRow);
         }
 

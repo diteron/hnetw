@@ -10,7 +10,7 @@ public:
     HnPacketCapturer();
     ~HnPacketCapturer();
 
-    void setPacketsDissector(HnPacketDissector* dissector);
+    bool setPacketsDissector(HnPacketDissector* dissector);
     bool setInterfaceToCapture(u_long interfaceIp, unsigned short port);
 
     void startCapturing();

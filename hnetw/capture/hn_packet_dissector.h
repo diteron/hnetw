@@ -11,8 +11,8 @@ public:
     void setPacketListModel(HnPacketListModel* pListModel);
     void setCaptureFile(HnCaptureFile* capFile);
 
-    void enqueuePacket(raw_packet* rawPacket);
-    void startDissection();
+    void writePacket(raw_packet* rawPacket);
+    bool startDissection();
     void stopDissection();
     void dissectPackets();
 
@@ -24,6 +24,6 @@ private:
 
     std::atomic<bool> isCapturePermitted_ = false;
     int dissectedPacketsCnt_ = 0;
-    long currentPacketOffset_ = 0;
+    std::atomic<long> currentPacketOffset_ = 0;
 };
 

@@ -161,7 +161,11 @@ bool HnMainWindow::setupCapturer()
     packetDissector_->setPacketListModel(packetListModel_);
     packetDissector_->setCaptureFile(captureFile_);
     packetCapturer_ = new HnPacketCapturer();
-    packetCapturer_->setPacketsDissector(packetDissector_);
+    
+    if (!packetCapturer_->setPacketsDissector(packetDissector_)) {
+        printErrorMessage("Failed to set packet dissector!");
+        return false;
+    }
 
     packetList_->setCaptureFile(captureFile_);
 

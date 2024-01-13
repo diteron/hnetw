@@ -11,10 +11,13 @@ HnPacketCapturer::~HnPacketCapturer()
     stopCapturing();
 }
 
-void HnPacketCapturer::setPacketsDissector(HnPacketDissector* dissector)
+bool HnPacketCapturer::setPacketsDissector(HnPacketDissector* dissector)
 {
     dissector_ = dissector;
-    dissector_->startDissection();
+    if (!dissector_->startDissection())
+        return false;
+
+    return true;
 }
 
 bool HnPacketCapturer::setInterfaceToCapture(u_long interfaceIp, unsigned short port)
@@ -95,7 +98,7 @@ void HnPacketCapturer::capturePackets()
 
             currentPacketTime = clock() - captureStarted_;
             rawPacket = new raw_packet { ++capturedPacketsCnt_, currentPacketTime, rawData, bytesRead };
-            dissector_->enqueuePacket(rawPacket);
+            dissector_->writePacket(rawPacket);
         }
 
         delete[] buffer;
