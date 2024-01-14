@@ -1,7 +1,7 @@
 #include <stdafx.h>
 
 #include <packet/hn_packet_factory.h>
-#include <ui/packetstrees/hn_proto_tree_factory.h>
+#include <packet/packetstrees/hn_proto_tree_factory.h>
 #include "hn_main_window.h"
 
 HnMainWindow::HnMainWindow(int startWidth, int startHeight, QWidget* parent)

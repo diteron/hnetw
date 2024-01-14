@@ -1,12 +1,11 @@
 #include <stdafx.h>
 #include "hn_details_tree_builder.h"
 
-#include "packetstrees/hn_proto_tree_factory.h"
-#include "packetstrees/hn_ip_tree.h"
-#include "packetstrees/hn_tcp_tree.h"
-#include "packetstrees/hn_udp_tree.h"
-
-#include "packetstrees/hn_other_tree.h"
+#include <packet/packetstrees/hn_proto_tree_factory.h>
+#include <packet/packetstrees/hn_ip_tree.h>
+#include <packet/packetstrees/hn_tcp_tree.h>
+#include <packet/packetstrees/hn_udp_tree.h>
+#include <packet/packetstrees/hn_other_tree.h>
 
 HnDetailsTreeBuilder::HnDetailsTreeBuilder()
 {}

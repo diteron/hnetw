@@ -2,7 +2,7 @@
 
 #include <packet/proto_headers.h>
 #include "hn_proto_tree.h"
-#include "../qtmodels/hn_info_node.h"
+#include "hn_info_node.h"
 
 class HnIpTree {
 public:

@@ -86,6 +86,7 @@ long HnCaptureFile::filePos() const
 raw_packet* HnCaptureFile::getNextPacketToDissect(long* packetOffsetBuff)
 {
     std::unique_lock<std::mutex> lock(mutex_);
+
     while (packetsToDissect_ == 0) {
         cond_var_.wait(lock);
     }
@@ -134,7 +135,7 @@ int HnCaptureFile::writeRawPacket(raw_packet* packet)
     if (writtenCnt < packetLen) goto write_err;
     totalBytesWritten += writtenCnt;
 
-    fileSize_ += packetLen;
+    fileSize_ += totalBytesWritten;
     ++packetsToDissect_;
 
     delete packet;
@@ -144,7 +145,6 @@ int HnCaptureFile::writeRawPacket(raw_packet* packet)
 
     write_err:
         delete packet;
-        cond_var_.notify_one();
         return 0;
 }
 
@@ -272,8 +272,6 @@ raw_packet* HnCaptureFile::readRawPacket(long offset, bool restoreFilePos) const
     uint8_t* rawData = readRawData(packetLen);
     if (rawData == nullptr) return nullptr;
 
-    ipv4_hdr* ipHdr = reinterpret_cast<ipv4_hdr*>(rawData);
-
     raw_packet* packet = new raw_packet{ id, arrivTime, rawData, packetLen };
 
     if (restoreFilePos)
@@ -286,7 +284,7 @@ uint8_t* HnCaptureFile::readRawData(int length) const
 {
 
     uint8_t* packetData = new uint8_t[length];
-    int readBytesCnt = std::fread((uint8_t*)packetData, sizeof(uint8_t), length, file_);
+    int readBytesCnt = std::fread(packetData, sizeof(uint8_t), length, file_);
 
     if (readBytesCnt < length) {
         delete[] packetData;

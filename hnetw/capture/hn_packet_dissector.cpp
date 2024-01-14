@@ -59,7 +59,6 @@ void HnPacketDissector::dissectPackets()
     std::clock_t currentPacketTime = -1;
     uint8_t* rawData = nullptr;
     int readBytesCnt = 0;
-    int writtenBytesCnt = 0;
     long packetOffsetBuff = 0;
 
     while (isCapturePermitted_.load()) {
@@ -85,7 +84,6 @@ void HnPacketDissector::dissectPackets()
 
         capturedPacket->setPacketData(rawDataCopy, readBytesCnt);
         capturedPacket->setArrivalTime(currentPacketTime);
-        ++dissectedPacketsCnt_;
 
         if (isCapturePermitted_.load()) {
             newRow = new HnPacketListRow(capturedPacket, currentPacketOffset_.load());

@@ -65,22 +65,22 @@
     <ClInclude Include="packet\packets\hn_other_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\qtmodels\hn_info_node.h">
+    <ClInclude Include="packet\packetstrees\hn_info_node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\hn_details_tree_builder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_proto_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_proto_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_tcp_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_tcp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_ip_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_ip_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_udp_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_udp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="capture\hn_packet_dissector.h">
@@ -92,22 +92,22 @@
     <ClInclude Include="ui\hn_interface_dialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_other_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_other_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_proto_tree_factory.h">
+    <ClInclude Include="packet\packetstrees\hn_proto_tree_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="packet\packets\hn_igmp_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_igmp_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_igmp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="packet\packets\hn_icmp_packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\packetstrees\hn_icmp_tree.h">
+    <ClInclude Include="packet\packetstrees\hn_icmp_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\utils\hn_converter.h">
@@ -181,22 +181,22 @@
     <ClCompile Include="packet\packets\hn_other_packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\qtmodels\hn_info_node.cpp">
+    <ClCompile Include="packet\packetstrees\hn_info_node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\hn_details_tree_builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_proto_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_proto_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_tcp_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_tcp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_ip_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_ip_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_udp_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_udp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="capture\hn_packet_dissector.cpp">
@@ -208,22 +208,22 @@
     <ClCompile Include="ui\hn_interface_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_other_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_other_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_proto_tree_factory.cpp">
+    <ClCompile Include="packet\packetstrees\hn_proto_tree_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="packet\packets\hn_igmp_packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_igmp_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_igmp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="packet\packets\hn_icmp_packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui\packetstrees\hn_icmp_tree.cpp">
+    <ClCompile Include="packet\packetstrees\hn_icmp_tree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\utils\hn_converter.cpp">

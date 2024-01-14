@@ -1,7 +1,7 @@
 #include <stdafx.h>
 #include <packet/hn_packet_factory.h>
-#include <ui/packetstrees/hn_proto_tree_factory.h>
-#include <ui/packetstrees/hn_ip_tree.h>
+#include <packet/packetstrees/hn_proto_tree_factory.h>
+#include <packet/packetstrees/hn_ip_tree.h>
 #include <ui/utils/hn_converter.h>
 
 #include "hn_icmp_tree.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../qtmodels/hn_info_node.h"
+#include "hn_info_node.h"
 
 class HnProtoTree {
 public:

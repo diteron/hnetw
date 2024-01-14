@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hn_info_node.h"
+#include <packet/packetstrees/hn_info_node.h>
 
 class HnPacketDetailsModel : public QAbstractItemModel {
 
