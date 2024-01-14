@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <stdafx.h>
 #include "hn_save_file_dialog.h"
 
 HnSaveFileDialog::HnSaveFileDialog(QWidget* parent) 
@@ -27,7 +27,6 @@ bool HnSaveFileDialog::isDiscarded() const
 int HnSaveFileDialog::exec()
 {
     isDiscarded_ = true;
-    QApplication::beep();
     return QDialog::exec();
 }
 

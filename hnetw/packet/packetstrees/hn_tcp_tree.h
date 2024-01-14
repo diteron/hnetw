@@ -23,7 +23,7 @@ private:
     };
 
     struct timestamp_ {
-        uint8_t echoReplyTimestamp : 4;     // TODO: Check bits order
+        uint8_t echoReplyTimestamp : 4;
         uint8_t senderTimestamp : 4;
     };
 
@@ -51,8 +51,8 @@ private:
         QString noOperation_opt = "No Operation";
         QString maxSegSize_opt =  "Maximum Segment Size: ";
         QString windowScale_opt = "Window Scale: ";
-        QString sackPerm_opt =    "Selective Acknowledgment Permitted";
-        QString sack_opt =        "Selective Acknowledgment";
+        QString sackPerm_opt =    "Selective Acknowledgments Permitted";
+        QString sack_opt =        "Selective Acknowledgments";
         QString sackLeft_opt =    " Left Edge: ";   // Block number is displayed first
         QString sackRight_opt =   " Right Edge: ";  // same
         QString timestamp_opt =   "Timestamp and echo of previous timestamp";

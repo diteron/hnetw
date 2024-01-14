@@ -172,7 +172,6 @@ bool HnMainWindow::setupCapturer()
     return true;
 }
 
-
 bool HnMainWindow::setupCaptureInterface()
 {
     if (currentInterfaceIp_ == 0L) {
