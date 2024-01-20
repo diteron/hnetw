@@ -24,6 +24,6 @@ private:
 
     std::atomic<bool> isCapturePermitted_ = false;
     int dissectedPacketsCnt_ = 0;
-    std::atomic<long> currentPacketOffset_ = 0;
+    std::atomic<size_t> currentPacketOffset_ = 0;
 };
 

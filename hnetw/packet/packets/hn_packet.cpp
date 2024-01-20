@@ -15,7 +15,7 @@ HnPacket::~HnPacket()
     delete[] rawData_;
 }
 
-void HnPacket::setPacketData(uint8_t* rawData, int rawDataLen)
+void HnPacket::setPacketData(uint8_t* rawData, size_t rawDataLen)
 {
     rawData_ = rawData;
     rawDataLen_ = rawDataLen;
@@ -58,7 +58,7 @@ const uint8_t* HnPacket::rawData() const
     return rawData_;
 }
 
-int HnPacket::length() const
+size_t HnPacket::length() const
 {
     return rawDataLen_;
 }

@@ -80,7 +80,7 @@ void HnPacketCapturer::capturePackets()
 {
     if (!socketSetToCapture_) return;
 
-    int bytesRead = 0;
+    size_t bytesRead = 0;
     std::clock_t currentPacketTime = 0;
 
     char* buffer = nullptr;

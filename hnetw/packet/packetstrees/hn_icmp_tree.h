@@ -7,15 +7,15 @@ public:
     ~HnIcmpTree();
 
 private:
-    void buildDestUnreachableMsg(uint8_t* msgBlock, int msgBlockLen);
-    void buildTimeExceededMsg(uint8_t* msgBlock, int msgBlockLen);
-    void buildParamProblemMsg(uint8_t* msgBlock, int msgBlockLen);
-    void buildRedirectMsg(uint8_t* msgBlock, int msgBlockLen);
-    void buildEchoReqReplMsg(uint8_t* msgBlock, int msgBlockLen);
-    void buildTimestampMsg(uint8_t* msgBlock, int msgBlockLen);
+    void buildDestUnreachableMsg(uint8_t* msgBlock, size_t msgBlockLen);
+    void buildTimeExceededMsg(uint8_t* msgBlock, size_t msgBlockLen);
+    void buildParamProblemMsg(uint8_t* msgBlock, size_t msgBlockLen);
+    void buildRedirectMsg(uint8_t* msgBlock, size_t msgBlockLen);
+    void buildEchoReqReplMsg(uint8_t* msgBlock, size_t msgBlockLen);
+    void buildTimestampMsg(uint8_t* msgBlock, size_t msgBlockLen);
     void buildUnknownMsg();
 
-    void buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, int ipHdrAndDataBlockLen);
+    void buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, size_t ipHdrAndDataBlockLen);
 
     struct icmpHeaderFields_ {
         QString header =     "Internet Control Message Protocol";

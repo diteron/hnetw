@@ -34,7 +34,7 @@ HnIgmpTree::HnIgmpTree(const HnPacket* packet, HnInfoNode* parent)
 HnIgmpTree::~HnIgmpTree()
 {}
 
-int HnIgmpTree::getIgmpVersion(int packetLen, int ipHeaderLen, struct igmp_v2_hdr* igmpHeader)
+int HnIgmpTree::getIgmpVersion(size_t packetLen, int ipHeaderLen, struct igmp_v2_hdr* igmpHeader)
 {
     const int igmpv2HeaderLen = 8;
 

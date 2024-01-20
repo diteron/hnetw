@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 
 #include "hnetwork_app.h"
 #include "ui/hn_main_window.h"

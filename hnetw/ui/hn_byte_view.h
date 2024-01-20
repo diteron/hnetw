@@ -6,7 +6,7 @@ public:
     HnByteView(QWidget* parent = nullptr);
     ~HnByteView();
 
-    void setRawData(const uint8_t* rawData, int len);
+    void setRawData(const uint8_t* rawData, size_t len);
     void printPacketBytes();
     void clear();
 
@@ -20,13 +20,13 @@ private:
     int getLastLineIndex(int firsLineIdx, int areaHeight);
     void drawLineAfterBytes(QPainter& painter, QPaintEvent* event);
     QPen createPen(int width, Qt::PenStyle style, const QColor& color);
-    uint8_t* getDataToPrint(int firstLineIdx, int lastLineIdx, int* buffForLen);
+    uint8_t* getDataToPrint(int firstLineIdx, int lastLineIdx, size_t* buffForLen);
     void printAddress(QPainter& painter, int lineIdx, int yPos);
-    void printBytes(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos);
-    void printAsciiChars(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos);
+    void printBytes(QPainter& painter, const uint8_t* data, size_t dataLen, int startByte, int yPos);
+    void printAsciiChars(QPainter& painter, const uint8_t* data, size_t dataLen, int startByte, int yPos);
 
     uint8_t* rawData_ = nullptr;
-    int rawDataLen_ = 0;
+    size_t rawDataLen_ = 0;
 
     const int addrCharsNum_ = 4;
     const int gapAfterAddr_ = 10;

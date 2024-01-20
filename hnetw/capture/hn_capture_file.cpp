@@ -72,18 +72,18 @@ bool HnCaptureFile::isLiveCapture() const
     return isLiveCapture_;
 }
 
-long HnCaptureFile::size() const
+size_t HnCaptureFile::size() const
 {
     std::lock_guard<std::mutex> lock(mutex_);
     return fileSize_;
 }
 
-long HnCaptureFile::filePos() const
+size_t HnCaptureFile::filePos() const
 {
     return std::ftell(file_);
 }
 
-raw_packet* HnCaptureFile::getNextPacketToDissect(long* packetOffsetBuff)
+raw_packet* HnCaptureFile::getNextPacketToDissect(size_t* packetOffsetBuff)
 {
     std::unique_lock<std::mutex> lock(mutex_);
 
@@ -103,14 +103,14 @@ raw_packet* HnCaptureFile::getNextPacketToDissect(long* packetOffsetBuff)
     return rawPacket;
 }
 
-int HnCaptureFile::writeRawPacket(raw_packet* packet)
+size_t HnCaptureFile::writeRawPacket(raw_packet* packet)
 {
     std::lock_guard<std::mutex> lock(mutex_);
 
-    int writtenCnt = 0;
-    int totalBytesWritten = 0;
+    size_t writtenCnt = 0;
+    size_t totalBytesWritten = 0;
 
-    int packetLen = packet->length;
+    size_t packetLen = packet->length;
     int id = packet->id;
     clock_t arrivTime = packet->time;
     const uint8_t* rawData = packet->data;
@@ -148,19 +148,19 @@ int HnCaptureFile::writeRawPacket(raw_packet* packet)
         return 0;
 }
 
-HnPacket* HnCaptureFile::readPacket(long offset, bool ​restoreFilePos) const
+HnPacket* HnCaptureFile::readPacket(size_t offset, bool ​restoreFilePos) const
 {
     std::lock_guard<std::mutex> lock(mutex_);
 
     /* We don't need to restore the file position indicator if we are reading entire saved capture file 
        But when we need to read a random packet, we must restore indicator for a correct write operation */
-    long prevOffset = 0;
+    size_t prevOffset = 0;
     if (​restoreFilePos) {                      
         prevOffset = std::ftell(file_);
-        std::fseek(file_, offset, SEEK_SET);
+        std::fseek(file_, static_cast<long>(offset), SEEK_SET);
     }
 
-    int readCnt = 0;
+    size_t readCnt = 0;
 
     int packetLen = 0;
     readCnt = std::fread(&packetLen, sizeof(packetLen), 1, file_);
@@ -184,7 +184,7 @@ HnPacket* HnCaptureFile::readPacket(long offset, bool ​restoreFilePos) const
     packet->setArrivalTime(arrivTime);
 
     if (​restoreFilePos)
-        std::fseek(file_, prevOffset, SEEK_SET);
+        std::fseek(file_, static_cast<long>(prevOffset), SEEK_SET);
 
     return packet;
 }
@@ -197,12 +197,12 @@ bool HnCaptureFile::saveFile(std::string fileName) const
     if (!savingFile) return false;
 
     long prevOffset = std::ftell(file_);
-    std::fseek(file_, 0, SEEK_SET);
+    std::fseek(file_, 0L, SEEK_SET);
 
     const int buffSize = 524'288;
     uint8_t* buff = new uint8_t[buffSize];
-    int readBytesCnt = 0;
-    int writtenBytesCnt = 0;
+    size_t readBytesCnt = 0;
+    size_t writtenBytesCnt = 0;
 
     while ((readBytesCnt = std::fread(buff, sizeof(uint8_t), buffSize, file_)) > 0) {
         writtenBytesCnt = std::fwrite(buff, sizeof(uint8_t), readBytesCnt, savingFile);
@@ -216,14 +216,14 @@ bool HnCaptureFile::saveFile(std::string fileName) const
     }
 
     std::fclose(savingFile);
-    std::fseek(file_, prevOffset, SEEK_SET);
+    std::fseek(file_, static_cast<long>(prevOffset), SEEK_SET);
     delete[] buff;
 
     return true;
 
     error:
         std::fclose(savingFile);
-        std::fseek(file_, prevOffset, SEEK_SET);
+        std::fseek(file_, static_cast<long>(prevOffset), SEEK_SET);
         delete[] buff;
         return false;
 }
@@ -245,19 +245,19 @@ bool HnCaptureFile::recreate()
     return true;
 }
 
-raw_packet* HnCaptureFile::readRawPacket(long offset, bool restoreFilePos) const
+raw_packet* HnCaptureFile::readRawPacket(size_t offset = 0L, bool restoreFilePos) const
 {
     /* We don't need to restore the file position indicator if we are reading entire saved capture file
        But when we need to read a random packet, we must restore indicator for a correct write operation */
-    long prevOffset = 0;
+    size_t prevOffset = 0;
     if (restoreFilePos) {
         prevOffset = std::ftell(file_);
-        std::fseek(file_, offset, SEEK_SET);
+        std::fseek(file_, static_cast<long>(offset), SEEK_SET);
     }
 
-    int readCnt = 0;
+    size_t readCnt = 0;
 
-    int packetLen = 0;
+    size_t packetLen = 0;
     readCnt = std::fread(&packetLen, sizeof(packetLen), 1, file_);
     if (readCnt < 1) return nullptr;
 
@@ -275,16 +275,16 @@ raw_packet* HnCaptureFile::readRawPacket(long offset, bool restoreFilePos) const
     raw_packet* packet = new raw_packet{ id, arrivTime, rawData, packetLen };
 
     if (restoreFilePos)
-        std::fseek(file_, prevOffset, SEEK_SET);
+        std::fseek(file_, static_cast<long>(prevOffset), SEEK_SET);
 
     return packet;
 }
 
-uint8_t* HnCaptureFile::readRawData(int length) const
+uint8_t* HnCaptureFile::readRawData(size_t length) const
 {
 
     uint8_t* packetData = new uint8_t[length];
-    int readBytesCnt = std::fread(packetData, sizeof(uint8_t), length, file_);
+    size_t readBytesCnt = std::fread(packetData, sizeof(uint8_t), length, file_);
 
     if (readBytesCnt < length) {
         delete[] packetData;

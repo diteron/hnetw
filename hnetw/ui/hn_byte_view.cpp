@@ -17,7 +17,7 @@ HnByteView::HnByteView(QWidget* parent) : QAbstractScrollArea(parent)
 HnByteView::~HnByteView()
 {}
 
-void HnByteView::setRawData(const uint8_t* rawData, int len)
+void HnByteView::setRawData(const uint8_t* rawData, size_t len)
 {
     clear();
     rawData_ = new uint8_t[len];
@@ -60,7 +60,7 @@ void HnByteView::paintEvent(QPaintEvent* event)
     drawLineAfterBytes(painter, event);
 
     // Get data that corresponds to the current view lines from the packet raw data to print
-    int dataLen = 0;
+    size_t dataLen = 0;
     uint8_t* data = getDataToPrint(firstLineIdx, lastLineIdx, &dataLen);
     
     int yPosStart = charHeight_;
@@ -93,7 +93,7 @@ QSize HnByteView::fullSize() const
         return QSize(0, 0);
 
     int width = asciiScreenOffsetX_ + (bytesInLine_ * charWidth_);
-    int height = rawDataLen_ / bytesInLine_;
+    int height = static_cast<int>(rawDataLen_ / bytesInLine_);
     if (rawDataLen_ % bytesInLine_)
         ++height;
 
@@ -105,8 +105,8 @@ QSize HnByteView::fullSize() const
 int HnByteView::getLastLineIndex(int firsLineIdx, int areaHeight)
 {
     int lastLineIdx = firsLineIdx + areaHeight / charHeight_;
-    if (static_cast<unsigned int>(lastLineIdx) > rawDataLen_ / bytesInLine_) {
-        lastLineIdx = rawDataLen_ / bytesInLine_;
+    if (static_cast<int>(lastLineIdx) > rawDataLen_ / bytesInLine_) {
+        lastLineIdx = static_cast<int>(rawDataLen_ / bytesInLine_);
         if (rawDataLen_ % bytesInLine_)
             ++lastLineIdx;
     }
@@ -133,9 +133,9 @@ QPen HnByteView::createPen(int width, Qt::PenStyle style, const QColor& color)
     return pen;
 }
 
-uint8_t* HnByteView::getDataToPrint(int firstLineIdx, int lastLineIdx, int* buffForLen)
+uint8_t* HnByteView::getDataToPrint(int firstLineIdx, int lastLineIdx, size_t* buffForLen)
 {
-    int dataLen = (lastLineIdx - firstLineIdx) * bytesInLine_;
+    size_t dataLen = (lastLineIdx - firstLineIdx) * bytesInLine_;
     if (dataLen > rawDataLen_) {
         dataLen -= dataLen - rawDataLen_;
     }
@@ -155,7 +155,7 @@ void HnByteView::printAddress(QPainter& painter, int lineIdx, int yPos)
     painter.setPen(palette().color(QPalette::Text));
 }
 
-void HnByteView::printBytes(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos)
+void HnByteView::printBytes(QPainter& painter, const uint8_t* data, size_t dataLen, int startByte, int yPos)
 {
     int currDataByte = startByte;
     for (int xPos = bytesScreenOffsetX_, i = 0;
@@ -176,7 +176,7 @@ void HnByteView::printBytes(QPainter& painter, const uint8_t* data, int dataLen,
     }
 }
 
-void HnByteView::printAsciiChars(QPainter& painter, const uint8_t* data, int dataLen, int startByte, int yPos)
+void HnByteView::printAsciiChars(QPainter& painter, const uint8_t* data, size_t dataLen, int startByte, int yPos)
 {
     int currDataByte = startByte;
     for (int xPosAscii = asciiScreenOffsetX_, i = 0;

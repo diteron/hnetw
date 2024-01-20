@@ -11,7 +11,7 @@ HnTcpTree::HnTcpTree(const HnPacket* packet, HnInfoNode* parent)
     : HnProtoTree(packet, parent)
 {
     int ipHeaderLen = packet->ipv4Header()->header_length * 4;
-    int tcpHeaderLen = packet->length() - ipHeaderLen;
+    size_t tcpHeaderLen = packet->length() - ipHeaderLen;
 
     if (tcpHeaderLen >= 20) {
         tcp_hdr* tcpHeader = reinterpret_cast<tcp_hdr*>(const_cast<uint8_t*>(packet->rawData() + ipHeaderLen));
@@ -74,7 +74,7 @@ HnTcpTree::HnTcpTree(const HnPacket* packet, HnInfoNode* parent)
 HnTcpTree::~HnTcpTree()
 {}
 
-void HnTcpTree::addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen)
+void HnTcpTree::addTcpOptions(uint8_t* rawData, size_t rawDataSize, int ipHeaderLen, int tcpHeaderLen)
 {
     const int minTcpHeaderLen = 20;
     if (tcpHeaderLen <= minTcpHeaderLen) return;             // There are no options in this header

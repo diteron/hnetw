@@ -8,7 +8,7 @@ public:
     ~HnTcpTree();
 
 private:
-    void addTcpOptions(uint8_t* rawData, int rawDataSize, int ipHeaderLen, int tcpHeaderLen);
+    void addTcpOptions(uint8_t* rawData, size_t rawDataSize, int ipHeaderLen, int tcpHeaderLen);
     HnInfoNode* createSackNode(uint8_t* rawData, int sackOffset, int sackLen);
     HnInfoNode* createTimestampsNode(uint8_t* rawData, int timestampsOffset, int timestampsLen);
 

@@ -28,7 +28,7 @@ HnIcmpTree::HnIcmpTree(const HnPacket* packet, HnInfoNode* parent)
 
     const uint8_t* packetRawData = packet->rawData();
     int msgBlockOffset = ipHeaderLen + icmpCommonPartLen;
-    int msgLen = packet->length() - ipHeaderLen - icmpCommonPartLen;
+    size_t msgLen = packet->length() - ipHeaderLen - icmpCommonPartLen;
 
     msgData_ = new uint8_t[msgLen];
     std::memcpy(msgData_, packetRawData + msgBlockOffset, msgLen);
@@ -72,31 +72,31 @@ HnIcmpTree::~HnIcmpTree()
     delete encapsPacket_;
 }
 
-void HnIcmpTree::buildDestUnreachableMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildDestUnreachableMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_dest_unreach* destUnreachHdr = reinterpret_cast<icmp_dest_unreach*>(msgBlock);
 
     QString unusedVal = QString::number(ntohs(destUnreachHdr->unused));
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.unused + unusedVal));
 
-    int ipHdrAndDataBlockLen = msgBlockLen - sizeof(destUnreachHdr->unused);
+    size_t ipHdrAndDataBlockLen = msgBlockLen - sizeof(destUnreachHdr->unused);
     buildEncapsPacketTree(msgBlock + sizeof(destUnreachHdr->unused),
                           ipHdrAndDataBlockLen);
 }
 
-void HnIcmpTree::buildTimeExceededMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildTimeExceededMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_time_exceed* timeExceedHdr = reinterpret_cast<icmp_time_exceed*>(msgBlock);
 
     QString unusedVal = QString::number(ntohs(timeExceedHdr->unused));
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.unused + unusedVal));
 
-    int ipHdrAndDataBlockLen = msgBlockLen - sizeof(timeExceedHdr->unused);
+    size_t ipHdrAndDataBlockLen = msgBlockLen - sizeof(timeExceedHdr->unused);
     buildEncapsPacketTree(msgBlock + sizeof(timeExceedHdr->unused),
                           ipHdrAndDataBlockLen);
 }
 
-void HnIcmpTree::buildParamProblemMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildParamProblemMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_param_probl* paramProblHdr = reinterpret_cast<icmp_param_probl*>(msgBlock);
 
@@ -111,24 +111,24 @@ void HnIcmpTree::buildParamProblemMsg(uint8_t* msgBlock, int msgBlockLen)
 
     int encapsPacketOffset = sizeof(paramProblHdr->ptr) + sizeof(paramProblHdr->unused8) +
                              sizeof(paramProblHdr->unused16);
-    int ipHdrAndDataBlockLen = msgBlockLen - encapsPacketOffset;
+    size_t ipHdrAndDataBlockLen = msgBlockLen - encapsPacketOffset;
     buildEncapsPacketTree(msgBlock + encapsPacketOffset, ipHdrAndDataBlockLen);
 
 }
 
-void HnIcmpTree::buildRedirectMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildRedirectMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_redirect* redirectHdr = reinterpret_cast<icmp_redirect*>(msgBlock);
 
     QString gwayAddrVal = HnConverter::uint32ToIpString(ntohl(redirectHdr->ip));
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.gway_addr + gwayAddrVal));
 
-    int ipHdrAndDataBlockLen = msgBlockLen - sizeof(redirectHdr->ip);
+    size_t ipHdrAndDataBlockLen = msgBlockLen - sizeof(redirectHdr->ip);
     buildEncapsPacketTree(msgBlock + sizeof(redirectHdr->ip),
                           ipHdrAndDataBlockLen);
 }
 
-void HnIcmpTree::buildEchoReqReplMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildEchoReqReplMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_echo_req_rep* echoHdr = reinterpret_cast<icmp_echo_req_rep*>(msgBlock);
 
@@ -139,7 +139,7 @@ void HnIcmpTree::buildEchoReqReplMsg(uint8_t* msgBlock, int msgBlockLen)
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.seq_num + seqNumVal));
 }
 
-void HnIcmpTree::buildTimestampMsg(uint8_t* msgBlock, int msgBlockLen)
+void HnIcmpTree::buildTimestampMsg(uint8_t* msgBlock, size_t msgBlockLen)
 {
     icmp_timestamp* timestampHdr = reinterpret_cast<icmp_timestamp*>(msgBlock);
 
@@ -161,7 +161,7 @@ void HnIcmpTree::buildUnknownMsg()
     rootNode_->addChild(new HnInfoNode(icmpHeaderFields.unknown));
 }
 
-void HnIcmpTree::buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, int ipHdrAndDataBlockLen)
+void HnIcmpTree::buildEncapsPacketTree(uint8_t* ipHdrAndDataBlock, size_t ipHdrAndDataBlockLen)
 {
     // Raw data for a pseudo-packet encapsulated in an ICMP packet
     // (IP header and at least 8 bytes of original datagram data) 

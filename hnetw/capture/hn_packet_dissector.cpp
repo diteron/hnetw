@@ -58,8 +58,8 @@ void HnPacketDissector::dissectPackets()
     int id = -1;
     std::clock_t currentPacketTime = -1;
     uint8_t* rawData = nullptr;
-    int readBytesCnt = 0;
-    long packetOffsetBuff = 0;
+    size_t readBytesCnt = 0;
+    size_t packetOffsetBuff = 0;
 
     while (isCapturePermitted_.load()) {
         rawPacket = captureFile_->getNextPacketToDissect(&packetOffsetBuff);

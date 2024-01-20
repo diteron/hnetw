@@ -16,7 +16,7 @@ public:
         UDP = 17,
     };
     
-    void setPacketData(uint8_t* rawData, int rawDataLen);
+    void setPacketData(uint8_t* rawData, size_t rawDataLen);
     void setArrivalTime(std::clock_t arrivalTime);
 
     int id() const;
@@ -25,7 +25,7 @@ public:
     std::clock_t arrivalTime() const;
     const ipv4_hdr* ipv4Header() const;
     const uint8_t* rawData() const;
-    int length() const;
+    size_t length() const;
 
 protected:
     template <typename derivedPacket>
@@ -38,5 +38,5 @@ protected:
     ipv4_hdr* ipv4Header_ = nullptr;
     int ipv4HeaderLength_ = 0;
     uint8_t* rawData_ = nullptr;
-    int rawDataLen_ = 0;
+    size_t rawDataLen_ = 0;
 };

@@ -9,7 +9,7 @@
 HnPacketListRow::HnPacketListRow()
 {}
 
-HnPacketListRow::HnPacketListRow(HnPacket* packet, long packetOffset)
+HnPacketListRow::HnPacketListRow(HnPacket* packet, size_t packetOffset)
 {
     setId(packet->id());
     setTime(packet->arrivalTime());
@@ -50,12 +50,12 @@ void HnPacketListRow::setDestinationIp(uint32_t destIp)
 }
 
 
-long HnPacketListRow::packetOffset() const
+size_t HnPacketListRow::packetOffset() const
 {
     return packetOffset_;
 }
 
-int HnPacketListRow::packetLength() const
+size_t HnPacketListRow::packetLength() const
 {
     return packetLen_;
 }
@@ -65,12 +65,12 @@ void HnPacketListRow::setProtocolType(QString type)
     rowColumns_[HnPacketListRow::protocol] = type;
 }
 
-void HnPacketListRow::setLength(int length)
+void HnPacketListRow::setLength(size_t length)
 {
     rowColumns_[HnPacketListRow::length] = QString::number(length);
 }
 
-void HnPacketListRow::setCaptureFileOffset(long packetOffset, int packetLen)
+void HnPacketListRow::setCaptureFileOffset(size_t packetOffset, size_t packetLen)
 {
     packetOffset_ = packetOffset;
     packetLen_ = packetLen;

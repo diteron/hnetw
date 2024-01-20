@@ -99,7 +99,7 @@ void HnPacketListModel::addRowsFromCapFile(HnCaptureFile* capFile)
     HnPacket* packet = nullptr;
     HnPacketListRow* row = nullptr;
 
-    long packetOffset = 0;
+    size_t packetOffset = 0;
     while ((packet = capFile->readPacket()) != nullptr) {
         row = new HnPacketListRow(packet, packetOffset);
         packetOffset = capFile->filePos();

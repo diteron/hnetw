@@ -8,7 +8,7 @@ public:
     ~HnIgmpTree();
 
 private:
-    int getIgmpVersion(int packetLen, int ipHeaderLen, struct igmp_v2_hdr* igmpHeader);
+    int getIgmpVersion(size_t packetLen, int ipHeaderLen, struct igmp_v2_hdr* igmpHeader);
     void createIgmpTree(struct igmp_v2_hdr* igmpHeader, HnInfoNode* parent, int version = 2);
     void createIgmpV3Tree(int ipHeaderLen, const HnPacket* packet, HnInfoNode* parent);
     
