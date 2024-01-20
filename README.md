@@ -5,7 +5,8 @@ A simple packet sniffer. The app can capture all common network packets:
 * IGMPv2 and v3
 * TCP
 * UDP
-Works only on Windows.
+
+**Works only on Windows.**
 
 Requirements:
 * Qt 6.6.0
