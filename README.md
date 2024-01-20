@@ -22,3 +22,4 @@ mkdir build
 cmake -S . -Bbuild
 cmake --build build --config Release
 ```
+To capture incoming packets disable your firewall or add an exception to it
