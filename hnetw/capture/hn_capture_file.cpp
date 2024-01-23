@@ -162,7 +162,7 @@ HnPacket* HnCaptureFile::readPacket(size_t offset, bool ​restoreFilePos) const
 
     size_t readCnt = 0;
 
-    int packetLen = 0;
+    size_t packetLen = 0;
     readCnt = std::fread(&packetLen, sizeof(packetLen), 1, file_);
     if (readCnt < 1) return nullptr;
 
