@@ -43,7 +43,6 @@ bool HnMainWindow::setupNetwork()
 
 void HnMainWindow::printErrorMessage(QString errMessage)
 {
-    QApplication::beep();
     QMessageBox::critical(this, QApplication::applicationName(), errMessage);
 }
 
@@ -234,14 +233,19 @@ int HnMainWindow::showSaveDialog()
     return HnSaveFileDialog::Rejected;
 }
 
-void HnMainWindow::handleOpenFile(QString fname)
+void HnMainWindow::handleOpenFile()
 {
-    if (showSaveDialog() == HnSaveFileDialog::Discarded) return;
+    if (showSaveDialog() == HnSaveFileDialog::Discarded) {
+        return;
+    }
 
-    if (fname.isEmpty()) return;
+    QString fileName = QFileDialog::getOpenFileName(this, nullptr, nullptr, "Hnetwork File (*.hnw)");
+    if (fileName.isEmpty()) {
+        return;
+    }
 
     stopCapture();
-    if (captureFile_->open(fname.toStdString())) {
+    if (captureFile_->open(fileName.toStdString())) {
         packetListModel_->addRowsFromCapFile(captureFile_);
     }
     else {
@@ -252,7 +256,7 @@ void HnMainWindow::handleOpenFile(QString fname)
     // Reset capture interface IP, in case we start writing captured packets to a saved file
     currentInterfaceIp_ = 0L;
     menuBar_->deselectInterfaceIp();
-    statusBarIpLabel_->setText("Viewing capture file: " + fname);
+    statusBarIpLabel_->setText("Viewing capture file: " + fileName);
 }
 
 void HnMainWindow::handleSaveFile(QString fname)

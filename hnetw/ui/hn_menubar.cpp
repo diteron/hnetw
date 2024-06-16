@@ -60,7 +60,7 @@ void HnMenuBar::addSubmenu(QMenu** submenu, const QString& title) {
 
 void HnMenuBar::addSubmenuAction(QWidget* parent, QMenu* submenu, QAction** action, const QString& actionName,
                                  const QString& title, const QString& shortcut) {
-    (*action) = new QAction(parent);
+    *action = new QAction(parent);
     submenu->addAction(*action);
     (*action)->setText(title);
     (*action)->setShortcut(QKeySequence(shortcut));
@@ -68,8 +68,7 @@ void HnMenuBar::addSubmenuAction(QWidget* parent, QMenu* submenu, QAction** acti
 
 void HnMenuBar::handleOpenFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, nullptr, nullptr, "Hnetwork File (*.hnw)");
-    emit openFileTriggered(fileName);
+    emit openFileTriggered();
 }
 
 void HnMenuBar::handleSaveFile()

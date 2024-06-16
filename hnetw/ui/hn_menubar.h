@@ -37,7 +37,7 @@ public slots:
     void handleInterfaceChange();
 
 signals:
-    void openFileTriggered(QString fname);
+    void openFileTriggered();
     void saveFileTriggered(QString fname);
     void interfaceIdChanged(int id);
 };

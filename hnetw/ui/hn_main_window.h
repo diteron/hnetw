@@ -72,7 +72,7 @@ private:
     HnByteView* packetBytesView_ = nullptr;
 
 private slots:
-    void handleOpenFile(QString fname);
+    void handleOpenFile();
     void handleSaveFile(QString fname);
     void handleInterfaceChange(int id);
     void startCapture();
